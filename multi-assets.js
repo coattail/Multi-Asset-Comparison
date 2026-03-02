@@ -273,6 +273,7 @@ let timeZoomRenderFrame = null;
 let isSyncingTimeZoomInputs = false;
 let textMeasureContext = null;
 let chartFontsReadyPromise = null;
+let forceEquityLineMode = false;
 
 const uiState = {
   hiddenAssetNames: new Set(),
@@ -661,6 +662,18 @@ function safeRender(contextLabel = "渲染") {
     }
     return false;
   }
+}
+
+function toLineFallbackRendered(renderedList) {
+  if (!Array.isArray(renderedList)) return [];
+  return renderedList.map((item) => {
+    if (!item || item.seriesType !== "candlestick") return item;
+    return {
+      ...item,
+      seriesType: "line",
+      normalizedOhlc: null,
+    };
+  });
 }
 
 function clampNumber(value, min, max) {
@@ -3571,7 +3584,7 @@ function render() {
     const fullOhlcSeries = raw.ohlcValues?.[assetId];
     let normalizedOhlc = null;
     let seriesType = "line";
-    if (asset.categoryKey === "equities" && Array.isArray(fullOhlcSeries)) {
+    if (!forceEquityLineMode && asset.categoryKey === "equities" && Array.isArray(fullOhlcSeries)) {
       const windowedOhlcSeries = fullOhlcSeries.slice(startIndex, endIndex + 1);
       const mappedOhlc = windowedOhlcSeries.map((tuple) => {
         if (!Array.isArray(tuple) || tuple.length < 4) return null;
@@ -3704,13 +3717,9 @@ function render() {
     if (!hasCandlestick) {
       throw error;
     }
-    const fallbackRendered = rendered.map((item) => {
-      if (item.seriesType !== "candlestick") return item;
-      return {
-        ...item,
-        seriesType: "line",
-      };
-    });
+    forceEquityLineMode = true;
+    const fallbackRendered = toLineFallbackRendered(rendered);
+    chart.clear();
     applyOptionByRendered(fallbackRendered);
     effectiveRendered = fallbackRendered;
     setStatus("当前浏览器对K线渲染兼容性有限，已自动切换为折线显示。", true);
