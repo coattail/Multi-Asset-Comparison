@@ -2,10 +2,8 @@ const THEME_MODE_STORAGE_KEY = "house-price-theme-mode";
 const THEME_MODE_LIGHT = "light";
 const THEME_MODE_DARK = "dark";
 const MAX_SELECTED_ASSET_COUNT = 6;
-const BASE_START_MONTH = "2006-01";
-const ENABLE_EQUITY_CANDLESTICK = true;
-const CHART_FONT_FAMILY =
-  '"ProjectChartSTKaiti", "STKaiti", "Kaiti SC", "KaiTi", "BiauKai", serif';
+const BASE_START_MONTH = "2008-01";
+const CHART_FONT_FAMILY = '"STKaiti", "Kaiti SC", "KaiTi", "BiauKai", serif';
 
 const CASE_SHILLER_SERIES = Object.freeze([
   { id: "us_cs_atxrsa", seriesId: "ATXRSA", name: "美国房产·亚特兰大都会区", legendName: "亚特兰大（Case-Shiller）" },
@@ -115,11 +113,11 @@ const CHART_THEME_STYLES = Object.freeze({
   [THEME_MODE_LIGHT]: Object.freeze({
     chartBackground: "#fbfeff",
     chartTextColor: "#1d435d",
-    legendTextColor: "#000000",
-    xAxisLineColor: "#000000",
-    xAxisLabelColor: "#000000",
-    yAxisLineColor: "#000000",
-    yAxisLabelColor: "#000000",
+    legendTextColor: "#22516d",
+    xAxisLineColor: "#7c97ac",
+    xAxisLabelColor: "#315d79",
+    yAxisLineColor: "#4d7596",
+    yAxisLabelColor: "#2f5874",
     sliderHandleColor: "rgba(255, 255, 255, 0.82)",
     sliderHandleBorderColor: "rgba(26, 143, 227, 0.84)",
     sliderHandleHoverColor: "rgba(255, 255, 255, 0.95)",
@@ -143,20 +141,20 @@ const CHART_THEME_STYLES = Object.freeze({
   [THEME_MODE_DARK]: Object.freeze({
     chartBackground: "#09131b",
     chartTextColor: "#dde7ee",
-    legendTextColor: "#FFFFFF",
-    xAxisLineColor: "#FFFFFF",
-    xAxisLabelColor: "#FFFFFF",
-    yAxisLineColor: "#FFFFFF",
-    yAxisLabelColor: "#FFFFFF",
+    legendTextColor: "#e2ebf2",
+    xAxisLineColor: "#8da5b5",
+    xAxisLabelColor: "#c7d6e0",
+    yAxisLineColor: "#9ab1bf",
+    yAxisLabelColor: "#d2dee7",
     sliderHandleColor: "rgba(245, 164, 59, 0.4)",
     sliderHandleBorderColor: "rgba(245, 164, 59, 0.95)",
     sliderHandleHoverColor: "rgba(255, 192, 105, 0.5)",
     sliderHandleHoverBorderColor: "rgba(255, 192, 105, 0.99)",
     textMaskColor: "rgba(6, 12, 18, 0.66)",
-    overlayTitleColor: "#FFFFFF",
-    overlayLineColor: "#FFFFFF",
-    overlayTextColor: "#FFFFFF",
-    overlaySubTextColor: "#FFFFFF",
+    overlayTitleColor: "#e1ebf2",
+    overlayLineColor: "#95aab8",
+    overlayTextColor: "#d7e3eb",
+    overlaySubTextColor: "#acc0cc",
     tooltipBackground: "rgba(9, 17, 24, 0.97)",
     tooltipBorderColor: "rgba(245, 164, 59, 0.62)",
     tooltipTextColor: "#dde9f2",
@@ -255,7 +253,7 @@ const timeZoomStartEl = document.getElementById("timeZoomStart");
 const timeZoomEndEl = document.getElementById("timeZoomEnd");
 
 const chart = echarts.init(chartEl, null, {
-  renderer: "svg",
+  renderer: "canvas",
 });
 
 const assetById = new Map();
@@ -556,15 +554,6 @@ function getLastFiniteInfo(series, months) {
   };
 }
 
-function getFirstFiniteIndex(series, fromIndex = 0) {
-  if (!Array.isArray(series) || series.length === 0) return -1;
-  const start = clampNumber(Number(fromIndex) || 0, 0, Math.max(0, series.length - 1));
-  for (let i = start; i < series.length; i += 1) {
-    if (isFiniteNumber(series[i]) && Number(series[i]) > 0) return i;
-  }
-  return -1;
-}
-
 function normalizeThemeMode(value) {
   return value === THEME_MODE_DARK ? THEME_MODE_DARK : THEME_MODE_LIGHT;
 }
@@ -631,18 +620,6 @@ function safeRender(contextLabel = "渲染") {
     }
     return false;
   }
-}
-
-function toLineFallbackRendered(renderedList) {
-  if (!Array.isArray(renderedList)) return [];
-  return renderedList.map((item) => {
-    if (!item || item.seriesType !== "candlestick") return item;
-    return {
-      ...item,
-      seriesType: "line",
-      normalizedOhlc: null,
-    };
-  });
 }
 
 function clampNumber(value, min, max) {
@@ -2661,25 +2638,6 @@ function renderSummaryTable(rows) {
   });
 }
 
-function getVisibleSummaryRows(rows) {
-  if (!Array.isArray(rows) || rows.length === 0) return [];
-  return rows.filter((row) => !uiState.hiddenAssetNames.has(row.seriesName));
-}
-
-function refreshSummaryAndOverlayFromLatestContext() {
-  if (!latestRenderContext) return;
-  const allRows = Array.isArray(latestRenderContext.summaryRows)
-    ? latestRenderContext.summaryRows
-    : [];
-  const visibleRows = getVisibleSummaryRows(allRows);
-  renderSummaryTable(visibleRows);
-  renderChartStatsOverlay(
-    visibleRows,
-    latestRenderContext.startMonth,
-    latestRenderContext.endMonth,
-  );
-}
-
 function getSeriesColor(index) {
   const palette = SERIES_COLORS[getCurrentThemeMode()] || SERIES_COLORS[THEME_MODE_LIGHT];
   return palette[index % palette.length];
@@ -3092,13 +3050,6 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
   });
   const yMin = allFiniteValues.length > 0 ? Math.min(...allFiniteValues) : 80;
   const yMax = allFiniteValues.length > 0 ? Math.max(...allFiniteValues) : 120;
-  const yAxisMinRaw = Math.floor((yMin - 5) / 10) * 10;
-  const yAxisMaxRaw = Math.ceil((yMax + 5) / 10) * 10;
-  const yAxisMinValue = Number.isFinite(yAxisMinRaw) ? yAxisMinRaw : 80;
-  let yAxisMaxValue = Number.isFinite(yAxisMaxRaw) ? yAxisMaxRaw : 120;
-  if (yAxisMaxValue <= yAxisMinValue) {
-    yAxisMaxValue = yAxisMinValue + 10;
-  }
   const effectivePlotWidth = Math.max(220, chartWidth - gridLeft - gridRight);
   const usableChartWidth = Math.max(
     220,
@@ -3267,9 +3218,8 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
         alignWithLabel: true,
         interval: 0,
         length: responsiveChartWidth <= 520 ? 4 : 5,
-        lineStyle: { color: chartTheme.xAxisLineColor },
       },
-      axisLine: { lineStyle: { color: chartTheme.xAxisLineColor, width: 1 } },
+      axisLine: { lineStyle: { color: chartTheme.xAxisLineColor } },
       axisLabel: {
         color: chartTheme.xAxisLabelColor,
         interval: 0,
@@ -3290,10 +3240,14 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
     },
     yAxis: {
       type: "value",
-      min: yAxisMinValue,
-      max: yAxisMaxValue,
-      axisLine: { show: true, lineStyle: { color: chartTheme.yAxisLineColor, width: 1 } },
-      axisTick: { show: true, inside: true, lineStyle: { color: chartTheme.yAxisLineColor } },
+      min: function (value) {
+        return Math.floor((value.min - 5) / 10) * 10;
+      },
+      max: function (value) {
+        return Math.ceil((value.max + 5) / 10) * 10;
+      },
+      axisLine: { show: true, lineStyle: { color: chartTheme.yAxisLineColor, width: 1.5 } },
+      axisTick: { show: true, inside: true },
       splitLine: { show: false },
       axisLabel: {
         color: chartTheme.yAxisLabelColor,
@@ -3408,13 +3362,11 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
               show: false,
             },
             lineStyle: {
-              width: Math.max(1.1, seriesLineWidth * 0.78),
-              color: item.color,
-              opacity: 0.74,
+              width: 1,
+              opacity: 0,
             },
             itemStyle: {
-              color: item.color,
-              opacity: 0.9,
+              opacity: 0,
             },
             endLabel: endLabelConfig,
             labelLayout: {
@@ -3552,7 +3504,6 @@ function render() {
   const rendered = [];
   const summaryRows = [];
   const missingBase = [];
-  const shiftedBase = [];
 
   selectedAssetIds.forEach((assetId, index) => {
     const asset = assetById.get(assetId);
@@ -3560,33 +3511,20 @@ function render() {
     if (!asset || !Array.isArray(fullSeries)) return;
 
     const seriesRaw = fullSeries.slice(startIndex, endIndex + 1);
-    let baseIndex = viewportStartOffset;
-    let baseRaw = seriesRaw[baseIndex];
-    if (!isFiniteNumber(baseRaw) || baseRaw <= 0) {
-      const fallbackIndex = getFirstFiniteIndex(seriesRaw, viewportStartOffset);
-      if (fallbackIndex >= 0) {
-        baseIndex = fallbackIndex;
-        baseRaw = seriesRaw[baseIndex];
-      }
-    }
+    const baseRaw = seriesRaw[viewportStartOffset];
     if (!isFiniteNumber(baseRaw) || baseRaw <= 0) {
       missingBase.push(getAssetDisplayName(asset));
       return;
     }
 
-    const normalized = seriesRaw.map((value, valueIndex) => {
+    const normalized = seriesRaw.map((value) => {
       if (!isFiniteNumber(value)) return null;
-      if (valueIndex < baseIndex) return null;
       return (value / baseRaw) * 100;
     });
     const fullOhlcSeries = raw.ohlcValues?.[assetId];
     let normalizedOhlc = null;
     let seriesType = "line";
-    if (
-      ENABLE_EQUITY_CANDLESTICK &&
-      asset.categoryKey === "equities" &&
-      Array.isArray(fullOhlcSeries)
-    ) {
+    if (asset.categoryKey === "equities" && Array.isArray(fullOhlcSeries)) {
       const windowedOhlcSeries = fullOhlcSeries.slice(startIndex, endIndex + 1);
       const mappedOhlc = windowedOhlcSeries.map((tuple) => {
         if (!Array.isArray(tuple) || tuple.length < 4) return null;
@@ -3634,12 +3572,6 @@ function render() {
     })();
 
     const displayName = getAssetDisplayName(asset);
-    if (baseIndex > viewportStartOffset) {
-      shiftedBase.push({
-        name: displayName,
-        month: months[baseIndex] || "",
-      });
-    }
     const seriesName = asset.id;
     rendered.push({
       id: asset.id,
@@ -3696,23 +3628,16 @@ function render() {
   uiState.hiddenAssetNames = new Set(
     [...uiState.hiddenAssetNames].filter((name) => renderedNameSet.has(name)),
   );
-  if (
-    renderedNameSet.size > 0 &&
-    [...renderedNameSet].every((name) => uiState.hiddenAssetNames.has(name))
-  ) {
-    uiState.hiddenAssetNames.clear();
-  }
 
-  const visibleRows = getVisibleSummaryRows(summaryRows);
+  const visibleRows = summaryRows.filter((row) => !uiState.hiddenAssetNames.has(row.seriesName));
   updateChartTableButton(rendered.length);
   latestRenderContext = {
     startMonth: viewportStartMonth,
     endMonth: viewportEndMonth,
-    summaryRows,
+    visibleSummaryRows: visibleRows,
   };
 
   let effectiveRendered = rendered;
-  let usedFallbackThisRender = false;
   const applyOptionByRendered = (renderList) => {
     isApplyingOption = true;
     try {
@@ -3732,10 +3657,16 @@ function render() {
     if (!hasCandlestick) {
       throw error;
     }
-    const fallbackRendered = toLineFallbackRendered(rendered);
+    const fallbackRendered = rendered.map((item) => {
+      if (item.seriesType !== "candlestick") return item;
+      return {
+        ...item,
+        seriesType: "line",
+      };
+    });
     applyOptionByRendered(fallbackRendered);
     effectiveRendered = fallbackRendered;
-    usedFallbackThisRender = true;
+    setStatus("当前浏览器对K线渲染兼容性有限，已自动切换为折线显示。", true);
   }
 
   effectiveRendered.forEach((item) => {
@@ -3746,11 +3677,7 @@ function render() {
   });
 
   chartTitleEl.textContent = "多资产价格走势对比";
-  const shiftedBaseMetaText =
-    shiftedBase.length > 0
-      ? " | 起点无值资产按首个有效月定基100"
-      : "";
-  chartMetaEl.textContent = `${formatMonthZh(viewportStartMonth)} - ${formatMonthZh(viewportEndMonth)} | 定基 ${formatMonthZh(viewportStartMonth)} = 100${shiftedBaseMetaText}`;
+  chartMetaEl.textContent = `${formatMonthZh(viewportStartMonth)} - ${formatMonthZh(viewportEndMonth)} | 定基 ${formatMonthZh(viewportStartMonth)} = 100`;
 
   renderSummaryTable(visibleRows);
   renderChartStatsOverlay(visibleRows, viewportStartMonth, viewportEndMonth);
@@ -3761,27 +3688,12 @@ function render() {
     if (asset?.source) activeSources.add(asset.source);
   });
   const sourceText = summarizeSourceProviders([...activeSources], { maxItems: 4, fallback: "-" });
-  const shiftedBaseFootnoteText =
-    shiftedBase.length > 0
-      ? `；起点无值资产改为首个有效月定基：${shiftedBase
-          .map((item) => `${item.name}(${item.month || "-"})`)
-          .join("、")}`
-      : "";
-  footnoteEl.textContent = `当前滑块区间：${viewportStartMonth} ~ ${viewportEndMonth}；数据源：${sourceText || "-"}${shiftedBaseFootnoteText}。`;
+  footnoteEl.textContent = `当前滑块区间：${viewportStartMonth} ~ ${viewportEndMonth}；数据源：${sourceText || "-"}。`;
 
   const missingText = missingBase.length ? `未纳入：${missingBase.join("、")}。` : "";
-  const shiftedBaseStatusText = shiftedBase.length
-    ? `起点无值资产已自动改为首个有效月定基：${shiftedBase
-        .map((item) => `${item.name}(${item.month || "-"})`)
-        .join("、")}。`
-    : "";
-  const fallbackText = usedFallbackThisRender
-    ? "当前浏览器对K线渲染兼容性有限，已自动切换为折线显示。"
-    : "";
-  setStatus(
-    `已生成 ${rendered.length} 条走势（定基 ${viewportStartMonth}=100）。${shiftedBaseStatusText}${missingText}${fallbackText}`,
-    Boolean(fallbackText),
-  );
+  if (!statusEl.textContent.includes("已自动切换为折线显示")) {
+    setStatus(`已生成 ${rendered.length} 条走势（定基 ${viewportStartMonth}=100）。${missingText}`, false);
+  }
 }
 
 function bindEvents() {
@@ -3866,16 +3778,17 @@ function bindEvents() {
       if (!selected) hidden.add(name);
     });
     uiState.hiddenAssetNames = hidden;
-    refreshSummaryAndOverlayFromLatestContext();
+    safeRender("图例筛选");
   });
 
   chart.on("click", (params) => {
     if (params?.componentType === "series" && params?.seriesName) {
-      const nextHidden = !uiState.hiddenAssetNames.has(params.seriesName);
-      chart.dispatchAction({
-        type: nextHidden ? "legendUnSelect" : "legendSelect",
-        name: params.seriesName,
-      });
+      if (uiState.hiddenAssetNames.has(params.seriesName)) {
+        uiState.hiddenAssetNames.delete(params.seriesName);
+      } else {
+        uiState.hiddenAssetNames.add(params.seriesName);
+      }
+      safeRender("点击系列切换");
     }
   });
 
