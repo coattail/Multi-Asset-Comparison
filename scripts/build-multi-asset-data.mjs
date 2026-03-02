@@ -160,7 +160,7 @@ const CASE_SHILLER_TARGETS = Object.freeze([
   },
 ]);
 
-const DEFAULT_START_MONTH = "2008-01";
+const DEFAULT_START_MONTH = "2006-01";
 const DEFAULT_OUTPUT_FILENAME = "multi-asset-data.js";
 const WINDOW_VAR_NAME = "MULTI_ASSET_SOURCE_DATA";
 

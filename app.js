@@ -146,11 +146,11 @@ const CHART_THEME_STYLES = Object.freeze({
   [THEME_MODE_LIGHT]: Object.freeze({
     chartBackground: "#fbfeff",
     chartTextColor: "#1d435d",
-    legendTextColor: "#22516d",
-    xAxisLineColor: "#7c97ac",
-    xAxisLabelColor: "#315d79",
-    yAxisLineColor: "#4d7596",
-    yAxisLabelColor: "#2f5874",
+    legendTextColor: "#000000",
+    xAxisLineColor: "#000000",
+    xAxisLabelColor: "#000000",
+    yAxisLineColor: "#000000",
+    yAxisLabelColor: "#000000",
     sliderHandleColor: "rgba(255, 255, 255, 0.82)",
     sliderHandleBorderColor: "rgba(26, 143, 227, 0.84)",
     sliderHandleHoverColor: "rgba(255, 255, 255, 0.95)",
@@ -170,20 +170,20 @@ const CHART_THEME_STYLES = Object.freeze({
   [THEME_MODE_DARK]: Object.freeze({
     chartBackground: "#09131b",
     chartTextColor: "#dde7ee",
-    legendTextColor: "#e2ebf2",
-    xAxisLineColor: "#8da5b5",
-    xAxisLabelColor: "#c7d6e0",
-    yAxisLineColor: "#9ab1bf",
-    yAxisLabelColor: "#d2dee7",
+    legendTextColor: "#FFFFFF",
+    xAxisLineColor: "#FFFFFF",
+    xAxisLabelColor: "#FFFFFF",
+    yAxisLineColor: "#FFFFFF",
+    yAxisLabelColor: "#FFFFFF",
     sliderHandleColor: "rgba(245, 164, 59, 0.4)",
     sliderHandleBorderColor: "rgba(245, 164, 59, 0.95)",
     sliderHandleHoverColor: "rgba(255, 192, 105, 0.5)",
     sliderHandleHoverBorderColor: "rgba(255, 192, 105, 0.99)",
     textMaskColor: "rgba(6, 12, 18, 0.66)",
-    overlayTitleColor: "#e1ebf2",
-    overlayLineColor: "#95aab8",
-    overlayTextColor: "#d7e3eb",
-    overlaySubTextColor: "#acc0cc",
+    overlayTitleColor: "#FFFFFF",
+    overlayLineColor: "#FFFFFF",
+    overlayTextColor: "#FFFFFF",
+    overlaySubTextColor: "#FFFFFF",
     tooltipBackground: "rgba(9, 17, 24, 0.97)",
     tooltipBorderColor: "rgba(245, 164, 59, 0.62)",
     tooltipTextColor: "#dde9f2",
@@ -288,8 +288,8 @@ let timeZoomMonths = [];
 let timeZoomRenderFrame = null;
 let isSyncingTimeZoomInputs = false;
 let textMeasureContext = null;
-let chartFontsReadyPromise = null;
 let resizeRenderTimer = null;
+let chartFontsReadyPromise = null;
 
 function isFiniteNumber(value) {
   return typeof value === "number" && Number.isFinite(value);
@@ -341,6 +341,7 @@ function waitForChartFonts(timeoutMs = 1800) {
   const loadPromise = Promise.all(
     CHART_FONT_LOAD_TARGETS.map((descriptor) => document.fonts.load(descriptor, sampleText)),
   ).catch(() => undefined);
+
   const timeoutPromise = new Promise((resolve) => {
     setTimeout(resolve, Math.max(0, timeoutMs));
   });
@@ -2463,7 +2464,7 @@ function drawOverlaySummaryOnCanvas(ctx, canvasWidth, canvasHeight, exportContex
     ? boxX - tableDelta * 0.35
     : boxX - tableDelta / 2;
   const centerX = tableX + tableW / 2;
-  const fontFamily = '"ProjectChartSTKaiti","STKaiti","Kaiti SC","KaiTi","BiauKai",serif';
+  const fontFamily = '"STKaiti","Kaiti SC","KaiTi","BiauKai",serif';
   const chartTheme = getActiveChartThemeStyle();
 
   const mainFontSize = Math.max(16, Math.round(19 * scaleY));
@@ -3156,6 +3157,9 @@ function makeOption(
   const endLabelFontSize = compactMobile ? 11 : mediumMobile ? 14 : 18;
   const legendBaseFontSize = compactMobile ? 10.8 : mediumMobile ? 12.2 : 15;
   const legendFontSize = Number((legendBaseFontSize * 1.05).toFixed(2));
+  const LEGEND_BOLD_FACTOR = 1.08;
+  const legendFontWeight = Math.round(700 * LEGEND_BOLD_FACTOR);
+  const legendStrokeWidth = Number(Math.max(0.06, legendFontSize * 0.008).toFixed(2));
   const xAxisLabelScale = compactMobile ? 0.98 : 1.1;
   const xAxisLabelFontSize = Number((xAxisLabelLayout.fontSize * xAxisLabelScale).toFixed(2));
   const yAxisLabelFontSize = compactMobile ? 11 : mediumMobile ? 12 : 14;
@@ -3271,7 +3275,9 @@ function makeOption(
       textStyle: {
         color: chartTheme.legendTextColor,
         fontSize: legendFontSize,
-        fontWeight: 700,
+        fontWeight: legendFontWeight,
+        textBorderColor: chartTheme.legendTextColor,
+        textBorderWidth: legendStrokeWidth,
         fontFamily: CHART_FONT_FAMILY,
       },
       itemWidth: 20,
@@ -3313,8 +3319,9 @@ function makeOption(
         alignWithLabel: true,
         interval: 0,
         length: responsiveChartWidth <= 520 ? 4 : 5,
+        lineStyle: { color: chartTheme.xAxisLineColor },
       },
-      axisLine: { lineStyle: { color: chartTheme.xAxisLineColor } },
+      axisLine: { lineStyle: { color: chartTheme.xAxisLineColor, width: 1 } },
       axisLabel: {
         color: chartTheme.xAxisLabelColor,
         interval: 0,
@@ -3341,8 +3348,8 @@ function makeOption(
       max: function (value) {
         return Math.ceil((value.max + 5) / 10) * 10;
       },
-      axisLine: { show: true, lineStyle: { color: chartTheme.yAxisLineColor, width: 1.5 } },
-      axisTick: { show: true, inside: true },
+      axisLine: { show: true, lineStyle: { color: chartTheme.yAxisLineColor, width: 1 } },
+      axisTick: { show: true, inside: true, lineStyle: { color: chartTheme.yAxisLineColor } },
       splitLine: { show: false },
       axisLabel: {
         color: chartTheme.yAxisLabelColor,
