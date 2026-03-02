@@ -3,7 +3,7 @@ const THEME_MODE_LIGHT = "light";
 const THEME_MODE_DARK = "dark";
 const MAX_SELECTED_ASSET_COUNT = 6;
 const BASE_START_MONTH = "2006-01";
-const ENABLE_EQUITY_CANDLESTICK = false;
+const ENABLE_EQUITY_CANDLESTICK = true;
 const CHART_FONT_FAMILY =
   '"ProjectChartSTKaiti", "STKaiti", "Kaiti SC", "KaiTi", "BiauKai", serif';
 
