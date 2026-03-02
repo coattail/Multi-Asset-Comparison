@@ -3,14 +3,8 @@ const THEME_MODE_LIGHT = "light";
 const THEME_MODE_DARK = "dark";
 const MAX_SELECTED_ASSET_COUNT = 6;
 const BASE_START_MONTH = "2006-01";
-const CHART_FONT_FACE = "ProjectChartSTKaiti";
 const CHART_FONT_FAMILY =
   '"ProjectChartSTKaiti", "STKaiti", "Kaiti SC", "KaiTi", "BiauKai", serif';
-const CHART_FONT_LOAD_TARGETS = Object.freeze([
-  `400 16px "${CHART_FONT_FACE}"`,
-  `600 16px "${CHART_FONT_FACE}"`,
-  `700 16px "${CHART_FONT_FACE}"`,
-]);
 
 const CASE_SHILLER_SERIES = Object.freeze([
   { id: "us_cs_atxrsa", seriesId: "ATXRSA", name: "美国房产·亚特兰大都会区", legendName: "亚特兰大（Case-Shiller）" },
@@ -272,9 +266,6 @@ let timeZoomMonths = [];
 let timeZoomRenderFrame = null;
 let isSyncingTimeZoomInputs = false;
 let textMeasureContext = null;
-let chartFontsReadyPromise = null;
-let forceEquityLineMode = false;
-let deferredRenderFrame = null;
 
 const uiState = {
   hiddenAssetNames: new Set(),
@@ -421,39 +412,6 @@ function formatOverlayRangeLabel(startMonth, endMonth) {
 
 function formatOverlayBaseLabel(baseMonth) {
   return `定基${formatMonthZh(baseMonth)}＝100`;
-}
-
-function waitForChartFonts(timeoutMs = 1800) {
-  if (typeof document === "undefined" || !document.fonts) {
-    return Promise.resolve();
-  }
-  if (typeof document.fonts.load !== "function") {
-    return Promise.resolve();
-  }
-  if (chartFontsReadyPromise) return chartFontsReadyPromise;
-
-  const sampleText = "多资产指数";
-  const allLoaded =
-    typeof document.fonts.check === "function" &&
-    CHART_FONT_LOAD_TARGETS.every((descriptor) => document.fonts.check(descriptor, sampleText));
-  if (allLoaded) {
-    chartFontsReadyPromise = Promise.resolve();
-    return chartFontsReadyPromise;
-  }
-
-  const loadPromise = Promise.all(
-    CHART_FONT_LOAD_TARGETS.map((descriptor) => document.fonts.load(descriptor, sampleText)),
-  ).catch(() => undefined);
-
-  const timeoutPromise = new Promise((resolve) => {
-    setTimeout(resolve, Math.max(0, timeoutMs));
-  });
-
-  chartFontsReadyPromise = Promise.race([loadPromise, timeoutPromise])
-    .then(() => document.fonts.ready.catch(() => undefined))
-    .then(() => undefined);
-
-  return chartFontsReadyPromise;
 }
 
 function escapeHtml(value) {
@@ -663,14 +621,6 @@ function safeRender(contextLabel = "渲染") {
     }
     return false;
   }
-}
-
-function scheduleDeferredRender(contextLabel = "渲染") {
-  if (deferredRenderFrame) return;
-  deferredRenderFrame = requestAnimationFrame(() => {
-    deferredRenderFrame = null;
-    safeRender(contextLabel);
-  });
 }
 
 function toLineFallbackRendered(renderedList) {
@@ -957,20 +907,6 @@ function syncChartViewport({ resizeChart = true } = {}) {
   if (resizeChart) {
     chart.resize();
   }
-}
-
-function ensureChartInstanceSize() {
-  if (!chartEl) return;
-  const width = Number(chartEl.clientWidth) || 0;
-  const height = Number(chartEl.clientHeight) || 0;
-  if (width <= 0 || height <= 0) return;
-  const currentWidth = chart.getWidth();
-  const currentHeight = chart.getHeight();
-  if (currentWidth !== width || currentHeight !== height) {
-    chart.resize({ width, height });
-    return;
-  }
-  chart.resize();
 }
 
 function updateChartTableButton(eligibleCount) {
@@ -3177,9 +3113,6 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
   const endLabelFontSize = Number((endLabelBaseFontSize * 0.8).toFixed(2));
   const legendBaseFontSize = compactMobile ? 10.8 : mediumMobile ? 12.2 : 15;
   const legendFontSize = Number((legendBaseFontSize * 1.05).toFixed(2));
-  const LEGEND_BOLD_FACTOR = 1.08;
-  const legendFontWeight = Math.round(700 * LEGEND_BOLD_FACTOR);
-  const legendStrokeWidth = Number(Math.max(0.06, legendFontSize * 0.008).toFixed(2));
   const xAxisLabelScale = compactMobile ? 0.98 : 1.1;
   const xAxisLabelFontSize = Number((xAxisLabelLayout.fontSize * xAxisLabelScale).toFixed(2));
   const yAxisLabelFontSize = compactMobile ? 11 : mediumMobile ? 12 : 14;
@@ -3279,9 +3212,7 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
       textStyle: {
         color: chartTheme.legendTextColor,
         fontSize: legendFontSize,
-        fontWeight: legendFontWeight,
-        textBorderColor: chartTheme.legendTextColor,
-        textBorderWidth: legendStrokeWidth,
+        fontWeight: 700,
         fontFamily: CHART_FONT_FAMILY,
       },
       itemWidth: 20,
@@ -3536,12 +3467,6 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
 
 function render() {
   syncChartViewport();
-  ensureChartInstanceSize();
-  if (chart.getWidth() <= 0 || chart.getHeight() <= 0) {
-    setStatus("正在等待图表区域完成布局，请稍候…", false);
-    scheduleDeferredRender("等待图表布局");
-    return;
-  }
   latestRenderContext = null;
   const selectedAssetIds = readSelectedAssetIds();
   const requestedStartMonth = startMonthEl.value;
@@ -3635,7 +3560,7 @@ function render() {
     const fullOhlcSeries = raw.ohlcValues?.[assetId];
     let normalizedOhlc = null;
     let seriesType = "line";
-    if (!forceEquityLineMode && asset.categoryKey === "equities" && Array.isArray(fullOhlcSeries)) {
+    if (asset.categoryKey === "equities" && Array.isArray(fullOhlcSeries)) {
       const windowedOhlcSeries = fullOhlcSeries.slice(startIndex, endIndex + 1);
       const mappedOhlc = windowedOhlcSeries.map((tuple) => {
         if (!Array.isArray(tuple) || tuple.length < 4) return null;
@@ -3759,12 +3684,10 @@ function render() {
   const applyOptionByRendered = (renderList) => {
     isApplyingOption = true;
     try {
-      ensureChartInstanceSize();
       chart.setOption(makeOption(renderList, months, viewportStartMonth, viewportEndMonth), {
         notMerge: true,
         lazyUpdate: false,
       });
-      ensureChartInstanceSize();
     } finally {
       isApplyingOption = false;
     }
@@ -3777,9 +3700,7 @@ function render() {
     if (!hasCandlestick) {
       throw error;
     }
-    forceEquityLineMode = true;
     const fallbackRendered = toLineFallbackRendered(rendered);
-    chart.clear();
     applyOptionByRendered(fallbackRendered);
     effectiveRendered = fallbackRendered;
     usedFallbackThisRender = true;
@@ -3956,7 +3877,6 @@ async function init() {
   buildMonthSelects(raw.dates);
   applyChinaSourceMode(uiState.chinaSourceMode, { announce: false });
   bindEvents();
-  await waitForChartFonts();
   if (!safeRender("初始化图表")) {
     return;
   }
