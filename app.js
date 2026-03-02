@@ -119,7 +119,14 @@ const OVERLAY_CITY_ORDER = ["北京", "上海", "广州", "深圳", "天津", "�
 const OVERLAY_CITY_ORDER_INDEX = new Map(
   OVERLAY_CITY_ORDER.map((name, index) => [name, index]),
 );
-const CHART_FONT_FAMILY = '"STKaiti", "Kaiti SC", "KaiTi", "BiauKai", serif';
+const CHART_FONT_FACE = "ProjectChartSTKaiti";
+const CHART_FONT_FAMILY =
+  '"ProjectChartSTKaiti", "STKaiti", "Kaiti SC", "KaiTi", "BiauKai", serif';
+const CHART_FONT_LOAD_TARGETS = Object.freeze([
+  `400 16px "${CHART_FONT_FACE}"`,
+  `600 16px "${CHART_FONT_FACE}"`,
+  `700 16px "${CHART_FONT_FACE}"`,
+]);
 const CHART_LAYOUT_BASE_WIDTH = 1160;
 const CHART_LAYOUT_ASPECT_RATIO = 0.78;
 const CHART_LAYOUT_MIN_HEIGHT = 420;
@@ -281,6 +288,7 @@ let timeZoomMonths = [];
 let timeZoomRenderFrame = null;
 let isSyncingTimeZoomInputs = false;
 let textMeasureContext = null;
+let chartFontsReadyPromise = null;
 let resizeRenderTimer = null;
 
 function isFiniteNumber(value) {
@@ -310,6 +318,38 @@ function formatOverlayRangeLabel(startMonth, endMonth) {
 
 function formatOverlayBaseLabel(baseMonth) {
   return `定基${formatMonthZh(baseMonth)}＝100`;
+}
+
+function waitForChartFonts(timeoutMs = 1800) {
+  if (typeof document === "undefined" || !document.fonts) {
+    return Promise.resolve();
+  }
+  if (typeof document.fonts.load !== "function") {
+    return Promise.resolve();
+  }
+  if (chartFontsReadyPromise) return chartFontsReadyPromise;
+
+  const sampleText = "房价指数";
+  const allLoaded =
+    typeof document.fonts.check === "function" &&
+    CHART_FONT_LOAD_TARGETS.every((descriptor) => document.fonts.check(descriptor, sampleText));
+  if (allLoaded) {
+    chartFontsReadyPromise = Promise.resolve();
+    return chartFontsReadyPromise;
+  }
+
+  const loadPromise = Promise.all(
+    CHART_FONT_LOAD_TARGETS.map((descriptor) => document.fonts.load(descriptor, sampleText)),
+  ).catch(() => undefined);
+  const timeoutPromise = new Promise((resolve) => {
+    setTimeout(resolve, Math.max(0, timeoutMs));
+  });
+
+  chartFontsReadyPromise = Promise.race([loadPromise, timeoutPromise])
+    .then(() => document.fonts.ready.catch(() => undefined))
+    .then(() => undefined);
+
+  return chartFontsReadyPromise;
 }
 
 function escapeHtml(value) {
@@ -2423,7 +2463,7 @@ function drawOverlaySummaryOnCanvas(ctx, canvasWidth, canvasHeight, exportContex
     ? boxX - tableDelta * 0.35
     : boxX - tableDelta / 2;
   const centerX = tableX + tableW / 2;
-  const fontFamily = '"STKaiti","Kaiti SC","KaiTi","BiauKai",serif';
+  const fontFamily = '"ProjectChartSTKaiti","STKaiti","Kaiti SC","KaiTi","BiauKai",serif';
   const chartTheme = getActiveChartThemeStyle();
 
   const mainFontSize = Math.max(16, Math.round(19 * scaleY));
@@ -4428,7 +4468,7 @@ function bindEvents() {
   });
 }
 
-function init() {
+async function init() {
   const availableSources = listAvailableSources();
   if (availableSources.length === 0) {
     setStatus("数据加载失败，请先生成 house-price-data.js / house-price-data-nbs-70.js。", true);
@@ -4448,6 +4488,7 @@ function init() {
 
   bindEvents();
   bindChartWheelToPageScroll();
+  await waitForChartFonts();
   render();
 }
 

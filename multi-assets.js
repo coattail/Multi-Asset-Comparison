@@ -3,7 +3,14 @@ const THEME_MODE_LIGHT = "light";
 const THEME_MODE_DARK = "dark";
 const MAX_SELECTED_ASSET_COUNT = 6;
 const BASE_START_MONTH = "2008-01";
-const CHART_FONT_FAMILY = '"STKaiti", "Kaiti SC", "KaiTi", "BiauKai", serif';
+const CHART_FONT_FACE = "ProjectChartSTKaiti";
+const CHART_FONT_FAMILY =
+  '"ProjectChartSTKaiti", "STKaiti", "Kaiti SC", "KaiTi", "BiauKai", serif';
+const CHART_FONT_LOAD_TARGETS = Object.freeze([
+  `400 16px "${CHART_FONT_FACE}"`,
+  `600 16px "${CHART_FONT_FACE}"`,
+  `700 16px "${CHART_FONT_FACE}"`,
+]);
 
 const CASE_SHILLER_SERIES = Object.freeze([
   { id: "us_cs_atxrsa", seriesId: "ATXRSA", name: "美国房产·亚特兰大都会区", legendName: "亚特兰大（Case-Shiller）" },
@@ -265,6 +272,7 @@ let timeZoomMonths = [];
 let timeZoomRenderFrame = null;
 let isSyncingTimeZoomInputs = false;
 let textMeasureContext = null;
+let chartFontsReadyPromise = null;
 
 const uiState = {
   hiddenAssetNames: new Set(),
@@ -411,6 +419,38 @@ function formatOverlayRangeLabel(startMonth, endMonth) {
 
 function formatOverlayBaseLabel(baseMonth) {
   return `定基${formatMonthZh(baseMonth)}＝100`;
+}
+
+function waitForChartFonts(timeoutMs = 1800) {
+  if (typeof document === "undefined" || !document.fonts) {
+    return Promise.resolve();
+  }
+  if (typeof document.fonts.load !== "function") {
+    return Promise.resolve();
+  }
+  if (chartFontsReadyPromise) return chartFontsReadyPromise;
+
+  const sampleText = "多资产指数";
+  const allLoaded =
+    typeof document.fonts.check === "function" &&
+    CHART_FONT_LOAD_TARGETS.every((descriptor) => document.fonts.check(descriptor, sampleText));
+  if (allLoaded) {
+    chartFontsReadyPromise = Promise.resolve();
+    return chartFontsReadyPromise;
+  }
+
+  const loadPromise = Promise.all(
+    CHART_FONT_LOAD_TARGETS.map((descriptor) => document.fonts.load(descriptor, sampleText)),
+  ).catch(() => undefined);
+  const timeoutPromise = new Promise((resolve) => {
+    setTimeout(resolve, Math.max(0, timeoutMs));
+  });
+
+  chartFontsReadyPromise = Promise.race([loadPromise, timeoutPromise])
+    .then(() => document.fonts.ready.catch(() => undefined))
+    .then(() => undefined);
+
+  return chartFontsReadyPromise;
 }
 
 function escapeHtml(value) {
@@ -3837,6 +3877,7 @@ async function init() {
   buildMonthSelects(raw.dates);
   applyChinaSourceMode(uiState.chinaSourceMode, { announce: false });
   bindEvents();
+  await waitForChartFonts();
   if (!safeRender("初始化图表")) {
     return;
   }
