@@ -727,6 +727,16 @@ function buildCitySearchTokens(city) {
   };
 
   pushToken(city?.name);
+  return [...tokens];
+}
+
+function buildProvinceSearchTokens(city) {
+  const tokens = new Set();
+  const pushToken = (value) => {
+    const normalized = normalizeCitySearchKeyword(value);
+    if (normalized) tokens.add(normalized);
+  };
+
   getProvinceSearchTokensFromRegCode(city?.regCode).forEach((token) => {
     pushToken(token);
   });
@@ -737,11 +747,20 @@ function filterCityListByKeyword(keyword) {
   const normalizedKeyword = normalizeCitySearchKeyword(keyword);
   const cityItems = [...cityListEl.querySelectorAll(".city-item")];
 
+  const readTokenList = (rawValue) =>
+    String(rawValue || "")
+      .split("|")
+      .map((token) => normalizeCitySearchKeyword(token))
+      .filter(Boolean);
+
   cityItems.forEach((label) => {
-    const searchableText = String(
-      label.dataset.searchTokens || label.dataset.cityName || label.textContent || "",
-    ).trim().toLowerCase();
-    const matched = !normalizedKeyword || searchableText.includes(normalizedKeyword);
+    const cityTokens = readTokenList(
+      label.dataset.citySearchTokens || label.dataset.cityName || label.textContent || "",
+    );
+    const provinceTokens = readTokenList(label.dataset.provinceSearchTokens);
+    const cityMatched = cityTokens.some((token) => token.includes(normalizedKeyword));
+    const provinceMatched = provinceTokens.some((token) => token === normalizedKeyword);
+    const matched = !normalizedKeyword || cityMatched || provinceMatched;
     label.classList.toggle("city-item-hidden-by-search", !matched);
   });
 }
@@ -1394,7 +1413,8 @@ function buildCityControls(cities, defaultSelectedNames = null) {
     const label = document.createElement("label");
     label.className = "city-item";
     label.dataset.cityName = city.name;
-    label.dataset.searchTokens = buildCitySearchTokens(city).join("|");
+    label.dataset.citySearchTokens = buildCitySearchTokens(city).join("|");
+    label.dataset.provinceSearchTokens = buildProvinceSearchTokens(city).join("|");
     const input = document.createElement("input");
     input.type = "checkbox";
     input.value = city.id;
@@ -4442,18 +4462,39 @@ function bindEvents() {
   }
 
   selectAllBtn.addEventListener("click", () => {
-    let selectedCount = 0;
-    cityListEl.querySelectorAll('input[type="checkbox"]').forEach((el) => {
-      if (selectedCount < MAX_SELECTED_CITY_COUNT) {
-        el.checked = true;
-        selectedCount += 1;
-      } else {
-        el.checked = false;
-      }
+    const allInputs = [...cityListEl.querySelectorAll('input[type="checkbox"]')].filter(
+      (input) => input instanceof HTMLInputElement,
+    );
+    const normalizedKeyword = normalizeCitySearchKeyword(citySearchEl?.value || "");
+    const visibleInputs = allInputs.filter((input) => {
+      const label = input.closest(".city-item");
+      return label ? !label.classList.contains("city-item-hidden-by-search") : true;
     });
+    const scopedInputs = normalizedKeyword ? visibleInputs : allInputs;
+    if (normalizedKeyword && scopedInputs.length === 0) {
+      setStatus("当前筛选结果为空，无法执行全选。", true);
+      return;
+    }
+
+    allInputs.forEach((input) => {
+      input.checked = false;
+    });
+
+    scopedInputs.slice(0, MAX_SELECTED_CITY_COUNT).forEach((input) => {
+      input.checked = true;
+    });
+
+    const selectedCount = scopedInputs.slice(0, MAX_SELECTED_CITY_COUNT).length;
     syncCitySelectionCapacityUi();
     refreshCompareSourceControl({ keepSelection: true });
-    setStatus(`已选择前 ${MAX_SELECTED_CITY_COUNT} 个城市。`, false);
+    if (normalizedKeyword) {
+      setStatus(
+        `已在当前搜索结果中选择 ${selectedCount} 个城市（最多 ${MAX_SELECTED_CITY_COUNT} 个）。`,
+        false,
+      );
+    } else {
+      setStatus(`已选择前 ${MAX_SELECTED_CITY_COUNT} 个城市。`, false);
+    }
   });
 
   clearAllBtn.addEventListener("click", () => {
