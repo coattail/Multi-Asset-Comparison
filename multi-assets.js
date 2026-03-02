@@ -3357,12 +3357,27 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
         };
 
         if (isCandlestickSeries) {
+          let lastValidCandleIndex = -1;
+          for (let candleIndex = item.normalizedOhlc.length - 1; candleIndex >= 0; candleIndex -= 1) {
+            if (Array.isArray(item.normalizedOhlc[candleIndex])) {
+              lastValidCandleIndex = candleIndex;
+              break;
+            }
+          }
+          const candleDataWindow =
+            lastValidCandleIndex >= 0
+              ? item.normalizedOhlc.slice(0, lastValidCandleIndex + 1)
+              : [];
+          const candlestickData = candleDataWindow.map((tuple) =>
+            Array.isArray(tuple) ? tuple : "-"
+          );
+
           seriesList.push({
             id: item.id,
             name: seriesName,
             type: "candlestick",
             triggerLineEvent: true,
-            data: item.normalizedOhlc,
+            data: candlestickData,
             barWidth: candleBodyWidth,
             barMaxWidth: candleMaxWidth,
             barMinWidth: candleMinWidth,
@@ -3389,7 +3404,7 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
             animationDuration: 560,
           });
 
-          const closeSeries = item.normalizedOhlc.map((tuple) => {
+          const closeSeries = candleDataWindow.map((tuple) => {
             if (!Array.isArray(tuple) || tuple.length < 2) return null;
             const closeValue = Number(tuple[1]);
             return isFiniteNumber(closeValue) ? closeValue : null;
