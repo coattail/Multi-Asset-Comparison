@@ -3,6 +3,7 @@ const THEME_MODE_LIGHT = "light";
 const THEME_MODE_DARK = "dark";
 const MAX_SELECTED_ASSET_COUNT = 6;
 const BASE_START_MONTH = "2006-01";
+const CENTALINE_BASE_MONTH = "2008-01";
 const CHART_FONT_FACE = "ProjectChartSTKaiti";
 const CHART_FONT_FAMILY =
   '"ProjectChartSTKaiti", "STKaiti", "Kaiti SC", "KaiTi", "BiauKai", serif';
@@ -3548,6 +3549,29 @@ function render() {
   uiState.zoomEndMonth = normalizeMonthToken(viewportEndMonth) || viewportEndMonth;
   syncTimeZoomWidget(months, viewportStartMonth, viewportEndMonth);
 
+  const hasSelectedCentalineHousing = selectedAssetIds.some((assetId) => {
+    const asset = assetById.get(assetId);
+    return (
+      asset?.categoryKey === "cn_housing" &&
+      inferChinaSourceKey(asset) === "centaline"
+    );
+  });
+  const shouldUseCentalineBase =
+    hasSelectedCentalineHousing &&
+    normalizeMonthToken(viewportStartMonth) < CENTALINE_BASE_MONTH;
+  const centalineBaseOffset = shouldUseCentalineBase
+    ? findMonthIndexByToken(CENTALINE_BASE_MONTH)
+    : -1;
+  const effectiveBaseOffset =
+    centalineBaseOffset >= 0 && centalineBaseOffset <= viewportEndOffset
+      ? centalineBaseOffset
+      : viewportStartOffset;
+  const effectiveBaseMonth = months[effectiveBaseOffset] || viewportStartMonth;
+  const baseStrategyNote =
+    shouldUseCentalineBase && effectiveBaseOffset === centalineBaseOffset
+      ? "已按中原房价起始月定基。"
+      : "";
+
   const rendered = [];
   const summaryRows = [];
   const missingBase = [];
@@ -3558,7 +3582,7 @@ function render() {
     if (!asset || !Array.isArray(fullSeries)) return;
 
     const seriesRaw = fullSeries.slice(startIndex, endIndex + 1);
-    const baseRaw = seriesRaw[viewportStartOffset];
+    const baseRaw = seriesRaw[effectiveBaseOffset];
     if (!isFiniteNumber(baseRaw) || baseRaw <= 0) {
       missingBase.push(getAssetDisplayName(asset));
       return;
@@ -3724,7 +3748,7 @@ function render() {
   });
 
   chartTitleEl.textContent = "多资产价格走势对比";
-  chartMetaEl.textContent = `${formatMonthZh(viewportStartMonth)} - ${formatMonthZh(viewportEndMonth)} | 定基 ${formatMonthZh(viewportStartMonth)} = 100`;
+  chartMetaEl.textContent = `${formatMonthZh(viewportStartMonth)} - ${formatMonthZh(viewportEndMonth)} | 定基 ${formatMonthZh(effectiveBaseMonth)} = 100`;
 
   renderSummaryTable(visibleRows);
   renderChartStatsOverlay(visibleRows, viewportStartMonth, viewportEndMonth);
@@ -3735,11 +3759,11 @@ function render() {
     if (asset?.source) activeSources.add(asset.source);
   });
   const sourceText = summarizeSourceProviders([...activeSources], { maxItems: 4, fallback: "-" });
-  footnoteEl.textContent = `当前滑块区间：${viewportStartMonth} ~ ${viewportEndMonth}；数据源：${sourceText || "-"}。`;
+  footnoteEl.textContent = `当前滑块区间：${viewportStartMonth} ~ ${viewportEndMonth}；数据源：${sourceText || "-"}。${baseStrategyNote}`;
 
   const missingText = missingBase.length ? `未纳入：${missingBase.join("、")}。` : "";
   if (!statusEl.textContent.includes("已自动切换为折线显示")) {
-    setStatus(`已生成 ${rendered.length} 条走势（定基 ${viewportStartMonth}=100）。${missingText}`, false);
+    setStatus(`已生成 ${rendered.length} 条走势（定基 ${effectiveBaseMonth}=100）。${baseStrategyNote}${missingText}`, false);
   }
 }
 
