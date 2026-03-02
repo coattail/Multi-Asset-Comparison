@@ -2715,6 +2715,25 @@ function renderSummaryTable(rows) {
   });
 }
 
+function getVisibleSummaryRows(rows) {
+  if (!Array.isArray(rows) || rows.length === 0) return [];
+  return rows.filter((row) => !uiState.hiddenAssetNames.has(row.seriesName));
+}
+
+function refreshSummaryAndOverlayFromLatestContext() {
+  if (!latestRenderContext) return;
+  const allRows = Array.isArray(latestRenderContext.summaryRows)
+    ? latestRenderContext.summaryRows
+    : [];
+  const visibleRows = getVisibleSummaryRows(allRows);
+  renderSummaryTable(visibleRows);
+  renderChartStatsOverlay(
+    visibleRows,
+    latestRenderContext.startMonth,
+    latestRenderContext.endMonth,
+  );
+}
+
 function getSeriesColor(index) {
   const palette = SERIES_COLORS[getCurrentThemeMode()] || SERIES_COLORS[THEME_MODE_LIGHT];
   return palette[index % palette.length];
@@ -3127,6 +3146,13 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
   });
   const yMin = allFiniteValues.length > 0 ? Math.min(...allFiniteValues) : 80;
   const yMax = allFiniteValues.length > 0 ? Math.max(...allFiniteValues) : 120;
+  const yAxisMinRaw = Math.floor((yMin - 5) / 10) * 10;
+  const yAxisMaxRaw = Math.ceil((yMax + 5) / 10) * 10;
+  const yAxisMinValue = Number.isFinite(yAxisMinRaw) ? yAxisMinRaw : 80;
+  let yAxisMaxValue = Number.isFinite(yAxisMaxRaw) ? yAxisMaxRaw : 120;
+  if (yAxisMaxValue <= yAxisMinValue) {
+    yAxisMaxValue = yAxisMinValue + 10;
+  }
   const effectivePlotWidth = Math.max(220, chartWidth - gridLeft - gridRight);
   const usableChartWidth = Math.max(
     220,
@@ -3323,12 +3349,8 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
     },
     yAxis: {
       type: "value",
-      min: function (value) {
-        return Math.floor((value.min - 5) / 10) * 10;
-      },
-      max: function (value) {
-        return Math.ceil((value.max + 5) / 10) * 10;
-      },
+      min: yAxisMinValue,
+      max: yAxisMaxValue,
       axisLine: { show: true, lineStyle: { color: chartTheme.yAxisLineColor, width: 1 } },
       axisTick: { show: true, inside: true, lineStyle: { color: chartTheme.yAxisLineColor } },
       splitLine: { show: false },
@@ -3717,19 +3739,27 @@ function render() {
   uiState.hiddenAssetNames = new Set(
     [...uiState.hiddenAssetNames].filter((name) => renderedNameSet.has(name)),
   );
+  if (
+    renderedNameSet.size > 0 &&
+    [...renderedNameSet].every((name) => uiState.hiddenAssetNames.has(name))
+  ) {
+    uiState.hiddenAssetNames.clear();
+  }
 
-  const visibleRows = summaryRows.filter((row) => !uiState.hiddenAssetNames.has(row.seriesName));
+  const visibleRows = getVisibleSummaryRows(summaryRows);
   updateChartTableButton(rendered.length);
   latestRenderContext = {
     startMonth: viewportStartMonth,
     endMonth: viewportEndMonth,
-    visibleSummaryRows: visibleRows,
+    summaryRows,
   };
 
   let effectiveRendered = rendered;
+  let usedFallbackThisRender = false;
   const applyOptionByRendered = (renderList) => {
     isApplyingOption = true;
     try {
+      ensureChartInstanceSize();
       chart.setOption(makeOption(renderList, months, viewportStartMonth, viewportEndMonth), {
         notMerge: true,
         lazyUpdate: false,
@@ -3752,7 +3782,7 @@ function render() {
     chart.clear();
     applyOptionByRendered(fallbackRendered);
     effectiveRendered = fallbackRendered;
-    setStatus("当前浏览器对K线渲染兼容性有限，已自动切换为折线显示。", true);
+    usedFallbackThisRender = true;
   }
 
   effectiveRendered.forEach((item) => {
@@ -3777,7 +3807,7 @@ function render() {
   footnoteEl.textContent = `当前滑块区间：${viewportStartMonth} ~ ${viewportEndMonth}；数据源：${sourceText || "-"}。`;
 
   const missingText = missingBase.length ? `未纳入：${missingBase.join("、")}。` : "";
-  const fallbackText = forceEquityLineMode
+  const fallbackText = usedFallbackThisRender
     ? "当前浏览器对K线渲染兼容性有限，已自动切换为折线显示。"
     : "";
   setStatus(
@@ -3868,17 +3898,16 @@ function bindEvents() {
       if (!selected) hidden.add(name);
     });
     uiState.hiddenAssetNames = hidden;
-    safeRender("图例筛选");
+    refreshSummaryAndOverlayFromLatestContext();
   });
 
   chart.on("click", (params) => {
     if (params?.componentType === "series" && params?.seriesName) {
-      if (uiState.hiddenAssetNames.has(params.seriesName)) {
-        uiState.hiddenAssetNames.delete(params.seriesName);
-      } else {
-        uiState.hiddenAssetNames.add(params.seriesName);
-      }
-      safeRender("点击系列切换");
+      const nextHidden = !uiState.hiddenAssetNames.has(params.seriesName);
+      chart.dispatchAction({
+        type: nextHidden ? "legendUnSelect" : "legendSelect",
+        name: params.seriesName,
+      });
     }
   });
 
