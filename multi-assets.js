@@ -3,6 +3,7 @@ const THEME_MODE_LIGHT = "light";
 const THEME_MODE_DARK = "dark";
 const MAX_SELECTED_ASSET_COUNT = 6;
 const BASE_START_MONTH = "2006-01";
+const ENABLE_EQUITY_CANDLESTICK = false;
 const CHART_FONT_FAMILY =
   '"ProjectChartSTKaiti", "STKaiti", "Kaiti SC", "KaiTi", "BiauKai", serif';
 
@@ -254,7 +255,7 @@ const timeZoomStartEl = document.getElementById("timeZoomStart");
 const timeZoomEndEl = document.getElementById("timeZoomEnd");
 
 const chart = echarts.init(chartEl, null, {
-  renderer: "svg",
+  renderer: "canvas",
 });
 
 const assetById = new Map();
@@ -3560,7 +3561,11 @@ function render() {
     const fullOhlcSeries = raw.ohlcValues?.[assetId];
     let normalizedOhlc = null;
     let seriesType = "line";
-    if (asset.categoryKey === "equities" && Array.isArray(fullOhlcSeries)) {
+    if (
+      ENABLE_EQUITY_CANDLESTICK &&
+      asset.categoryKey === "equities" &&
+      Array.isArray(fullOhlcSeries)
+    ) {
       const windowedOhlcSeries = fullOhlcSeries.slice(startIndex, endIndex + 1);
       const mappedOhlc = windowedOhlcSeries.map((tuple) => {
         if (!Array.isArray(tuple) || tuple.length < 4) return null;
