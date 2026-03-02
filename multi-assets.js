@@ -556,6 +556,15 @@ function getLastFiniteInfo(series, months) {
   };
 }
 
+function getFirstFiniteIndex(series, fromIndex = 0) {
+  if (!Array.isArray(series) || series.length === 0) return -1;
+  const start = clampNumber(Number(fromIndex) || 0, 0, Math.max(0, series.length - 1));
+  for (let i = start; i < series.length; i += 1) {
+    if (isFiniteNumber(series[i]) && Number(series[i]) > 0) return i;
+  }
+  return -1;
+}
+
 function normalizeThemeMode(value) {
   return value === THEME_MODE_DARK ? THEME_MODE_DARK : THEME_MODE_LIGHT;
 }
@@ -3541,6 +3550,7 @@ function render() {
   const rendered = [];
   const summaryRows = [];
   const missingBase = [];
+  const shiftedBase = [];
 
   selectedAssetIds.forEach((assetId, index) => {
     const asset = assetById.get(assetId);
@@ -3548,14 +3558,23 @@ function render() {
     if (!asset || !Array.isArray(fullSeries)) return;
 
     const seriesRaw = fullSeries.slice(startIndex, endIndex + 1);
-    const baseRaw = seriesRaw[viewportStartOffset];
+    let baseIndex = viewportStartOffset;
+    let baseRaw = seriesRaw[baseIndex];
+    if (!isFiniteNumber(baseRaw) || baseRaw <= 0) {
+      const fallbackIndex = getFirstFiniteIndex(seriesRaw, viewportStartOffset);
+      if (fallbackIndex >= 0) {
+        baseIndex = fallbackIndex;
+        baseRaw = seriesRaw[baseIndex];
+      }
+    }
     if (!isFiniteNumber(baseRaw) || baseRaw <= 0) {
       missingBase.push(getAssetDisplayName(asset));
       return;
     }
 
-    const normalized = seriesRaw.map((value) => {
+    const normalized = seriesRaw.map((value, valueIndex) => {
       if (!isFiniteNumber(value)) return null;
+      if (valueIndex < baseIndex) return null;
       return (value / baseRaw) * 100;
     });
     const fullOhlcSeries = raw.ohlcValues?.[assetId];
@@ -3613,6 +3632,12 @@ function render() {
     })();
 
     const displayName = getAssetDisplayName(asset);
+    if (baseIndex > viewportStartOffset) {
+      shiftedBase.push({
+        name: displayName,
+        month: months[baseIndex] || "",
+      });
+    }
     const seriesName = asset.id;
     rendered.push({
       id: asset.id,
@@ -3719,7 +3744,11 @@ function render() {
   });
 
   chartTitleEl.textContent = "多资产价格走势对比";
-  chartMetaEl.textContent = `${formatMonthZh(viewportStartMonth)} - ${formatMonthZh(viewportEndMonth)} | 定基 ${formatMonthZh(viewportStartMonth)} = 100`;
+  const shiftedBaseMetaText =
+    shiftedBase.length > 0
+      ? " | 起点无值资产按首个有效月定基100"
+      : "";
+  chartMetaEl.textContent = `${formatMonthZh(viewportStartMonth)} - ${formatMonthZh(viewportEndMonth)} | 定基 ${formatMonthZh(viewportStartMonth)} = 100${shiftedBaseMetaText}`;
 
   renderSummaryTable(visibleRows);
   renderChartStatsOverlay(visibleRows, viewportStartMonth, viewportEndMonth);
@@ -3730,14 +3759,25 @@ function render() {
     if (asset?.source) activeSources.add(asset.source);
   });
   const sourceText = summarizeSourceProviders([...activeSources], { maxItems: 4, fallback: "-" });
-  footnoteEl.textContent = `当前滑块区间：${viewportStartMonth} ~ ${viewportEndMonth}；数据源：${sourceText || "-"}。`;
+  const shiftedBaseFootnoteText =
+    shiftedBase.length > 0
+      ? `；起点无值资产改为首个有效月定基：${shiftedBase
+          .map((item) => `${item.name}(${item.month || "-"})`)
+          .join("、")}`
+      : "";
+  footnoteEl.textContent = `当前滑块区间：${viewportStartMonth} ~ ${viewportEndMonth}；数据源：${sourceText || "-"}${shiftedBaseFootnoteText}。`;
 
   const missingText = missingBase.length ? `未纳入：${missingBase.join("、")}。` : "";
+  const shiftedBaseStatusText = shiftedBase.length
+    ? `起点无值资产已自动改为首个有效月定基：${shiftedBase
+        .map((item) => `${item.name}(${item.month || "-"})`)
+        .join("、")}。`
+    : "";
   const fallbackText = usedFallbackThisRender
     ? "当前浏览器对K线渲染兼容性有限，已自动切换为折线显示。"
     : "";
   setStatus(
-    `已生成 ${rendered.length} 条走势（定基 ${viewportStartMonth}=100）。${missingText}${fallbackText}`,
+    `已生成 ${rendered.length} 条走势（定基 ${viewportStartMonth}=100）。${shiftedBaseStatusText}${missingText}${fallbackText}`,
     Boolean(fallbackText),
   );
 }
