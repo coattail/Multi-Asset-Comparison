@@ -2219,9 +2219,12 @@ function resolveOverlayPresentation(rows) {
 }
 
 function formatOverlayCityCellHtml(row, isCrossSource) {
-  const cityName = row.cityName || row.name || "-";
-  if (!isCrossSource || !row.sourceLabel) return cityName;
-  return `<span class="chart-stats-city-main">${cityName}<span class="chart-stats-source-tag">（${row.sourceLabel}）</span></span>`;
+  const cityName = escapeHtml(row.cityName || row.name || "-");
+  if (!isCrossSource || !row.sourceLabel) {
+    return `<span class="chart-stats-city-main">${cityName}</span>`;
+  }
+  const sourceLabel = escapeHtml(row.sourceLabel);
+  return `<span class="chart-stats-city-main">${cityName}<span class="chart-stats-source-tag">（${sourceLabel}）</span></span>`;
 }
 
 function renderChartStatsOverlay(rows, startMonth, endMonth) {
@@ -3157,8 +3160,12 @@ function makeOption(
   const endLabelFontSize = compactMobile ? 11 : mediumMobile ? 14 : 18;
   const legendBaseFontSize = compactMobile ? 10.8 : mediumMobile ? 12.2 : 15;
   const legendFontSize = Number((legendBaseFontSize * 1.05).toFixed(2));
+  const END_LABEL_BOLD_FACTOR = 1.07;
   const LEGEND_BOLD_FACTOR = 1.08;
+  const endLabelMainWeight = Math.round(700 * END_LABEL_BOLD_FACTOR);
+  const endLabelSubWeight = Math.round(600 * END_LABEL_BOLD_FACTOR);
   const legendFontWeight = Math.round(700 * LEGEND_BOLD_FACTOR);
+  const endLabelStrokeWidth = Number(Math.max(0.06, endLabelFontSize * 0.008).toFixed(2));
   const legendStrokeWidth = Number(Math.max(0.06, legendFontSize * 0.008).toFixed(2));
   const xAxisLabelScale = compactMobile ? 0.98 : 1.1;
   const xAxisLabelFontSize = Number((xAxisLabelLayout.fontSize * xAxisLabelScale).toFixed(2));
@@ -3328,7 +3335,7 @@ function makeOption(
         margin: xAxisLabelLayout.margin,
         rotate: xAxisLabelLayout.rotate,
         fontSize: xAxisLabelFontSize,
-        fontWeight: 800,
+        fontWeight: 700,
         hideOverlap: true,
         showMinLabel: true,
         showMaxLabel: true,
@@ -3840,7 +3847,9 @@ function makeOption(
             main: {
               color: item.color,
               fontFamily: CHART_FONT_FAMILY,
-              fontWeight: 700,
+              fontWeight: endLabelMainWeight,
+              textBorderColor: item.color,
+              textBorderWidth: endLabelStrokeWidth,
               width: endLabelBoxWidth || undefined,
               align: endLabelSubText ? "center" : "left",
               fontSize: Math.max(
@@ -3855,7 +3864,9 @@ function makeOption(
             sub: {
               color: item.color,
               fontFamily: CHART_FONT_FAMILY,
-              fontWeight: 600,
+              fontWeight: endLabelSubWeight,
+              textBorderColor: item.color,
+              textBorderWidth: endLabelStrokeWidth,
               width: endLabelBoxWidth || undefined,
               align: endLabelSubText ? "center" : "left",
               fontSize: Math.max(

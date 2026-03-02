@@ -31,8 +31,15 @@
         <h1>房价可视化</h1>
         <p class="subtitle" id="sourceSubtitleText">数据来源：Wind、中原研究中心</p>
         <p class="subtitle credit">数据整合与图表制作：公众号 - 一座独立屋</p>
-        <div class="hero-links">
+        <div class="hero-links hero-links--with-theme">
           <a class="hero-link-btn" href="multi-assets.html">多资产对比</a>
+          <label class="hero-theme-field">
+            <span class="hero-theme-label">页面风格</span>
+            <select id="themeMode" aria-label="页面风格选择">
+              <option value="light">浅色</option>
+              <option value="dark">深色</option>
+            </select>
+          </label>
         </div>
       </section>
 
@@ -44,16 +51,6 @@
             <h3>数据源</h3>
             <label>
               <select id="dataSource" aria-label="数据源选择"></select>
-            </label>
-          </div>
-
-          <div class="control-block control-block--loose-select">
-            <h3>页面风格</h3>
-            <label>
-              <select id="themeMode" aria-label="页面风格选择">
-                <option value="light">浅色</option>
-                <option value="dark">深色</option>
-              </select>
             </label>
           </div>
 

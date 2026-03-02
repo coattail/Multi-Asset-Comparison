@@ -987,6 +987,141 @@ function estimateLabelBox(lines, fontSize, padding, fontWeight = 700) {
   };
 }
 
+function measureTextWidth(text, fontSize, fontWeight = 700) {
+  const value = String(text || "");
+  if (!value) return 0;
+  const measureCtx = getTextMeasureContext();
+  if (!measureCtx) {
+    return value.length * fontSize;
+  }
+  measureCtx.font = `${fontWeight} ${fontSize}px ${CHART_FONT_FAMILY}`;
+  return measureCtx.measureText(value).width;
+}
+
+function trimTextToWidth(text, maxWidth, fontSize, fontWeight = 700) {
+  const source = String(text || "");
+  if (!source) return "";
+  if (!(Number.isFinite(maxWidth) && maxWidth > 0)) return source;
+  if (measureTextWidth(source, fontSize, fontWeight) <= maxWidth) return source;
+  const ellipsis = "…";
+  const ellipsisWidth = measureTextWidth(ellipsis, fontSize, fontWeight);
+  if (ellipsisWidth >= maxWidth) return ellipsis;
+  let result = "";
+  for (const char of source) {
+    const candidate = `${result}${char}`;
+    if (measureTextWidth(candidate, fontSize, fontWeight) + ellipsisWidth > maxWidth) {
+      break;
+    }
+    result = candidate;
+  }
+  return `${result}${ellipsis}`;
+}
+
+function wrapTextByWidth(text, maxWidth, fontSize, fontWeight = 700, maxLines = 2) {
+  const source = String(text || "").trim();
+  if (!source) return [""];
+  if (!(Number.isFinite(maxWidth) && maxWidth > 0)) return [source];
+  if (measureTextWidth(source, fontSize, fontWeight) <= maxWidth) return [source];
+
+  const lines = [];
+  let currentLine = "";
+  for (const char of source) {
+    const candidate = currentLine ? `${currentLine}${char}` : char;
+    if (!currentLine || measureTextWidth(candidate, fontSize, fontWeight) <= maxWidth) {
+      currentLine = candidate;
+      continue;
+    }
+    lines.push(currentLine.trimEnd());
+    currentLine = char.trimStart();
+  }
+  if (currentLine) {
+    lines.push(currentLine.trimEnd());
+  }
+
+  const safeMaxLines = Math.max(1, Math.round(maxLines));
+  if (lines.length <= safeMaxLines) {
+    return lines;
+  }
+  const keptLines = lines.slice(0, safeMaxLines - 1);
+  const tail = lines.slice(safeMaxLines - 1).join("");
+  keptLines.push(trimTextToWidth(tail, maxWidth, fontSize, fontWeight));
+  return keptLines;
+}
+
+function collectPreferredWrapBreakIndexes(text) {
+  const source = String(text || "");
+  if (!source) return [];
+  const breakSet = new Set();
+  const pushBreak = (index) => {
+    if (!Number.isInteger(index)) return;
+    if (index <= 0 || index >= source.length) return;
+    breakSet.add(index);
+  };
+
+  const trailingQualifiers = ["房产", "指数", "现货", "期货", "收益", "回报", "价格", "总值"];
+  trailingQualifiers.forEach((suffix) => {
+    if (source.endsWith(suffix) && source.length > suffix.length + 1) {
+      pushBreak(source.length - suffix.length);
+    }
+  });
+
+  const breakBeforeTokens = ["（", "("];
+  breakBeforeTokens.forEach((token) => {
+    let cursor = 0;
+    while (cursor < source.length) {
+      const index = source.indexOf(token, cursor);
+      if (index < 0) break;
+      pushBreak(index);
+      cursor = index + token.length;
+    }
+  });
+
+  const breakAfterTokens = ["·", "/", "|", "｜", "—", "-", "、", "，", ",", " "];
+  breakAfterTokens.forEach((token) => {
+    let cursor = 0;
+    while (cursor < source.length) {
+      const index = source.indexOf(token, cursor);
+      if (index < 0) break;
+      pushBreak(index + token.length);
+      cursor = index + token.length;
+    }
+  });
+
+  return [...breakSet].sort((a, b) => b - a);
+}
+
+function wrapLabelMainTextByPreference(text, maxWidth, fontSize, fontWeight = 700, maxLines = 2) {
+  const source = String(text || "").trim();
+  if (!source) return [""];
+  if (!(Number.isFinite(maxWidth) && maxWidth > 0)) return [source];
+  const safeMaxLines = Math.max(1, Math.round(maxLines));
+  if (measureTextWidth(source, fontSize, fontWeight) <= maxWidth) return [source];
+  if (safeMaxLines === 1) {
+    return [trimTextToWidth(source, maxWidth, fontSize, fontWeight)];
+  }
+
+  const breakIndexes = collectPreferredWrapBreakIndexes(source);
+  for (const breakIndex of breakIndexes) {
+    const firstLine = source.slice(0, breakIndex).trim();
+    const remainder = source.slice(breakIndex).trim();
+    if (!firstLine || !remainder) continue;
+    if (measureTextWidth(firstLine, fontSize, fontWeight) > maxWidth) continue;
+
+    const remainLines = wrapTextByWidth(
+      remainder,
+      maxWidth,
+      fontSize,
+      fontWeight,
+      safeMaxLines - 1,
+    );
+    if (remainLines.length <= safeMaxLines - 1) {
+      return [firstLine].concat(remainLines);
+    }
+  }
+
+  return wrapTextByWidth(source, maxWidth, fontSize, fontWeight, safeMaxLines);
+}
+
 function buildLabelRect({
   anchorX,
   anchorY,
@@ -2579,7 +2714,12 @@ function resolveOverlayPresentation(rows) {
 }
 
 function formatOverlayAssetCellHtml(row, isCrossSource) {
-  return row.name || "-";
+  const assetName = escapeHtml(row.name || "-");
+  if (!isCrossSource || !row.sourceLabel) {
+    return `<span class="chart-stats-city-main">${assetName}</span>`;
+  }
+  const sourceLabel = escapeHtml(row.sourceLabel);
+  return `<span class="chart-stats-city-main">${assetName}<span class="chart-stats-source-tag">（${sourceLabel}）</span></span>`;
 }
 
 function renderChartStatsOverlay(rows, startMonth, endMonth) {
@@ -3112,12 +3252,26 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
       right: gridRight,
     },
   );
+  const END_LABEL_FONT_SCALE = 0.75;
+  const LEGEND_FONT_SCALE = 0.9;
   const endLabelBaseFontSize = compactMobile ? 11 : mediumMobile ? 14 : 18;
-  const endLabelFontSize = Number((endLabelBaseFontSize * 0.8).toFixed(2));
+  const endLabelFontSize = Number((endLabelBaseFontSize * END_LABEL_FONT_SCALE).toFixed(2));
   const legendBaseFontSize = compactMobile ? 10.8 : mediumMobile ? 12.2 : 15;
-  const legendFontSize = Number((legendBaseFontSize * 1.05).toFixed(2));
+  const legendFontSize = Number((legendBaseFontSize * 1.05 * LEGEND_FONT_SCALE).toFixed(2));
+  const END_LABEL_BOLD_FACTOR = 1.07;
   const LEGEND_BOLD_FACTOR = 1.08;
+  const endLabelMainWeight = Math.round(700 * END_LABEL_BOLD_FACTOR);
+  const endLabelSubWeight = Math.round(600 * END_LABEL_BOLD_FACTOR);
+  const endLabelMainMinFontSize = Number(((compactMobile ? 8.6 : 10) * END_LABEL_FONT_SCALE).toFixed(2));
+  const endLabelMainMinLineHeight = Number(
+    ((compactMobile ? 10 : 13) * END_LABEL_FONT_SCALE).toFixed(2),
+  );
+  const endLabelSubMinFontSize = Number(((compactMobile ? 6.8 : 8) * END_LABEL_FONT_SCALE).toFixed(2));
+  const endLabelSubMinLineHeight = Number(
+    ((compactMobile ? 8 : 10) * END_LABEL_FONT_SCALE).toFixed(2),
+  );
   const legendFontWeight = Math.round(700 * LEGEND_BOLD_FACTOR);
+  const endLabelStrokeWidth = Number(Math.max(0.06, endLabelFontSize * 0.008).toFixed(2));
   const legendStrokeWidth = Number(Math.max(0.06, legendFontSize * 0.008).toFixed(2));
   const xAxisLabelScale = compactMobile ? 0.98 : 1.1;
   const xAxisLabelFontSize = Number((xAxisLabelLayout.fontSize * xAxisLabelScale).toFixed(2));
@@ -3274,7 +3428,7 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
         margin: xAxisLabelLayout.margin,
         rotate: xAxisLabelLayout.rotate,
         fontSize: xAxisLabelFontSize,
-        fontWeight: 800,
+        fontWeight: 700,
         hideOverlap: true,
         showMinLabel: true,
         showMaxLabel: true,
@@ -3309,49 +3463,102 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
     },
     series: (() => {
       const seriesList = [];
-      const equityEndLabelTextColor =
-        getCurrentThemeMode() === THEME_MODE_DARK ? "#f4f8fc" : "#101317";
-      const equityEndLabelBackground =
-        getCurrentThemeMode() === THEME_MODE_DARK ? "rgba(7, 13, 20, 0.86)" : "rgba(246, 250, 253, 0.9)";
 
       rendered.forEach((item) => {
         const endLabelMainText = item.endLabelMain || item.name;
+        const endLabelSubText = item.endLabelSub || "";
+        const endLabelDistance = endLabelSubText ? (compactMobile ? 3 : 5) : (compactMobile ? 6 : 12);
+        const endLabelOffset = endLabelSubText
+          ? (compactMobile ? [-14, 0] : [-24, 0])
+          : (compactMobile ? [-2, 0] : [-6, 0]);
+        const endLabelMainFontSize = Math.max(
+          endLabelMainMinFontSize,
+          Math.round(endLabelFontSize * (item.endLabelMainScale || 1)),
+        );
+        const endLabelMainLineHeight = Math.max(
+          endLabelMainMinLineHeight,
+          Math.round(endLabelFontSize * (item.endLabelMainScale || 1) * 1.08),
+        );
+        const endLabelSubFontSize = Math.max(
+          endLabelSubMinFontSize,
+          Math.round(endLabelFontSize * (item.endLabelSubScale || 0.82)),
+        );
+        const endLabelSubLineHeight = Math.max(
+          endLabelSubMinLineHeight,
+          Math.round(endLabelFontSize * (item.endLabelSubScale || 0.82) * 1.05),
+        );
+        const endLabelAvailableWidth = Math.max(
+          compactMobile ? 44 : mediumMobile ? 58 : 72,
+          Math.round(gridRight - endLabelDistance - endLabelOffset[0] - (compactMobile ? 8 : 10)),
+        );
+        const endLabelMainLines = wrapLabelMainTextByPreference(
+          endLabelMainText,
+          endLabelAvailableWidth,
+          endLabelMainFontSize,
+          endLabelMainWeight,
+          endLabelSubText ? 2 : 3,
+        );
+        const endLabelMainFormatted = endLabelMainLines
+          .map((line) => `{main|${line}}`)
+          .join("\n");
+        const shouldWrapEndLabelMain =
+          endLabelMainLines.length > 1 ||
+          measureTextWidth(endLabelMainText, endLabelMainFontSize, endLabelMainWeight) >
+            endLabelAvailableWidth;
+        const endLabelTextAlign =
+          shouldWrapEndLabelMain || endLabelSubText ? "center" : "left";
+        const endLabelBoxWidth = endLabelSubText
+          ? Math.max(compactMobile ? 64 : 78, Math.round(endLabelFontSize * (compactMobile ? 4.4 : 5.2)))
+          : null;
+        const resolvedMainLabelWidth = shouldWrapEndLabelMain
+          ? Math.max(compactMobile ? 44 : mediumMobile ? 58 : 72, endLabelAvailableWidth)
+          : endLabelBoxWidth;
         const seriesName = item.seriesName || item.id || item.name;
         const isCandlestickSeries =
           item.seriesType === "candlestick" &&
           Array.isArray(item.normalizedOhlc) &&
           item.normalizedOhlc.some((tuple) => Array.isArray(tuple));
-        const isEquityAsset = item.categoryKey === "equities";
-        const endLabelTextColor = isEquityAsset ? equityEndLabelTextColor : item.color;
-        const endLabelBackground = isEquityAsset ? equityEndLabelBackground : chartTextMaskColor;
         const endLabelConfig = {
           show: true,
           position: "right",
-          distance: compactMobile ? 4 : 6,
-          offset: compactMobile ? [2, 0] : [4, 0],
+          distance: endLabelDistance,
+          offset: endLabelOffset,
           formatter() {
-            return `{main|${endLabelMainText}}`;
+            if (endLabelSubText) {
+              return `${endLabelMainFormatted}\n{sub|${endLabelSubText}}`;
+            }
+            return endLabelMainFormatted;
           },
           align: "left",
-          color: endLabelTextColor,
+          color: item.color,
           fontFamily: CHART_FONT_FAMILY,
           fontSize: endLabelFontSize,
-          backgroundColor: endLabelBackground,
-          padding: [1, 5],
+          backgroundColor: endLabelSubText ? "rgba(0,0,0,0)" : chartTextMaskColor,
+          padding: endLabelSubText ? [2, 5] : [1, 5],
           rich: {
             main: {
-              color: endLabelTextColor,
+              color: item.color,
               fontFamily: CHART_FONT_FAMILY,
-              fontWeight: 700,
-              align: "left",
-              fontSize: Math.max(
-                compactMobile ? 8.6 : 10,
-                Math.round(endLabelFontSize * (item.endLabelMainScale || 1)),
-              ),
-              lineHeight: Math.max(
-                compactMobile ? 10 : 13,
-                Math.round(endLabelFontSize * (item.endLabelMainScale || 1) * 1.08),
-              ),
+              fontWeight: endLabelMainWeight,
+              textBorderColor: item.color,
+              textBorderWidth: endLabelStrokeWidth,
+              width: resolvedMainLabelWidth || undefined,
+              align: endLabelTextAlign,
+              overflow: "break",
+              lineOverflow: "truncate",
+              fontSize: endLabelMainFontSize,
+              lineHeight: endLabelMainLineHeight,
+            },
+            sub: {
+              color: item.color,
+              fontFamily: CHART_FONT_FAMILY,
+              fontWeight: endLabelSubWeight,
+              textBorderColor: item.color,
+              textBorderWidth: endLabelStrokeWidth,
+              width: endLabelBoxWidth || undefined,
+              align: endLabelTextAlign,
+              fontSize: endLabelSubFontSize,
+              lineHeight: endLabelSubLineHeight,
             },
           },
         };
