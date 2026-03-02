@@ -260,7 +260,7 @@ const timeZoomStartEl = document.getElementById("timeZoomStart");
 const timeZoomEndEl = document.getElementById("timeZoomEnd");
 
 const chart = echarts.init(chartEl, null, {
-  renderer: "canvas",
+  renderer: "svg",
 });
 
 const assetById = new Map();
