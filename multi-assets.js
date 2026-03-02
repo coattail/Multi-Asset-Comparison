@@ -255,7 +255,7 @@ const timeZoomStartEl = document.getElementById("timeZoomStart");
 const timeZoomEndEl = document.getElementById("timeZoomEnd");
 
 const chart = echarts.init(chartEl, null, {
-  renderer: "canvas",
+  renderer: "svg",
 });
 
 const assetById = new Map();
@@ -3408,11 +3408,13 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
               show: false,
             },
             lineStyle: {
-              width: 1,
-              opacity: 0,
+              width: Math.max(1.1, seriesLineWidth * 0.78),
+              color: item.color,
+              opacity: 0.74,
             },
             itemStyle: {
-              opacity: 0,
+              color: item.color,
+              opacity: 0.9,
             },
             endLabel: endLabelConfig,
             labelLayout: {
