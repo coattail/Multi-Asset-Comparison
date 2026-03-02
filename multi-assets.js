@@ -274,6 +274,7 @@ let isSyncingTimeZoomInputs = false;
 let textMeasureContext = null;
 let chartFontsReadyPromise = null;
 let forceEquityLineMode = false;
+let deferredRenderFrame = null;
 
 const uiState = {
   hiddenAssetNames: new Set(),
@@ -664,6 +665,14 @@ function safeRender(contextLabel = "渲染") {
   }
 }
 
+function scheduleDeferredRender(contextLabel = "渲染") {
+  if (deferredRenderFrame) return;
+  deferredRenderFrame = requestAnimationFrame(() => {
+    deferredRenderFrame = null;
+    safeRender(contextLabel);
+  });
+}
+
 function toLineFallbackRendered(renderedList) {
   if (!Array.isArray(renderedList)) return [];
   return renderedList.map((item) => {
@@ -948,6 +957,20 @@ function syncChartViewport({ resizeChart = true } = {}) {
   if (resizeChart) {
     chart.resize();
   }
+}
+
+function ensureChartInstanceSize() {
+  if (!chartEl) return;
+  const width = Number(chartEl.clientWidth) || 0;
+  const height = Number(chartEl.clientHeight) || 0;
+  if (width <= 0 || height <= 0) return;
+  const currentWidth = chart.getWidth();
+  const currentHeight = chart.getHeight();
+  if (currentWidth !== width || currentHeight !== height) {
+    chart.resize({ width, height });
+    return;
+  }
+  chart.resize();
 }
 
 function updateChartTableButton(eligibleCount) {
@@ -3491,6 +3514,12 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
 
 function render() {
   syncChartViewport();
+  ensureChartInstanceSize();
+  if (chart.getWidth() <= 0 || chart.getHeight() <= 0) {
+    setStatus("正在等待图表区域完成布局，请稍候…", false);
+    scheduleDeferredRender("等待图表布局");
+    return;
+  }
   latestRenderContext = null;
   const selectedAssetIds = readSelectedAssetIds();
   const requestedStartMonth = startMonthEl.value;
@@ -3705,6 +3734,7 @@ function render() {
         notMerge: true,
         lazyUpdate: false,
       });
+      ensureChartInstanceSize();
     } finally {
       isApplyingOption = false;
     }
@@ -3747,9 +3777,13 @@ function render() {
   footnoteEl.textContent = `当前滑块区间：${viewportStartMonth} ~ ${viewportEndMonth}；数据源：${sourceText || "-"}。`;
 
   const missingText = missingBase.length ? `未纳入：${missingBase.join("、")}。` : "";
-  if (!statusEl.textContent.includes("已自动切换为折线显示")) {
-    setStatus(`已生成 ${rendered.length} 条走势（定基 ${viewportStartMonth}=100）。${missingText}`, false);
-  }
+  const fallbackText = forceEquityLineMode
+    ? "当前浏览器对K线渲染兼容性有限，已自动切换为折线显示。"
+    : "";
+  setStatus(
+    `已生成 ${rendered.length} 条走势（定基 ${viewportStartMonth}=100）。${missingText}${fallbackText}`,
+    Boolean(fallbackText),
+  );
 }
 
 function bindEvents() {
