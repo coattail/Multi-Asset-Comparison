@@ -3137,6 +3137,12 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
     visibleStartIndex = visibleEndIndex;
     visibleEndIndex = temp;
   }
+  const safeVisibleStartIndex = clampNumber(visibleStartIndex, 0, Math.max(0, months.length - 1));
+  const safeVisibleEndIndex = clampNumber(
+    visibleEndIndex,
+    safeVisibleStartIndex,
+    Math.max(0, months.length - 1),
+  );
   const visibleStartToken = axisMonths[visibleStartIndex];
   const visibleEndToken = axisMonths[visibleEndIndex];
 
@@ -3212,7 +3218,9 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
   const allFiniteValues = [];
   rendered.forEach((item) => {
     if (item.seriesType === "candlestick" && Array.isArray(item.normalizedOhlc)) {
-      item.normalizedOhlc.forEach((tuple) => {
+      item.normalizedOhlc
+        .slice(safeVisibleStartIndex, safeVisibleEndIndex + 1)
+        .forEach((tuple) => {
         if (!Array.isArray(tuple)) return;
         tuple.forEach((value) => {
           if (isFiniteNumber(value)) {
@@ -3223,7 +3231,9 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
       return;
     }
     if (Array.isArray(item.normalized)) {
-      item.normalized.forEach((value) => {
+      item.normalized
+        .slice(safeVisibleStartIndex, safeVisibleEndIndex + 1)
+        .forEach((value) => {
         if (isFiniteNumber(value)) {
           allFiniteValues.push(value);
         }
@@ -3232,6 +3242,10 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
   });
   const yMin = allFiniteValues.length > 0 ? Math.min(...allFiniteValues) : 80;
   const yMax = allFiniteValues.length > 0 ? Math.max(...allFiniteValues) : 120;
+  const yAxisStep = 10;
+  const yAxisMin = Math.floor((yMin - 5) / yAxisStep) * yAxisStep;
+  const yAxisMaxCandidate = Math.ceil((yMax + 5) / yAxisStep) * yAxisStep;
+  const yAxisMax = Math.max(yAxisMin + yAxisStep, yAxisMaxCandidate);
   const effectivePlotWidth = Math.max(220, chartWidth - gridLeft - gridRight);
   const usableChartWidth = Math.max(
     220,
@@ -3298,6 +3312,9 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
     backgroundColor: chartTheme.chartBackground,
     color: rendered.map((item) => item.color),
     animationDuration: 650,
+    animationDurationUpdate: 420,
+    animationEasing: "cubicOut",
+    animationEasingUpdate: "cubicOut",
     textStyle: {
       fontFamily: CHART_FONT_FAMILY,
       fontSize: baseTextFontSize,
@@ -3442,12 +3459,8 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
     },
     yAxis: {
       type: "value",
-      min: function (value) {
-        return Math.floor((value.min - 5) / 10) * 10;
-      },
-      max: function (value) {
-        return Math.ceil((value.max + 5) / 10) * 10;
-      },
+      min: yAxisMin,
+      max: yAxisMax,
       axisLine: { show: true, lineStyle: { color: chartTheme.yAxisLineColor, width: 1 } },
       axisTick: { show: true, inside: true, lineStyle: { color: chartTheme.yAxisLineColor } },
       splitLine: { show: false },

@@ -3140,6 +3140,12 @@ function makeOption(
     visibleStartIndex = visibleEndIndex;
     visibleEndIndex = temp;
   }
+  const safeVisibleStartIndex = clampNumber(visibleStartIndex, 0, Math.max(0, months.length - 1));
+  const safeVisibleEndIndex = clampNumber(
+    visibleEndIndex,
+    safeVisibleStartIndex,
+    Math.max(0, months.length - 1),
+  );
   const visibleStartToken = axisMonths[visibleStartIndex];
   const visibleEndToken = axisMonths[visibleEndIndex];
   const selectedMap = Object.fromEntries(
@@ -3149,10 +3155,24 @@ function makeOption(
   const chartHeight = chart.getHeight();
   const responsiveChartWidth = getResponsiveChartWidth(chartWidth);
   const gridLayout = resolveChartGridLayout(chartWidth);
-  const allFiniteValues = rendered.flatMap((item) => item.normalized.filter(isFiniteNumber));
+  const allFiniteValues = [];
+  rendered.forEach((item) => {
+    if (!Array.isArray(item.normalized)) return;
+    item.normalized
+      .slice(safeVisibleStartIndex, safeVisibleEndIndex + 1)
+      .forEach((value) => {
+        if (isFiniteNumber(value)) {
+          allFiniteValues.push(value);
+        }
+      });
+  });
   const yMin = allFiniteValues.length > 0 ? Math.min(...allFiniteValues) : 80;
   const yMax = allFiniteValues.length > 0 ? Math.max(...allFiniteValues) : 120;
   const yRange = Math.max(1, yMax - yMin);
+  const yAxisStep = 10;
+  const yAxisMin = Math.floor((yMin - 5) / yAxisStep) * yAxisStep;
+  const yAxisMaxCandidate = Math.ceil((yMax + 5) / yAxisStep) * yAxisStep;
+  const yAxisMax = Math.max(yAxisMin + yAxisStep, yAxisMaxCandidate);
   const usableChartWidth = Math.max(
     220,
     chartWidth - gridLayout.left - gridLayout.right - (responsiveChartWidth <= 760 ? 12 : 24),
@@ -3252,6 +3272,9 @@ function makeOption(
     backgroundColor: chartTheme.chartBackground,
     color: rendered.map((item) => item.color),
     animationDuration: 650,
+    animationDurationUpdate: 420,
+    animationEasing: "cubicOut",
+    animationEasingUpdate: "cubicOut",
     textStyle: {
       fontFamily: CHART_FONT_FAMILY,
       fontSize: baseTextFontSize,
@@ -3369,12 +3392,8 @@ function makeOption(
     },
     yAxis: {
       type: "value",
-      min: function (value) {
-        return Math.floor((value.min - 5) / 10) * 10;
-      },
-      max: function (value) {
-        return Math.ceil((value.max + 5) / 10) * 10;
-      },
+      min: yAxisMin,
+      max: yAxisMax,
       axisLine: { show: true, lineStyle: { color: chartTheme.yAxisLineColor, width: 1 } },
       axisTick: { show: true, inside: true, lineStyle: { color: chartTheme.yAxisLineColor } },
       splitLine: { show: false },
