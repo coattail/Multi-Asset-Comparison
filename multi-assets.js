@@ -3531,6 +3531,7 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
           item.seriesType === "candlestick" &&
           Array.isArray(item.normalizedOhlc) &&
           item.normalizedOhlc.some((tuple) => Array.isArray(tuple));
+        const endLabelTextColor = item.categoryKey === "equities" ? "#111111" : item.color;
         const endLabelConfig = {
           show: true,
           position: "right",
@@ -3543,17 +3544,17 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
             return endLabelMainFormatted;
           },
           align: "left",
-          color: item.color,
+          color: endLabelTextColor,
           fontFamily: CHART_FONT_FAMILY,
           fontSize: endLabelFontSize,
           backgroundColor: endLabelSubText ? "rgba(0,0,0,0)" : chartTextMaskColor,
           padding: endLabelSubText ? [2, 5] : [1, 5],
           rich: {
             main: {
-              color: item.color,
+              color: endLabelTextColor,
               fontFamily: CHART_FONT_FAMILY,
               fontWeight: endLabelMainWeight,
-              textBorderColor: item.color,
+              textBorderColor: endLabelTextColor,
               textBorderWidth: endLabelStrokeWidth,
               width: resolvedMainLabelWidth || undefined,
               align: endLabelTextAlign,
@@ -3563,10 +3564,10 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
               lineHeight: endLabelMainLineHeight,
             },
             sub: {
-              color: item.color,
+              color: endLabelTextColor,
               fontFamily: CHART_FONT_FAMILY,
               fontWeight: endLabelSubWeight,
-              textBorderColor: item.color,
+              textBorderColor: endLabelTextColor,
               textBorderWidth: endLabelStrokeWidth,
               width: endLabelBoxWidth || undefined,
               align: endLabelTextAlign,
