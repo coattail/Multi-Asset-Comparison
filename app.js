@@ -9,6 +9,8 @@ const SOURCE_CONFIGS = [
     sourceTitle: "中原领先指数（月度）",
     heroSubtitle: "数据来源：Wind、中原研究中心",
     defaultSelectedNames: null,
+    globalKey: "HOUSE_PRICE_SOURCE_DATA",
+    scriptUrl: "house-price-data.js",
     data: window.HOUSE_PRICE_SOURCE_DATA,
   },
   {
@@ -18,9 +20,13 @@ const SOURCE_CONFIGS = [
     sourceTitle: "国家统计局70城二手住宅销售价格指数（上月=100，链式定基）",
     heroSubtitle: "数据来源：国家统计局（70城二手住宅销售价格指数）",
     defaultSelectedNames: ["北京", "上海", "广州", "深圳", "天津", "重庆"],
+    globalKey: "HOUSE_PRICE_SOURCE_DATA_NBS_70",
+    scriptUrl: "house-price-data-nbs-70.js",
     data: window.HOUSE_PRICE_SOURCE_DATA_NBS_70,
   },
 ];
+const HTML2CANVAS_SCRIPT_URL =
+  "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js";
 
 const cityListEl = document.getElementById("cityList");
 const citySearchEl = document.getElementById("citySearch");
@@ -290,6 +296,10 @@ let isSyncingTimeZoomInputs = false;
 let textMeasureContext = null;
 let resizeRenderTimer = null;
 let chartFontsReadyPromise = null;
+let html2canvasLoadPromise = null;
+const externalScriptLoadPromises = new Map();
+const sourceDataLoadPromises = new Map();
+let sourceSwitchNonce = 0;
 
 function isFiniteNumber(value) {
   return typeof value === "number" && Number.isFinite(value);
@@ -624,6 +634,88 @@ function isUsableSourceData(data) {
   );
 }
 
+function getSourceConfigByKey(sourceKey) {
+  return SOURCE_CONFIGS.find((source) => source.key === sourceKey) || null;
+}
+
+function loadScriptOnce(url) {
+  if (!url) return Promise.reject(new Error("script-url-missing"));
+  const existingPromise = externalScriptLoadPromises.get(url);
+  if (existingPromise) return existingPromise;
+
+  const loadingPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = url;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => {
+      externalScriptLoadPromises.delete(url);
+      reject(new Error("script-load-failed"));
+    };
+    document.head.appendChild(script);
+  });
+
+  externalScriptLoadPromises.set(url, loadingPromise);
+  return loadingPromise;
+}
+
+async function ensureSourceDataLoaded(sourceKey, { showStatus = false } = {}) {
+  const source = getSourceConfigByKey(sourceKey);
+  if (!source) return null;
+
+  source.data = ensureSourceTimelineByDataAvailability(source.data);
+  if (isUsableSourceData(source.data)) return source.data;
+
+  const globalData = source.globalKey ? window[source.globalKey] : null;
+  const normalizedGlobalData = ensureSourceTimelineByDataAvailability(globalData);
+  if (isUsableSourceData(normalizedGlobalData)) {
+    source.data = normalizedGlobalData;
+    return source.data;
+  }
+
+  const pendingPromise = sourceDataLoadPromises.get(source.key);
+  if (pendingPromise) return pendingPromise;
+
+  const loadingPromise = (async () => {
+    if (showStatus) {
+      setStatus(`正在加载${source.label}数据...`, false);
+    }
+    if (source.scriptUrl) {
+      await loadScriptOnce(source.scriptUrl);
+    }
+    const latestGlobalData = source.globalKey ? window[source.globalKey] : null;
+    const normalizedData = ensureSourceTimelineByDataAvailability(latestGlobalData);
+    if (!isUsableSourceData(normalizedData)) {
+      throw new Error("source-data-invalid");
+    }
+    source.data = normalizedData;
+    return source.data;
+  })();
+
+  sourceDataLoadPromises.set(source.key, loadingPromise);
+  try {
+    return await loadingPromise;
+  } finally {
+    sourceDataLoadPromises.delete(source.key);
+  }
+}
+
+async function ensureHtml2CanvasLoaded() {
+  if (typeof window.html2canvas === "function") return true;
+  if (!html2canvasLoadPromise) {
+    html2canvasLoadPromise = loadScriptOnce(HTML2CANVAS_SCRIPT_URL).catch((error) => {
+      html2canvasLoadPromise = null;
+      throw error;
+    });
+  }
+  try {
+    await html2canvasLoadPromise;
+  } catch (error) {
+    return false;
+  }
+  return typeof window.html2canvas === "function";
+}
+
 function listAvailableSources() {
   return SOURCE_CONFIGS.filter((source) => {
     source.data = ensureSourceTimelineByDataAvailability(source.data);
@@ -637,12 +729,46 @@ function findSourceByKey(sourceKey) {
   return matched || available[0] || null;
 }
 
-function populateSourceSelector(availableSources) {
+function populateSourceSelector() {
   if (!dataSourceEl) return;
-  dataSourceEl.innerHTML = availableSources
-    .map((source) => `<option value="${source.key}">${source.label}</option>`)
+  const availableKeys = new Set(listAvailableSources().map((source) => source.key));
+  dataSourceEl.innerHTML = SOURCE_CONFIGS
+    .map((source) => {
+      const suffix = availableKeys.has(source.key) ? "" : "（首次切换时加载）";
+      return `<option value="${source.key}">${source.label}${suffix}</option>`;
+    })
     .join("");
-  dataSourceEl.disabled = availableSources.length <= 1;
+  dataSourceEl.disabled = SOURCE_CONFIGS.length <= 1;
+}
+
+function scheduleDeferredSourcePrefetch(sourceKey) {
+  const source = getSourceConfigByKey(sourceKey);
+  if (!source || isUsableSourceData(source.data)) return;
+
+  const startPrefetch = async () => {
+    try {
+      await ensureSourceDataLoaded(sourceKey);
+    } catch (error) {
+      return;
+    }
+    const currentSourceKey = activeSourceMeta?.key || "";
+    populateSourceSelector();
+    if (dataSourceEl && currentSourceKey) {
+      dataSourceEl.value = currentSourceKey;
+    }
+    refreshCompareSourceControl({ keepSelection: true });
+  };
+
+  if (typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(() => {
+      void startPrefetch();
+    }, { timeout: 3500 });
+    return;
+  }
+
+  setTimeout(() => {
+    void startPrefetch();
+  }, 1200);
 }
 
 function buildCityMaps() {
@@ -2644,6 +2770,10 @@ async function exportCurrentChartImage(pixelRatio = 2, label = "标准清晰") {
     return;
   }
 
+  if (typeof window.html2canvas !== "function") {
+    await ensureHtml2CanvasLoaded();
+  }
+
   let stageSnapshot = null;
   try {
     stageSnapshot = await captureChartStageSnapshot(pixelRatio);
@@ -4453,10 +4583,28 @@ function bindEvents() {
   }
 
   if (dataSourceEl) {
-    dataSourceEl.addEventListener("change", () => {
-      const applied = applyDataSource(dataSourceEl.value);
+    dataSourceEl.addEventListener("change", async () => {
+      const targetSourceKey = dataSourceEl.value;
+      const previousSourceKey = activeSourceMeta?.key || "";
+      const currentNonce = ++sourceSwitchNonce;
+      try {
+        await ensureSourceDataLoaded(targetSourceKey, { showStatus: true });
+      } catch (error) {
+        if (currentNonce !== sourceSwitchNonce) return;
+        setStatus("目标数据源加载失败，请稍后重试。", true);
+        if (dataSourceEl && previousSourceKey) {
+          dataSourceEl.value = previousSourceKey;
+        }
+        return;
+      }
+      if (currentNonce !== sourceSwitchNonce) return;
+      populateSourceSelector();
+      const applied = applyDataSource(targetSourceKey);
       if (!applied) {
         setStatus("数据源切换失败，请刷新重试。", true);
+        if (dataSourceEl && previousSourceKey) {
+          dataSourceEl.value = previousSourceKey;
+        }
         return;
       }
       render();
@@ -4606,7 +4754,22 @@ function bindEvents() {
 }
 
 async function init() {
-  const availableSources = listAvailableSources();
+  setStatus("正在加载核心数据...", false);
+  try {
+    await ensureSourceDataLoaded("centaline6");
+  } catch (error) {
+    // ignore and rely on available source fallback
+  }
+
+  let availableSources = listAvailableSources();
+  if (availableSources.length === 0) {
+    try {
+      await ensureSourceDataLoaded("nbs70");
+    } catch (error) {
+      // ignore and fall through
+    }
+    availableSources = listAvailableSources();
+  }
   if (availableSources.length === 0) {
     setStatus("数据加载失败，请先生成 house-price-data.js / house-price-data-nbs-70.js。", true);
     return;
@@ -4614,7 +4777,7 @@ async function init() {
 
   applyThemeMode(readStoredThemeMode(), { persist: false, rerender: false });
 
-  populateSourceSelector(availableSources);
+  populateSourceSelector();
   const defaultSource =
     availableSources.find((source) => source.key === "centaline6") || availableSources[0];
   const applied = applyDataSource(defaultSource.key);
@@ -4627,6 +4790,7 @@ async function init() {
   bindChartWheelToPageScroll();
   await waitForChartFonts();
   render();
+  scheduleDeferredSourcePrefetch("nbs70");
 }
 
 init();

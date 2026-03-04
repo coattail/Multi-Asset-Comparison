@@ -12,6 +12,8 @@ const CHART_FONT_LOAD_TARGETS = Object.freeze([
   `600 16px "${CHART_FONT_FACE}"`,
   `700 16px "${CHART_FONT_FACE}"`,
 ]);
+const HTML2CANVAS_SCRIPT_URL =
+  "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js";
 
 const CASE_SHILLER_SERIES = Object.freeze([
   { id: "us_cs_atxrsa", seriesId: "ATXRSA", name: "美国房产·亚特兰大都会区", legendName: "亚特兰大（Case-Shiller）" },
@@ -274,6 +276,8 @@ let timeZoomRenderFrame = null;
 let isSyncingTimeZoomInputs = false;
 let textMeasureContext = null;
 let chartFontsReadyPromise = null;
+let html2canvasLoadPromise = null;
+const externalScriptLoadPromises = new Map();
 
 const uiState = {
   hiddenAssetNames: new Set(),
@@ -645,6 +649,42 @@ function applyThemeMode(nextMode, { persist = true, rerender = true } = {}) {
 function setStatus(text, isError = false) {
   statusEl.textContent = text;
   statusEl.classList.toggle("error", isError);
+}
+
+function loadScriptOnce(url) {
+  if (!url) return Promise.reject(new Error("script-url-missing"));
+  const existingPromise = externalScriptLoadPromises.get(url);
+  if (existingPromise) return existingPromise;
+
+  const loadingPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = url;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => {
+      externalScriptLoadPromises.delete(url);
+      reject(new Error("script-load-failed"));
+    };
+    document.head.appendChild(script);
+  });
+  externalScriptLoadPromises.set(url, loadingPromise);
+  return loadingPromise;
+}
+
+async function ensureHtml2CanvasLoaded() {
+  if (typeof window.html2canvas === "function") return true;
+  if (!html2canvasLoadPromise) {
+    html2canvasLoadPromise = loadScriptOnce(HTML2CANVAS_SCRIPT_URL).catch((error) => {
+      html2canvasLoadPromise = null;
+      throw error;
+    });
+  }
+  try {
+    await html2canvasLoadPromise;
+  } catch (error) {
+    return false;
+  }
+  return typeof window.html2canvas === "function";
 }
 
 function safeRender(contextLabel = "渲染") {
@@ -1493,6 +1533,10 @@ async function exportCurrentChartImage(pixelRatio = 2, label = "标准清晰") {
   if (!latestRenderContext) {
     setStatus("暂无可导出的图表，请先生成。", true);
     return;
+  }
+
+  if (typeof window.html2canvas !== "function") {
+    await ensureHtml2CanvasLoaded();
   }
 
   let stageSnapshot = null;
