@@ -452,9 +452,7 @@ function waitForChartFonts(timeoutMs = 1800) {
     setTimeout(resolve, Math.max(0, timeoutMs));
   });
 
-  chartFontsReadyPromise = Promise.race([loadPromise, timeoutPromise])
-    .then(() => document.fonts.ready.catch(() => undefined))
-    .then(() => undefined);
+  chartFontsReadyPromise = Promise.race([loadPromise, timeoutPromise]).then(() => undefined);
 
   return chartFontsReadyPromise;
 }

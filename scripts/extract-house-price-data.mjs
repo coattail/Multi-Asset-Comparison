@@ -112,12 +112,22 @@ function readSheetName(workbookXml) {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, "..");
 
 const inputPath = process.argv[2] || "/Users/coattail/Downloads/全面 二手房价格202601.xlsx";
 const outputPath =
   process.argv[3] || path.resolve(__dirname, "..", "house-price-data.js");
 const outputJsonPath = outputPath.replace(/\.js$/i, ".json");
 const hkMonthlyPath = process.argv[4] || path.resolve(__dirname, "..", "hk-centaline-monthly.json");
+
+function buildFontSubsetIfEnabled() {
+  if (String(process.env.SKIP_FONT_SUBSET || "").trim() === "1") {
+    console.log("Skip font subset update (SKIP_FONT_SUBSET=1).");
+    return;
+  }
+  const scriptPath = path.resolve(rootDir, "scripts", "build-font-subset.mjs");
+  execFileSync(process.execPath, [scriptPath], { stdio: "inherit" });
+}
 const OUTPUT_MIN_MONTH = "2008-01";
 const OUTPUT_BASE_MONTH = "2008-01";
 
@@ -341,3 +351,4 @@ console.log(`Cities: ${cityNames}`);
 console.log(`Date range: ${outputDates[0]} -> ${outputDates[outputDates.length - 1]}`);
 console.log(`JS output: ${outputPath}`);
 console.log(`JSON output: ${outputJsonPath}`);
+buildFontSubsetIfEnabled();

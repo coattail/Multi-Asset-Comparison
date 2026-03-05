@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const API_URL = "https://data.stats.gov.cn/easyquery.htm";
@@ -219,9 +220,20 @@ function buildAvailableRange(series, months) {
   return `${months[firstIndex]}:${months[lastIndex]}`;
 }
 
+function buildFontSubsetIfEnabled(rootDir) {
+  if (String(process.env.SKIP_FONT_SUBSET || "").trim() === "1") {
+    // eslint-disable-next-line no-console
+    console.log("Skip font subset update (SKIP_FONT_SUBSET=1).");
+    return;
+  }
+  const scriptPath = path.resolve(rootDir, "scripts", "build-font-subset.mjs");
+  execFileSync(process.execPath, [scriptPath], { stdio: "inherit" });
+}
+
 async function main() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
+  const rootDir = path.resolve(__dirname, "..");
 
   const outputPath = process.argv[2] || path.resolve(__dirname, "..", "house-price-data-nbs-70.js");
   const requestedOutputMinMonth = normalizeMonthToken(process.env.NBS_OUTPUT_MIN_MONTH);
@@ -403,6 +415,7 @@ async function main() {
   console.log(`JS output: ${outputPath}`);
   // eslint-disable-next-line no-console
   console.log(`JSON output: ${outputJsonPath}`);
+  buildFontSubsetIfEnabled(rootDir);
 }
 
 main().catch((error) => {

@@ -1,143 +1,146 @@
-# House Price Dashboard (Centaline-Leading-Index)
+# Multi-Asset & Housing Dashboard (Multi-Asset-Dashboard)
 
 [中文说明](./README.md)
 
-A research-oriented dashboard for visualizing second-hand housing price trends in Chinese cities.
-It uses a **fully static frontend architecture** (no bundler/build pipeline) and supports dual data sources, rebasing, cross-source comparison, in-chart summary tables, high-resolution export, and mobile-friendly layouts.
+A research-oriented, fully static dashboard covering:
+
+- China second-hand housing indices (Centaline 6-city + NBS 70-city)
+- Multi-asset comparison (China housing / US housing / metals / equities)
+- Rebase analysis, drawdown analysis, in-chart summary table, and HD export
+
+No frontend build/bundling pipeline is required.
 
 ---
 
-## 1. Project Scope
+## 1. Feature Overview
 
-This project helps answer two practical questions:
+### 1.1 Entry Pages
 
-- How do city-level housing trends diverge within the same time window?
-- How do different data sources compare for the same city?
+- `index.html`: housing dashboard (dual source + cross-source comparison)
+- `multi-assets.html`: multi-asset dashboard (unified timeline)
 
-Typical use cases:
+### 1.2 Core Capabilities
 
-- Real-estate cycle research
-- Macro content creation
-- Relative city strength monitoring
-
----
-
-## 2. Key Features
-
-### 2.1 Dual Data Sources
-
-- Centaline Leading Index (6 cities)
-- NBS 70-city second-hand housing index
-
-### 2.2 Chart Interaction
-
-- Compare up to 6 cities simultaneously
-- External dual-handle time slider below the chart
-- Two-way sync between date dropdowns and slider
-- Light / dark theme switch
-
-### 2.3 Analytics
-
-- Rebase by selected range (start month = 100)
-- Drawdown analysis (peak, drawdown, recovery)
-- Cross-source comparison (available under rule-based conditions)
-- In-chart summary table toggle
-
-### 2.4 Export
-
-- Standard PNG
-- Ultra-HD PNG
-- Export automatically hides non-core UI controls for cleaner output
+- Up to 6 concurrent series
+- Date selects + dual-handle time slider sync
+- Light / dark theme switching
+- In-chart stats table toggle
+- PNG export (standard / ultra-HD)
 
 ---
 
-## 3. Technical Architecture (Portable)
+## 2. Performance & Reliability
 
-### 3.1 Frontend
+### 2.1 Font Subset Strategy
+
+- Full font: `fonts/STKaiti-full.woff2`
+- Runtime font: `fonts/STKaiti-subset.woff2`
+- Character list: `fonts/STKaiti-subset-chars.txt`
+- Subset rebuild is automatically triggered after data updates, and the charset grows incrementally
+
+### 2.2 ECharts Multi-Level Fallback
+
+Primary load:
+
+1. `https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js`
+
+Automatic fallbacks on failure:
+
+1. `./vendor/echarts.min.js` (local backup, same version)
+2. `https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js`
+3. `https://cdn.staticfile.org/echarts/5.5.0/echarts.min.js`
+
+---
+
+## 3. Tech Stack & Runtime
+
+### 3.1 Frontend Stack
 
 - Vanilla HTML / CSS / JavaScript
-- ECharts (via CDN) for chart rendering
-- html2canvas (via CDN) for screenshot-style export
+- ECharts (chart rendering)
+- html2canvas (export)
 
-### 3.2 Data Organization
+### 3.2 Data Model
 
-The frontend reads static data files from the repository directly:
+The frontend reads static JS data files directly:
 
-- `house-price-data.js` (Centaline source)
-- `house-price-data-nbs-70.js` (NBS source)
-- JSON variants for verification/reuse
+- `house-price-data.js` / `house-price-data-nbs-70.js`
+- `multi-asset-data.js`
+- JSON snapshots for inspection/reuse
 
-### 3.3 Update Strategy
+### 3.3 Architecture Notes
 
-- Centaline data: manual updates (optionally via Excel extraction script)
-- NBS data: automatic monthly refresh via GitHub Actions
-- Multi-asset data (metals, equities, etc.): automatic daily refresh via GitHub Actions
-
-> Even with scheduled updates, runtime remains static: pages load static JS/JSON files from the repo.
+- No runtime backend API dependency
+- No npm bundling/build step
+- GitHub Actions updates data files on schedule
 
 ---
 
-## 4. Project Structure
+## 4. Quick Start
+
+### 4.1 Requirements
+
+- Node.js 18+
+- Python 3
+- Python packages: `fonttools`, `brotli` (for font subset generation)
+- Modern browser (latest Chrome / Edge / Safari)
+
+Install font tooling (one-time):
+
+```bash
+python3 -m pip install --upgrade fonttools brotli
+```
+
+### 4.2 Run Locally
+
+```bash
+git clone https://github.com/Sunny-1991/Multi-Asset-Dashboard.git
+cd Multi-Asset-Dashboard
+python3 -m http.server 9013
+```
+
+Open: <http://127.0.0.1:9013>
+
+> Avoid opening pages via `file://`.
+
+---
+
+## 5. Project Structure
 
 ```text
-Centaline-Leading-Index/
+Multi-Asset-Dashboard/
 ├── index.html
+├── multi-assets.html
 ├── style.css
 ├── app.js
+├── multi-assets.js
 ├── house-price-data.js
-├── house-price-data.json
 ├── house-price-data-nbs-70.js
-├── house-price-data-nbs-70.json
-├── hk-centaline-monthly.json
+├── multi-asset-data.js
+├── fonts/
+│   ├── STKaiti-full.woff2
+│   ├── STKaiti-subset.woff2
+│   └── STKaiti-subset-chars.txt
+├── vendor/
+│   └── echarts.min.js
 ├── scripts/
+│   ├── build-font-subset.mjs
+│   ├── build-multi-asset-data.mjs
 │   ├── extract-house-price-data.mjs
 │   ├── fetch-hk-centaline-monthly.mjs
 │   └── fetch-nbs-70city-secondhand.mjs
+├── .github/workflows/
+│   ├── auto-update-nbs-data.yml
+│   └── auto-update-multi-asset-data.yml
 ├── README.md
 └── README.en.md
 ```
 
 ---
 
-## 5. Quick Start
+## 6. Data Update Scripts
 
-### 5.1 Requirements
-
-- Node.js 18+
-- Python 3 (for serving static files locally)
-- Modern browsers (latest Chrome / Edge / Safari recommended)
-
-### 5.2 Run Locally
-
-```bash
-git clone https://github.com/Sunny-1991/Centaline-Leading-Index.git
-cd Centaline-Leading-Index
-python3 -m http.server 9013
-```
-
-Open in browser:
-
-- <http://127.0.0.1:9013>
-
-> Avoid opening `index.html` directly via `file://`, as browser security policies may block resources.
-
----
-
-## 6. Typical Usage Flow
-
-1. Select data source (Centaline / NBS)
-2. Select cities (up to 6)
-3. Select start/end months
-4. Click "Generate"
-5. Optionally enable drawdown and in-chart table
-6. Fine-tune range using the external time slider
-7. Export standard or ultra-HD chart images
-
----
-
-## 7. Data Update Guide
-
-### 7.1 Fetch Hong Kong Monthly Data (optional)
+### 6.1 Hong Kong Monthly Data (optional)
 
 ```bash
 node scripts/fetch-hk-centaline-monthly.mjs
@@ -145,7 +148,7 @@ node scripts/fetch-hk-centaline-monthly.mjs
 
 Output: `hk-centaline-monthly.json`
 
-### 7.2 Extract Centaline Data from Excel
+### 6.2 Extract Centaline Data from Excel
 
 ```bash
 node scripts/extract-house-price-data.mjs <excel-file.xlsx>
@@ -155,8 +158,10 @@ Outputs:
 
 - `house-price-data.js`
 - `house-price-data.json`
+- `fonts/STKaiti-subset.woff2`
+- `fonts/STKaiti-subset-chars.txt`
 
-### 7.3 Fetch and Build NBS 70-city Data
+### 6.3 Fetch NBS 70-City Dataset
 
 ```bash
 node scripts/fetch-nbs-70city-secondhand.mjs
@@ -166,8 +171,10 @@ Outputs:
 
 - `house-price-data-nbs-70.js`
 - `house-price-data-nbs-70.json`
+- `fonts/STKaiti-subset.woff2`
+- `fonts/STKaiti-subset-chars.txt`
 
-### 7.4 Build Multi-Asset Data (metals / equities / US housing)
+### 6.4 Build Multi-Asset Dataset
 
 ```bash
 node scripts/build-multi-asset-data.mjs
@@ -177,52 +184,58 @@ Outputs:
 
 - `multi-asset-data.js`
 - `multi-asset-data.json`
+- `fonts/STKaiti-subset.woff2`
+- `fonts/STKaiti-subset-chars.txt`
+
+### 6.5 Manually Rebuild Font Subset
+
+```bash
+node scripts/build-font-subset.mjs
+```
 
 ---
 
-## 8. Automated Updates (GitHub Actions)
+## 7. Environment Variables (Advanced)
 
-### 8.1 Automatic Monthly NBS Updates
+### 7.1 Font Subset
 
-Workflow file:
+- `SKIP_FONT_SUBSET=1`: skip automatic subset generation
+- `FONT_SUBSET_RESET=1`: rebuild charset from scratch (do not inherit historical chars)
 
-- `.github/workflows/auto-update-nbs-data.yml`
+### 7.2 NBS Builder
 
-Triggers:
+- `NBS_OUTPUT_MIN_MONTH=YYYY-MM`
+- `NBS_OUTPUT_BASE_MONTH=YYYY-MM`
+- `NBS_OUTPUT_MAX_MONTH=YYYY-MM`
+- `NBS_SCAN_START_YEAR=YYYY`
 
-- Monthly scheduled run (UTC)
-- Manual `workflow_dispatch`
+### 7.3 Multi-Asset Builder
 
-Workflow behavior:
+- `MULTI_ASSET_START_MONTH=YYYY-MM`
 
-1. Runs `node scripts/fetch-nbs-70city-secondhand.mjs`
-2. Checks whether target data files changed
-3. Commits and pushes only when changes are detected
+---
 
-This automation covers NBS updates only. Paid Centaline data should still be updated manually.
+## 8. GitHub Actions Automation
 
-### 8.2 Automatic Daily Multi-Asset Updates (metals / equities)
+### 8.1 Monthly NBS Update
 
-Workflow file:
+File: `.github/workflows/auto-update-nbs-data.yml`
 
-- `.github/workflows/auto-update-multi-asset-data.yml`
+Pipeline:
 
-Triggers:
+1. Fetch latest NBS dataset
+2. Rebuild font subset automatically
+3. Commit & push only if dataset/subset changed
 
-- Daily scheduled run (UTC)
-- Manual `workflow_dispatch`
+### 8.2 Daily Multi-Asset Update
 
-Workflow behavior:
+File: `.github/workflows/auto-update-multi-asset-data.yml`
 
-1. Runs `node scripts/build-multi-asset-data.mjs`
-2. Checks whether `multi-asset-data.js` / `multi-asset-data.json` changed
-3. Commits and pushes only when data changes are detected
+Pipeline:
 
-In-progress month rules (multi-asset):
-
-- Equities: aggregate daily candles into a month-to-date monthly candle (OHLC)
-- Metals: use the latest available daily close as the current month value
-- Timeline and month selectors: include the current month only when at least one asset already has a valid value in that month
+1. Build latest multi-asset dataset
+2. Rebuild font subset automatically
+3. Commit & push only if dataset/subset changed
 
 ---
 
@@ -230,46 +243,47 @@ In-progress month rules (multi-asset):
 
 ### 9.1 GitHub Pages
 
-Because this is a static site, deployment is straightforward after pushing repository files.
-
-At minimum, ensure these files are published at the site root:
+Ensure these files are published:
 
 - `index.html`
+- `multi-assets.html`
 - `style.css`
 - `app.js`
+- `multi-assets.js`
+- `vendor/echarts.min.js`
+- `fonts/STKaiti-subset.woff2`
 - `house-price-data.js`
 - `house-price-data-nbs-70.js`
+- `multi-asset-data.js`
 
 ### 9.2 Cache Refresh
 
-If changes do not appear immediately:
-
-- Hard refresh (`Cmd/Ctrl + Shift + R`)
-- Or bump asset query versions in `index.html` (`?v=...`)
+- Hard refresh: `Cmd/Ctrl + Shift + R`
+- Or bump static asset query versions (`?v=...`)
 
 ---
 
 ## 10. FAQ
 
-### Q1. The page stays on "Loading..."
+### Q1. The page remains on "Loading..."
 
-- Make sure you are serving via `http://`, not `file://`
-- Verify `house-price-data*.js` files exist and are valid
+- Make sure you are using `http://` instead of `file://`
+- Verify data files exist and are valid
+- Check whether external CDN access is restricted in your network
 
-### Q2. Exported image does not match on-screen chart
+### Q2. Export output differs from the on-screen chart
 
 - Click "Generate" before exporting
-- Export reflects the current chart state (cities, range, toggles)
+- Export follows the current state (theme, range, selected series, toggles)
 
-### Q3. Is this still a static site if NBS updates are automated?
+### Q3. New labels show missing glyphs
 
-- Yes. Automation only refreshes repository data files offline
-- Runtime still serves static frontend and static JS/JSON assets
+- Re-run the corresponding data script (font subset auto-expands)
+- Or run `node scripts/build-font-subset.mjs` manually
 
 ---
 
-## 11. Compliance Notice
+## 11. Disclaimer
 
-- Data sources may be subject to licensing or usage restrictions.
-- Use this project within legal and policy-compliant boundaries.
-- The project is intended for research and communication, not investment advice.
+- Data usage must comply with source terms and applicable regulations.
+- This project is for research and communication, not investment advice.

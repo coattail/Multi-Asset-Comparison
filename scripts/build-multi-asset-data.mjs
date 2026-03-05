@@ -690,6 +690,16 @@ function resolveGeneratedAt(nextData, previousData) {
   return new Date().toISOString();
 }
 
+function buildFontSubsetIfEnabled(rootDir) {
+  if (String(process.env.SKIP_FONT_SUBSET || "").trim() === "1") {
+    // eslint-disable-next-line no-console
+    console.log("Skip font subset update (SKIP_FONT_SUBSET=1).");
+    return;
+  }
+  const scriptPath = path.resolve(rootDir, "scripts", "build-font-subset.mjs");
+  execFileSync(process.execPath, [scriptPath], { stdio: "inherit" });
+}
+
 async function main() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
@@ -884,6 +894,7 @@ async function main() {
   console.log(`Months: ${months[0]} -> ${months[months.length - 1]} (${months.length})`);
   // eslint-disable-next-line no-console
   console.log(`Assets: ${assets.length}`);
+  buildFontSubsetIfEnabled(rootDir);
 }
 
 main().catch((error) => {
