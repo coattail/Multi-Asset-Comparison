@@ -60,9 +60,15 @@ const THEME_MODE_STORAGE_KEY = "house-price-theme-mode";
 const THEME_MODE_LIGHT = "light";
 const THEME_MODE_DARK = "dark";
 
-const chart = echarts.init(chartEl, null, {
-  renderer: "canvas",
-});
+const chart =
+  typeof window !== "undefined" &&
+  window.echarts &&
+  typeof window.echarts.init === "function" &&
+  chartEl
+    ? window.echarts.init(chartEl, null, {
+        renderer: "canvas",
+      })
+    : null;
 
 const LEGACY_CORE_CITY_COLORS = Object.freeze({
   北京: "#5b9bd5",
@@ -618,6 +624,27 @@ function applyThemeMode(nextMode, { persist = true, rerender = true } = {}) {
 function setStatus(text, isError = false) {
   statusEl.textContent = text;
   statusEl.classList.toggle("error", isError);
+}
+
+function showChartBootstrapError(message) {
+  if (chartEl) {
+    chartEl.classList.add("chart--error");
+    chartEl.textContent = message;
+    chartEl.setAttribute("aria-label", message);
+  }
+  if (footnoteEl) {
+    footnoteEl.textContent = "请确认 GitHub Pages 已发布 vendor/echarts.min.js、fonts/STKaiti-subset.woff2 和数据文件。";
+  }
+  if (renderBtn) {
+    renderBtn.disabled = true;
+  }
+  if (drawdownBtn) {
+    drawdownBtn.disabled = true;
+  }
+  if (chartTableBtn) {
+    chartTableBtn.disabled = true;
+  }
+  setStatus(message, true);
 }
 
 function isUsableSourceData(data) {
@@ -4752,6 +4779,15 @@ function bindEvents() {
 }
 
 async function init() {
+  if (!chart) {
+    const detail =
+      typeof window !== "undefined" && window.__ECHARTS_LOAD_FAILURE_DETAIL
+        ? `（${window.__ECHARTS_LOAD_FAILURE_DETAIL}）`
+        : "";
+    showChartBootstrapError(`图表库 ECharts 加载失败，请刷新重试；若为 GitHub Pages，请确认 vendor/echarts.min.js 已随站点发布${detail}`);
+    return;
+  }
+
   setStatus("正在加载核心数据...", false);
   try {
     await ensureSourceDataLoaded("centaline6");

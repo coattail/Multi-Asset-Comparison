@@ -27,17 +27,34 @@
     />
     <link rel="stylesheet" href="style.css?v=20260302-centaline-display-sync" />
     <script>
+      window.__ECHARTS_LOAD_STATUS = "loading";
+      window.__ECHARTS_LOAD_FAILURE_DETAIL = "";
       window.__ECHARTS_FALLBACK_URLS = [
-        "./vendor/echarts.min.js",
+        "https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js",
         "https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js",
         "https://cdn.staticfile.org/echarts/5.5.0/echarts.min.js",
       ];
+      window.__markEchartsReady = function () {
+        window.__ECHARTS_LOAD_STATUS = "ready";
+        window.__ECHARTS_LOAD_FAILURE_DETAIL = "";
+      };
+      window.__markEchartsLoadFailed = function () {
+        window.__ECHARTS_LOAD_STATUS = "failed";
+        window.__ECHARTS_LOAD_FAILURE_DETAIL =
+          "vendor/echarts.min.js 与所有 CDN 回退均加载失败";
+      };
       window.__loadEchartsFallback = function (scriptEl, index) {
         if (!scriptEl) return;
         const parsedIndex = Number(index);
         const safeIndex = Number.isFinite(parsedIndex) ? parsedIndex : 0;
         const nextUrl = window.__ECHARTS_FALLBACK_URLS[safeIndex];
-        if (!nextUrl) return;
+        if (!nextUrl) {
+          window.__markEchartsLoadFailed();
+          return;
+        }
+        scriptEl.onload = function () {
+          window.__markEchartsReady();
+        };
         scriptEl.onerror = function () {
           window.__loadEchartsFallback(scriptEl, safeIndex + 1);
         };
@@ -46,7 +63,8 @@
     </script>
     <script
       defer
-      src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"
+      src="./vendor/echarts.min.js"
+      onload="window.__markEchartsReady()"
       onerror="window.__loadEchartsFallback(this, 0)"
     ></script>
     <script defer src="house-price-data.js"></script>

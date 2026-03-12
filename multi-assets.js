@@ -262,9 +262,15 @@ const timeZoomFillEl = document.getElementById("timeZoomFill");
 const timeZoomStartEl = document.getElementById("timeZoomStart");
 const timeZoomEndEl = document.getElementById("timeZoomEnd");
 
-const chart = echarts.init(chartEl, null, {
-  renderer: "canvas",
-});
+const chart =
+  typeof window !== "undefined" &&
+  window.echarts &&
+  typeof window.echarts.init === "function" &&
+  chartEl
+    ? window.echarts.init(chartEl, null, {
+        renderer: "canvas",
+      })
+    : null;
 
 const assetById = new Map();
 let raw = null;
@@ -647,6 +653,21 @@ function applyThemeMode(nextMode, { persist = true, rerender = true } = {}) {
 function setStatus(text, isError = false) {
   statusEl.textContent = text;
   statusEl.classList.toggle("error", isError);
+}
+
+function showChartBootstrapError(message) {
+  if (chartEl) {
+    chartEl.classList.add("chart--error");
+    chartEl.textContent = message;
+    chartEl.setAttribute("aria-label", message);
+  }
+  if (footnoteEl) {
+    footnoteEl.textContent = "请确认 GitHub Pages 已发布 vendor/echarts.min.js、fonts/STKaiti-subset.woff2 和 multi-asset-data.js。";
+  }
+  if (renderBtn) {
+    renderBtn.disabled = true;
+  }
+  setStatus(message, true);
 }
 
 function loadScriptOnce(url) {
@@ -4164,6 +4185,15 @@ function bindEvents() {
 }
 
 async function init() {
+  if (!chart) {
+    const detail =
+      typeof window !== "undefined" && window.__ECHARTS_LOAD_FAILURE_DETAIL
+        ? `（${window.__ECHARTS_LOAD_FAILURE_DETAIL}）`
+        : "";
+    showChartBootstrapError(`图表库 ECharts 加载失败，请刷新重试；若为 GitHub Pages，请确认 vendor/echarts.min.js 已随站点发布${detail}`);
+    return;
+  }
+
   applyThemeMode(readStoredThemeMode(), { persist: false, rerender: false });
 
   setStatus("正在加载多资产数据（中国房产/Case-Shiller/贵金属/权益类资产）...", false);

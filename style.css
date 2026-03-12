@@ -1014,6 +1014,20 @@ select:focus {
   color: var(--warn);
 }
 
+.chart.chart--error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  border: 1px dashed rgba(205, 91, 91, 0.42);
+  border-radius: 18px;
+  background: rgba(255, 248, 248, 0.9);
+  color: #9e3d3d;
+  text-align: center;
+  line-height: 1.7;
+  white-space: normal;
+}
+
 .chart-zone {
   background:
     radial-gradient(118% 132% at 100% -20%, rgba(26, 153, 242, 0.12), transparent 62%),

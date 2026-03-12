@@ -42,11 +42,11 @@ No frontend build/bundling pipeline is required.
 
 Primary load:
 
-1. `https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js`
+1. `./vendor/echarts.min.js`
 
 Automatic fallbacks on failure:
 
-1. `./vendor/echarts.min.js` (local backup, same version)
+1. `https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js`
 2. `https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js`
 3. `https://cdn.staticfile.org/echarts/5.5.0/echarts.min.js`
 
@@ -94,8 +94,8 @@ python3 -m pip install --upgrade fonttools brotli
 ### 4.2 Run Locally
 
 ```bash
-git clone https://github.com/Sunny-1991/Multi-Asset-Dashboard.git
-cd Multi-Asset-Dashboard
+git clone https://github.com/coattail/Multi-Asset-Comparison.git
+cd Multi-Asset-Comparison
 python3 -m http.server 9013
 ```
 
@@ -269,6 +269,7 @@ Ensure these files are published:
 
 - Make sure you are using `http://` instead of `file://`
 - Verify data files exist and are valid
+- Make sure GitHub Pages also publishes `vendor/echarts.min.js` and `fonts/STKaiti-subset.woff2`
 - Check whether external CDN access is restricted in your network
 
 ### Q2. Export output differs from the on-screen chart

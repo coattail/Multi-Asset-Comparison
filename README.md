@@ -1,17 +1,17 @@
 # Multi-Asset Dashboard · 多资产与房价可视化
 
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Fsunny-1991.github.io%2FMulti-Asset-Dashboard%2F&up_message=online&down_message=offline)](https://sunny-1991.github.io/Multi-Asset-Dashboard/)
-[![NBS Auto Update](https://github.com/Sunny-1991/Multi-Asset-Dashboard/actions/workflows/auto-update-nbs-data.yml/badge.svg)](https://github.com/Sunny-1991/Multi-Asset-Dashboard/actions/workflows/auto-update-nbs-data.yml)
-[![Multi-Asset Auto Update](https://github.com/Sunny-1991/Multi-Asset-Dashboard/actions/workflows/auto-update-multi-asset-data.yml/badge.svg)](https://github.com/Sunny-1991/Multi-Asset-Dashboard/actions/workflows/auto-update-multi-asset-data.yml)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fcoattail.github.io%2FMulti-Asset-Comparison%2F&up_message=online&down_message=offline)](https://coattail.github.io/Multi-Asset-Comparison/)
+[![NBS Auto Update](https://github.com/coattail/Multi-Asset-Comparison/actions/workflows/auto-update-nbs-data.yml/badge.svg)](https://github.com/coattail/Multi-Asset-Comparison/actions/workflows/auto-update-nbs-data.yml)
+[![Multi-Asset Auto Update](https://github.com/coattail/Multi-Asset-Comparison/actions/workflows/auto-update-multi-asset-data.yml/badge.svg)](https://github.com/coattail/Multi-Asset-Comparison/actions/workflows/auto-update-multi-asset-data.yml)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-43853d?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Python](https://img.shields.io/badge/python-%3E%3D3.9-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Architecture](https://img.shields.io/badge/architecture-static%20site-blue)](https://github.com/Sunny-1991/Multi-Asset-Dashboard)
+[![Architecture](https://img.shields.io/badge/architecture-static%20site-blue)](https://github.com/coattail/Multi-Asset-Comparison)
 
 一个面向研究与内容创作的**纯静态仪表盘**：  
 支持中国房价双源对比 + 多资产统一时间轴观察，兼顾可读性、导出质量与长期维护。
 
-- 在线主页：[房价主面板](https://sunny-1991.github.io/Multi-Asset-Dashboard/)
-- 在线多资产页：[multi-assets.html](https://sunny-1991.github.io/Multi-Asset-Dashboard/multi-assets.html)
+- 在线主页：[房价主面板](https://coattail.github.io/Multi-Asset-Comparison/)
+- 在线多资产页：[multi-assets.html](https://coattail.github.io/Multi-Asset-Comparison/multi-assets.html)
 - English doc: [README.en.md](./README.en.md)
 
 ---
@@ -40,8 +40,8 @@
 ## 🚀 30 秒本地启动
 
 ```bash
-git clone https://github.com/Sunny-1991/Multi-Asset-Dashboard.git
-cd Multi-Asset-Dashboard
+git clone https://github.com/coattail/Multi-Asset-Comparison.git
+cd Multi-Asset-Comparison
 python3 -m http.server 9013
 ```
 
@@ -92,6 +92,54 @@ node scripts/build-font-subset.mjs
 
 ---
 
+## 🖥️ 本地每日自动更新（不依赖 GitHub）
+
+当 GitHub Actions 暂时不可用时，可改用本地 `launchd`（macOS）每天自动跑一次数据更新。
+
+默认行为：
+
+- 每天本地时间 `07:40` 执行
+- 顺序执行：
+  1) `node scripts/build-multi-asset-data.mjs`
+  2) `node scripts/fetch-nbs-70city-secondhand.mjs`
+- 自动写入日志到 `.local-auto-update/`
+- 仅更新本地文件，不会自动 `git push`
+
+### 1) 安装（macOS）
+
+```bash
+chmod +x scripts/local-daily-update.sh scripts/install-local-daily-update-macos.sh scripts/uninstall-local-daily-update-macos.sh
+./scripts/install-local-daily-update-macos.sh
+```
+
+若想改执行时间（示例：每天 06:20）：
+
+```bash
+UPDATE_HOUR=6 UPDATE_MINUTE=20 ./scripts/install-local-daily-update-macos.sh
+```
+
+### 2) 立即手动跑一次（验证）
+
+```bash
+launchctl kickstart -k gui/$(id -u)/com.multiassetdashboard.dailyupdate
+```
+
+### 3) 查看状态与日志
+
+```bash
+launchctl print gui/$(id -u)/com.multiassetdashboard.dailyupdate
+tail -f .local-auto-update/launchd.stdout.log
+tail -f .local-auto-update/logs/update-$(date +%Y%m%d).log
+```
+
+### 4) 卸载
+
+```bash
+./scripts/uninstall-local-daily-update-macos.sh
+```
+
+---
+
 ## ⚡ 性能设计
 
 ### 字体优化
@@ -102,13 +150,13 @@ node scripts/build-font-subset.mjs
 
 ### ECharts 回退链路
 
-默认加载：
+默认优先加载：
 
-- `https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js`
+- `./vendor/echarts.min.js`
 
-失败后回退：
+失败后自动回退：
 
-1. `./vendor/echarts.min.js`
+1. `https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js`
 2. `https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js`
 3. `https://cdn.staticfile.org/echarts/5.5.0/echarts.min.js`
 
@@ -160,6 +208,7 @@ Multi-Asset-Dashboard/
 
 - 确认通过 `http://` 访问而非 `file://`
 - 确认 `house-price-data*.js` / `multi-asset-data.js` 存在且内容完整
+- 确认 GitHub Pages 已同时发布 `vendor/echarts.min.js` 与 `fonts/STKaiti-subset.woff2`
 - 若外网受限，优先保证本地 `vendor/echarts.min.js` 可访问
 
 ### 新增城市/资产后字体缺字？
@@ -176,7 +225,7 @@ Multi-Asset-Dashboard/
 
 ## 🤝 参与与反馈
 
-- 建议/问题：欢迎提交 [Issues](https://github.com/Sunny-1991/Multi-Asset-Dashboard/issues)
+- 建议/问题：欢迎提交 [Issues](https://github.com/coattail/Multi-Asset-Comparison/issues)
 - 代码改进：欢迎发起 PR
 
 ---
