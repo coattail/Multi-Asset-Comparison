@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>多资产对比</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Marcellus&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Marcellus&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      />
+    </noscript>
+    <link
+      rel="preload"
+      href="./fonts/STKaiti-subset.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="style.css?v=20260302-data-march-kline-fix1" />
+    <script>
+      window.__ECHARTS_FALLBACK_URLS = [
+        "https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js",
+        "https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js",
+        "https://cdn.staticfile.org/echarts/5.5.0/echarts.min.js",
+      ];
+      window.__loadEchartsFallback = function (scriptEl, index) {
+        if (!scriptEl) return;
+        const parsedIndex = Number(index);
+        const safeIndex = Number.isFinite(parsedIndex) ? parsedIndex : 0;
+        const nextUrl = window.__ECHARTS_FALLBACK_URLS[safeIndex];
+        if (!nextUrl) return;
+        scriptEl.onerror = function () {
+          window.__loadEchartsFallback(scriptEl, safeIndex + 1);
+        };
+        scriptEl.src = nextUrl;
+      };
+    </script>
+    <script
+      defer
+      src="./vendor/echarts.min.js"
+      onerror="window.__loadEchartsFallback(this, 0)"
+    ></script>
+    <script defer src="multi-asset-data.js?v=20260302-data-march-kline-fix1"></script>
+    <script defer src="multi-assets.js?v=20260304-first-load-boost1"></script>
+  </head>
+  <body>
+    <main class="page page-multi-assets">
+      <section class="hero">
+        <p class="eyebrow">Multi Asset Dashboard</p>
+        <h1>多资产对比</h1>
+        <p class="subtitle">覆盖中国房产、美国房产（Case-Shiller）、贵金属、权益类资产</p>
+        <p class="subtitle credit">同一时间轴统一观察（2006年1月起；中原房价自2008年1月起）</p>
+        <div class="hero-links hero-links--with-theme">
+          <a class="hero-link-btn hero-link-btn--back" href="index.html">
+            <span class="hero-link-arrow" aria-hidden="true">&larr;</span>
+            <span>返回房价主页</span>
+          </a>
+          <label class="hero-theme-field">
+            <span class="hero-theme-label">页面风格</span>
+            <select id="themeMode" aria-label="页面风格选择">
+              <option value="light">浅色</option>
+              <option value="dark">深色</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="controls">
+          <h2>设置</h2>
+
+          <div class="control-block control-block--time-range">
+            <div class="compact-range">
+              <span class="compact-label">时间区间</span>
+              <div class="compact-range-grid">
+                <label class="compact-field compact-field--inline">
+                  <span class="compact-sub-label">起点</span>
+                  <select id="startMonth"></select>
+                </label>
+                <label class="compact-field compact-field--inline">
+                  <span class="compact-sub-label">终点</span>
+                  <select id="endMonth"></select>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-block">
+            <div class="block-head">
+              <h3 id="assetBlockTitle">资产（可选多至6个）</h3>
+              <div class="inline-actions">
+                <button id="selectAllBtn" type="button">全选前6个</button>
+                <button id="clearAllBtn" type="button">清空</button>
+              </div>
+            </div>
+            <label>
+              搜索资产
+              <input
+                id="assetSearch"
+                class="asset-search"
+                type="search"
+                placeholder="输入城市或资产名（如 北京 / 黄金 / 标普500）"
+                autocomplete="off"
+              />
+            </label>
+            <div id="assetList" class="asset-list" aria-label="资产选择"></div>
+          </div>
+
+          <div class="control-block">
+            <h3>图内表格</h3>
+            <button id="chartTableBtn" class="analysis-btn sub enabled" type="button">
+              表格汇总（开启）
+            </button>
+            <p class="analysis-hint">导出图片时保持与页面展示一致</p>
+          </div>
+
+          <div class="control-block actions">
+            <button id="renderBtn" class="primary-btn" type="button">一键生成</button>
+            <p id="statusText" class="status">正在加载多资产数据...</p>
+          </div>
+        </aside>
+
+        <section class="chart-zone">
+          <div class="chart-head">
+            <h2 id="chartTitle">多资产价格走势对比</h2>
+            <p id="chartMeta">-</p>
+          </div>
+          <div class="chart-stage">
+            <div id="chart" class="chart" role="img" aria-label="多资产价格走势折线图"></div>
+            <div id="chartStatsOverlay" class="chart-stats-overlay" aria-hidden="true"></div>
+          </div>
+          <div class="timeline-zoom-widget" id="timeZoomWidget" aria-label="时间区间滑块">
+            <div class="timeline-zoom-summary" id="timeZoomRangeText">-</div>
+            <div class="timeline-zoom-slider">
+              <div class="timeline-zoom-track">
+                <span class="timeline-zoom-rail" aria-hidden="true"></span>
+                <span class="timeline-zoom-fill" id="timeZoomFill" aria-hidden="true"></span>
+                <input
+                  id="timeZoomStart"
+                  class="timeline-zoom-input timeline-zoom-input--start"
+                  type="range"
+                  min="0"
+                  max="0"
+                  step="1"
+                  value="0"
+                  aria-label="时间区间起点"
+                />
+                <input
+                  id="timeZoomEnd"
+                  class="timeline-zoom-input timeline-zoom-input--end"
+                  type="range"
+                  min="0"
+                  max="0"
+                  step="1"
+                  value="0"
+                  aria-label="时间区间终点"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>资产</th>
+                  <th>起点指数</th>
+                  <th>区间峰值</th>
+                  <th>最新指数</th>
+                  <th>环比涨幅</th>
+                  <th>同比涨幅</th>
+                  <th>较峰值回撤</th>
+                </tr>
+              </thead>
+              <tbody id="summaryBody"></tbody>
+            </table>
+          </div>
+          <p class="footnote" id="footnoteText"></p>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

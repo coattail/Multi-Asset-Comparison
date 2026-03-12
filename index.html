@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>房价可视化</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Marcellus&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Marcellus&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      />
+    </noscript>
+    <link
+      rel="preload"
+      href="./fonts/STKaiti-subset.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="style.css?v=20260302-centaline-display-sync" />
+    <script>
+      window.__ECHARTS_FALLBACK_URLS = [
+        "https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js",
+        "https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js",
+        "https://cdn.staticfile.org/echarts/5.5.0/echarts.min.js",
+      ];
+      window.__loadEchartsFallback = function (scriptEl, index) {
+        if (!scriptEl) return;
+        const parsedIndex = Number(index);
+        const safeIndex = Number.isFinite(parsedIndex) ? parsedIndex : 0;
+        const nextUrl = window.__ECHARTS_FALLBACK_URLS[safeIndex];
+        if (!nextUrl) return;
+        scriptEl.onerror = function () {
+          window.__loadEchartsFallback(scriptEl, safeIndex + 1);
+        };
+        scriptEl.src = nextUrl;
+      };
+    </script>
+    <script
+      defer
+      src="./vendor/echarts.min.js"
+      onerror="window.__loadEchartsFallback(this, 0)"
+    ></script>
+    <script defer src="house-price-data.js"></script>
+    <script defer src="app.js?v=20260304-first-load-boost1"></script>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <p class="eyebrow">Centaline Leading Index</p>
+        <h1>房价可视化</h1>
+        <p class="subtitle" id="sourceSubtitleText">数据来源：Wind、中原研究中心</p>
+        <p class="subtitle credit">数据整合与图表制作：公众号 - 一座独立屋</p>
+        <div class="hero-links hero-links--with-theme">
+          <a class="hero-link-btn" href="multi-assets.html">多资产对比</a>
+          <label class="hero-theme-field">
+            <span class="hero-theme-label">页面风格</span>
+            <select id="themeMode" aria-label="页面风格选择">
+              <option value="light">浅色</option>
+              <option value="dark">深色</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="controls">
+          <h2>设置</h2>
+
+          <div class="control-block control-block--loose-select">
+            <h3>数据源</h3>
+            <label>
+              <select id="dataSource" aria-label="数据源选择"></select>
+            </label>
+          </div>
+
+          <div class="control-block">
+            <div class="block-head">
+              <h3 id="cityBlockTitle">城市（可选多至6个）</h3>
+              <div class="inline-actions">
+                <button id="selectAllBtn" type="button">全选</button>
+                <button id="clearAllBtn" type="button">清空</button>
+              </div>
+            </div>
+            <input
+              id="citySearch"
+              class="asset-search city-search"
+              type="search"
+              placeholder="搜索城市或所在省份"
+              aria-label="搜索城市"
+              hidden
+            />
+            <div id="cityList" class="city-list" aria-label="城市选择"></div>
+          </div>
+
+          <div class="control-block">
+            <h3>时间区间</h3>
+            <div class="date-grid">
+              <label>
+                起点
+                <select id="startMonth"></select>
+              </label>
+              <label>
+                终点
+                <select id="endMonth"></select>
+              </label>
+            </div>
+          </div>
+
+          <div class="control-block">
+            <h3>跨源对比</h3>
+            <label>
+              对比数据源
+              <select id="compareSource" aria-label="跨源对比数据源" disabled>
+                <option value="none">不对比</option>
+              </select>
+            </label>
+            <p class="analysis-hint" id="compareHint">仅在单选北上广深天津时可开启对比</p>
+          </div>
+
+          <div class="control-block">
+            <h3>累计跌幅</h3>
+            <button id="drawdownBtn" class="analysis-btn" type="button" disabled>
+              累计跌幅（关闭）
+            </button>
+            <button id="chartTableBtn" class="analysis-btn sub" type="button" disabled>
+              表格汇总（关闭）
+            </button>
+            <p class="analysis-hint">当最新值较历史峰值回撤超过 10% 时可开启</p>
+          </div>
+
+          <div class="control-block actions">
+            <button id="renderBtn" class="primary-btn" type="button">一键生成</button>
+            <p id="statusText" class="status">正在加载数据...</p>
+          </div>
+        </aside>
+
+        <section class="chart-zone">
+          <div class="chart-head">
+            <h2 id="chartTitle">热点城市二手房价格走势图</h2>
+            <p id="chartMeta">-</p>
+          </div>
+          <div class="chart-stage">
+            <div id="chart" class="chart" role="img" aria-label="房价走势折线图"></div>
+            <div id="chartStatsOverlay" class="chart-stats-overlay" aria-hidden="true"></div>
+          </div>
+          <div class="timeline-zoom-widget" id="timeZoomWidget" aria-label="时间区间滑块">
+            <div class="timeline-zoom-summary" id="timeZoomRangeText">-</div>
+            <div class="timeline-zoom-slider">
+              <div class="timeline-zoom-track">
+                <span class="timeline-zoom-rail" aria-hidden="true"></span>
+                <span class="timeline-zoom-fill" id="timeZoomFill" aria-hidden="true"></span>
+                <input
+                  id="timeZoomStart"
+                  class="timeline-zoom-input timeline-zoom-input--start"
+                  type="range"
+                  min="0"
+                  max="0"
+                  step="1"
+                  value="0"
+                  aria-label="时间区间起点"
+                />
+                <input
+                  id="timeZoomEnd"
+                  class="timeline-zoom-input timeline-zoom-input--end"
+                  type="range"
+                  min="0"
+                  max="0"
+                  step="1"
+                  value="0"
+                  aria-label="时间区间终点"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>城市</th>
+                  <th>起点指数</th>
+                  <th>区间峰值</th>
+                  <th>最新指数</th>
+                  <th>环比涨幅</th>
+                  <th>同比涨幅</th>
+                  <th>较峰值回撤</th>
+                </tr>
+              </thead>
+              <tbody id="summaryBody"></tbody>
+            </table>
+          </div>
+          <p class="footnote" id="footnoteText"></p>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
