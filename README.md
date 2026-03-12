@@ -81,7 +81,7 @@ node scripts/build-font-subset.mjs
 
 ## ⚙️ 自动化更新（GitHub Actions）
 
-- 统计局月更：`.github/workflows/auto-update-nbs-data.yml`
+- 统计局月更：`.github/workflows/auto-update-nbs-data.yml`（每月 6 日和 15 日各运行一次）
 - 多资产日更：`.github/workflows/auto-update-multi-asset-data.yml`
 
 两条流水线都会：

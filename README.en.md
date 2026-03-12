@@ -221,6 +221,8 @@ node scripts/build-font-subset.mjs
 
 File: `.github/workflows/auto-update-nbs-data.yml`
 
+Schedule: runs on the 6th and 15th of each month.
+
 Pipeline:
 
 1. Fetch latest NBS dataset
