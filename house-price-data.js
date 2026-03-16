@@ -1,9 +1,9 @@
 window.HOUSE_PRICE_SOURCE_DATA = {
-  "sourceFile": "/Users/coattail/Downloads/全面 二手房价格202601.xlsx",
-  "generatedAt": "2026-02-19T03:19:19.724Z",
+  "sourceFile": "/Users/yuwan/Downloads/全面 二手房价格202602.xlsx",
+  "generatedAt": "2026-03-16T08:56:58Z",
   "sheetName": "天津_中原领先指数",
   "baseMonth": "2008-01",
-  "rowsParsed": 217,
+  "rowsParsed": 218,
   "dates": [
     "2008-01",
     "2008-02",
@@ -221,7 +221,8 @@ window.HOUSE_PRICE_SOURCE_DATA = {
     "2025-10",
     "2025-11",
     "2025-12",
-    "2026-01"
+    "2026-01",
+    "2026-02"
   ],
   "cities": [
     {
@@ -230,7 +231,7 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       "metricName": "天津:中原领先指数",
       "column": "B",
       "indicatorId": "S0109940",
-      "availableRange": "2008-01:2026-01",
+      "availableRange": "2008-01:2026-02",
       "source": "中原地产",
       "frequency": "月",
       "updatedAt": "2026-02-13",
@@ -243,7 +244,7 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       "metricName": "深圳:中原领先指数",
       "column": "D",
       "indicatorId": "S0109845",
-      "availableRange": "2008-01:2026-01",
+      "availableRange": "2008-01:2026-02",
       "source": "中原地产",
       "frequency": "月",
       "updatedAt": "2026-02-13",
@@ -256,7 +257,7 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       "metricName": "广州:中原领先指数",
       "column": "E",
       "indicatorId": "S0109895",
-      "availableRange": "2008-01:2026-01",
+      "availableRange": "2008-01:2026-02",
       "source": "中原地产",
       "frequency": "月",
       "updatedAt": "2026-02-13",
@@ -269,7 +270,7 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       "metricName": "北京:中原领先指数",
       "column": "F",
       "indicatorId": "S0109786",
-      "availableRange": "2008-01:2026-01",
+      "availableRange": "2008-01:2026-02",
       "source": "中原地产",
       "frequency": "月",
       "updatedAt": "2026-02-13",
@@ -282,7 +283,7 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       "metricName": "上海:中原领先指数",
       "column": "G",
       "indicatorId": "S0070073",
-      "availableRange": "2008-01:2026-01",
+      "availableRange": "2008-01:2026-02",
       "source": "中原地产",
       "frequency": "月",
       "updatedAt": "2026-02-13",
@@ -295,17 +296,17 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       "metricName": "香港:中原城市领先指数(CCL按月)",
       "column": null,
       "indicatorId": "HK_CCL_MONTHLY",
-      "availableRange": "2008-01:2026-01",
+      "availableRange": "2008-01:2026-02",
       "source": "中原地产香港官网(CCL)",
       "frequency": "月(由周度取月末)",
-      "updatedAt": "2026-02-17",
+      "updatedAt": "2026-03-16",
       "rebaseBaseMonth": "2008-01",
       "rebaseBaseValue": 70.59
     }
   ],
   "values": {
     "city_1": [
-      100,
+      100.0,
       101.192827,
       102.348865,
       104.183071,
@@ -521,10 +522,11 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       180.211938,
       177.135149,
       172.739736,
-      168.783864
+      168.783864,
+      170.542029
     ],
     "city_3": [
-      100,
+      100.0,
       98.261898,
       97.134049,
       95.878634,
@@ -740,10 +742,11 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       330.984978,
       327.537217,
       322.365577,
-      318.055877
+      318.055877,
+      321.072667
     ],
     "city_4": [
-      100,
+      100.0,
       100.012566,
       100.258114,
       99.949294,
@@ -959,10 +962,11 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       317.345025,
       311.431763,
       307.489589,
-      305.02573
+      305.02573,
+      300.590784
     ],
     "city_5": [
-      100,
+      100.0,
       100.336512,
       100.658007,
       101.749707,
@@ -1178,10 +1182,11 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       281.832578,
       276.483931,
       271.135283,
-      269.90098
+      269.90098,
+      273.192455
     ],
     "city_6": [
-      100,
+      100.0,
       99.725991,
       100.294484,
       103.407431,
@@ -1397,10 +1402,11 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       245.587564,
       240.620625,
       233.998039,
-      232.894274
+      232.894274,
+      235.101803
     ],
     "city_hk": [
-      100,
+      100.0,
       103.810738,
       103.258252,
       101.232469,
@@ -1616,7 +1622,8 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       200.155829,
       202.620768,
       204.15073,
-      207.493979
+      207.493979,
+      211.658875
     ]
   }
 };
