@@ -4194,7 +4194,7 @@ async function init() {
     return;
   }
 
-  applyThemeMode(readStoredThemeMode(), { persist: false, rerender: false });
+  applyThemeMode(THEME_MODE_LIGHT, { persist: false, rerender: false });
 
   setStatus("正在加载多资产数据（中国房产/Case-Shiller/贵金属/权益类资产）...", false);
   let dataset;

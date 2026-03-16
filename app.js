@@ -1586,9 +1586,9 @@ function buildMonthSelects(dates) {
   startMonthEl.innerHTML = options;
   endMonthEl.innerHTML = options;
 
-  const preferEarliestStart = activeSourceMeta?.key === "nbs70";
-  const defaultStart = preferEarliestStart
-    ? dates[0]
+  const preferredBaseMonth = normalizeMonthToken(raw?.baseMonth) || "2008-01";
+  const defaultStart = dates.includes(preferredBaseMonth)
+    ? preferredBaseMonth
     : (dates.includes("2008-01") ? "2008-01" : dates[0]);
   const defaultEnd = dates[dates.length - 1];
   startMonthEl.value = defaultStart;
@@ -4809,7 +4809,7 @@ async function init() {
     return;
   }
 
-  applyThemeMode(readStoredThemeMode(), { persist: false, rerender: false });
+  applyThemeMode(THEME_MODE_LIGHT, { persist: false, rerender: false });
 
   populateSourceSelector();
   const defaultSource =
