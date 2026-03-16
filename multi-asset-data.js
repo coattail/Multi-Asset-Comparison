@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-03-16T09:04:22Z",
+  "generatedAt": "2026-03-16T23:58:24.473Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -1660,7 +1660,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
-      100.0,
+      100,
       101.192827,
       102.348865,
       104.183071,
@@ -1905,7 +1905,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
-      100.0,
+      100,
       98.261898,
       97.134049,
       95.878634,
@@ -2150,7 +2150,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
-      100.0,
+      100,
       100.012566,
       100.258114,
       99.949294,
@@ -2395,7 +2395,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
-      100.0,
+      100,
       100.336512,
       100.658007,
       101.749707,
@@ -2640,7 +2640,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
-      100.0,
+      100,
       99.725991,
       100.294484,
       103.407431,
@@ -2885,7 +2885,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
-      100.0,
+      100,
       103.810738,
       103.258252,
       101.232469,
@@ -25398,7 +25398,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4318.59,
       4847.87,
       5263.825,
-      4997.08
+      5013.98
     ],
     "metal_silver_spot_usd": [
       9.84,
@@ -25643,7 +25643,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       71.6275,
       83.136,
       93.82,
-      80.079
+      81.131
     ],
     "equity_sp500": [
       1280.08,
@@ -25888,7 +25888,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       6845.5,
       6939.03,
       6878.88,
-      6632.19
+      6699.38
     ],
     "equity_nasdaq100": [
       1710.75,
@@ -26133,7 +26133,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       25249.85,
       25552.39,
       24960.04,
-      24380.73
+      24655.34
     ],
     "equity_csi300": [
       null,
@@ -26378,7 +26378,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4629.94,
       4706.34,
       4710.65,
-      4669.14
+      4671.56
     ]
   },
   "ohlcValues": {
@@ -27837,7 +27837,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         6824.36,
-        6632.19,
+        6699.38,
         6623.92,
         6901.01
       ]
@@ -29297,7 +29297,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         24599.41,
-        24380.73,
+        24655.34,
         24289.22,
         25189.17
       ]
@@ -30637,7 +30637,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         4681.01,
-        4669.14,
+        4671.56,
         4548.97,
         4744.6
       ]
