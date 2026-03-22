@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-03-20T23:57:08.061Z",
+  "generatedAt": "2026-03-22T23:58:52.035Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -25398,7 +25398,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4318.59,
       4847.87,
       5263.825,
-      4493.95
+      4462.22
     ],
     "metal_silver_spot_usd": [
       9.84,
@@ -25643,7 +25643,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       71.6275,
       83.136,
       93.82,
-      67.915
+      67.941
     ],
     "equity_sp500": [
       1280.08,
