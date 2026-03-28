@@ -3594,7 +3594,12 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
           item.seriesType === "candlestick" &&
           Array.isArray(item.normalizedOhlc) &&
           item.normalizedOhlc.some((tuple) => Array.isArray(tuple));
-        const endLabelTextColor = item.categoryKey === "equities" ? "#111111" : item.color;
+        const endLabelTextColor =
+          item.categoryKey === "equities"
+            ? getCurrentThemeMode() === THEME_MODE_DARK
+              ? "#ffffff"
+              : "#111111"
+            : item.color;
         const endLabelConfig = {
           show: true,
           position: "right",
