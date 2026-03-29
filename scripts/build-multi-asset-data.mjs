@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
 import { execFileSync } from "node:child_process";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const STOOQ_SERIES_URLS = Object.freeze({
   gold: "https://stooq.com/q/d/l/?s=xauusd&i=d",
@@ -15,17 +15,17 @@ const EQUITY_TARGETS = Object.freeze([
     id: "equity_sp500",
     name: "权益类资产·标普500",
     legendName: "标普500",
-    source: "Stooq（^SPX）",
-    parser: "stooq",
-    url: "https://stooq.com/q/d/l/?s=%5Espx&i=d",
+    source: "FRED（SP500）",
+    parser: "fred",
+    seriesId: "SP500",
   },
   {
     id: "equity_nasdaq100",
     name: "权益类资产·纳斯达克100",
     legendName: "纳斯达克100",
-    source: "Stooq（^NDX）",
-    parser: "stooq",
-    url: "https://stooq.com/q/d/l/?s=%5Endx&i=d",
+    source: "FRED（NASDAQ100）",
+    parser: "fred",
+    seriesId: "NASDAQ100",
   },
   {
     id: "equity_csi300",
@@ -282,6 +282,9 @@ function isResponseBodyUsable(sourceUrl, text) {
   if (!body) return false;
 
   const loweredSourceUrl = String(sourceUrl || "").toLowerCase();
+  if (loweredSourceUrl.includes("fred.stlouisfed.org")) {
+    return /(?:^|\n)observation_date,[^\n]+(?:\r?\n|$)/i.test(body);
+  }
   if (loweredSourceUrl.includes("stooq.com")) {
     if (body.includes("Exceeded the daily hits limit")) return false;
     return /(?:^|\n)Date,Open,High,Low,Close(?:,Volume)?(?:\r?\n|$)/i.test(body);
@@ -598,6 +601,52 @@ function buildStooqAsset(assetId, assetName, legendName, categoryKey, categoryLa
   };
 }
 
+function parseFredValueCsvToDailyRows(csvText) {
+  const rows = [];
+  const lines = String(csvText || "")
+    .replace(/\r\n?/g, "\n")
+    .split("\n")
+    .slice(1);
+
+  for (const line of lines) {
+    if (!line) continue;
+    const cells = line.split(",");
+    if (cells.length < 2) continue;
+    const date = normalizeDateToken(cells[0]);
+    const rawValue = String(cells[1] || "").trim();
+    if (!rawValue || rawValue === ".") continue;
+    const value = Number(rawValue);
+    if (!date || !isFiniteNumber(value)) continue;
+    rows.push({
+      date,
+      tuple: [value, value, value, value],
+    });
+  }
+
+  return rows;
+}
+
+export function buildEquityAssetFromFred(target, csvText) {
+  const monthOhlcMap = aggregateDailyRowsToMonthOhlcMap(parseFredValueCsvToDailyRows(csvText), 6);
+  const monthValueMap = buildMonthCloseMapFromMonthOhlcMap(monthOhlcMap, 6);
+
+  return {
+    asset: {
+      id: target.id,
+      name: target.name,
+      legendName: target.legendName,
+      categoryKey: "equities",
+      categoryLabel: "权益类资产",
+      subgroupKey: "equities",
+      subgroupLabel: "权益类资产",
+      source: target.source || `FRED（${target.seriesId || target.id}）`,
+      unit: "指数",
+    },
+    seriesMap: monthValueMap,
+    ohlcMap: monthOhlcMap,
+  };
+}
+
 function parseEastmoneyKlineToDailyRows(jsonText) {
   const rows = [];
   const parsed = parseJsonLoose(jsonText);
@@ -670,6 +719,85 @@ function readJsonIfExists(filePath) {
   }
 }
 
+function buildSeriesMapFromPreviousOutput(previousOutputData, assetId) {
+  const monthValueMap = new Map();
+  const months = Array.isArray(previousOutputData?.dates) ? previousOutputData.dates : [];
+  const values = Array.isArray(previousOutputData?.values?.[assetId]) ? previousOutputData.values[assetId] : [];
+
+  months.forEach((month, index) => {
+    const rawValue = values[index];
+    if (rawValue === null || rawValue === undefined || rawValue === "") return;
+    const value = Number(rawValue);
+    if (normalizeMonthToken(month) && isFiniteNumber(value)) {
+      monthValueMap.set(month, value);
+    }
+  });
+
+  return monthValueMap;
+}
+
+function buildOhlcMapFromPreviousOutput(previousOutputData, assetId) {
+  const monthOhlcMap = new Map();
+  const months = Array.isArray(previousOutputData?.dates) ? previousOutputData.dates : [];
+  const tuples = Array.isArray(previousOutputData?.ohlcValues?.[assetId]) ? previousOutputData.ohlcValues[assetId] : [];
+
+  months.forEach((month, index) => {
+    const tuple = Array.isArray(tuples[index]) ? tuples[index] : null;
+    if (normalizeMonthToken(month) && Array.isArray(tuple) && tuple.length >= 4) {
+      const normalizedTuple = buildOhlcTuple(tuple[0], tuple[1], tuple[2], tuple[3], 6);
+      if (normalizedTuple) {
+        monthOhlcMap.set(month, normalizedTuple);
+      }
+    }
+  });
+
+  return monthOhlcMap;
+}
+
+export function buildAssetPartFromPreviousOutput(previousOutputData, assetMeta) {
+  const seriesMap = buildSeriesMapFromPreviousOutput(previousOutputData, assetMeta.id);
+  const ohlcMap = buildOhlcMapFromPreviousOutput(previousOutputData, assetMeta.id);
+  if (seriesMap.size === 0 && ohlcMap.size === 0) {
+    throw new Error(`No cached data available for ${assetMeta.id}`);
+  }
+
+  return {
+    asset: {
+      id: assetMeta.id,
+      name: assetMeta.name,
+      legendName: assetMeta.legendName,
+      categoryKey: assetMeta.categoryKey,
+      categoryLabel: assetMeta.categoryLabel,
+      subgroupKey: assetMeta.subgroupKey || assetMeta.categoryKey,
+      subgroupLabel: assetMeta.subgroupLabel || assetMeta.categoryLabel,
+      source: assetMeta.source || "缓存回退",
+      unit: assetMeta.unit || "指数",
+    },
+    seriesMap,
+    ohlcMap,
+  };
+}
+
+function withCachedAssetFallback(previousOutputData, assetMeta, buildPrimaryPart) {
+  return Promise.resolve()
+    .then(buildPrimaryPart)
+    .catch((error) => {
+      if (!previousOutputData) throw error;
+      // eslint-disable-next-line no-console
+      console.warn(`[fallback] ${assetMeta.id}: ${error.message}`);
+      return buildAssetPartFromPreviousOutput(previousOutputData, {
+        ...assetMeta,
+        source: `${assetMeta.source || "远端数据"}（缓存回退）`,
+      });
+    });
+}
+
+function resolveEquitySourceUrl(target) {
+  if (target.url) return target.url;
+  if (target.parser === "fred" && target.seriesId) return caseShillerSeriesUrl(target.seriesId);
+  return "";
+}
+
 function stripGeneratedAt(data) {
   if (!data || typeof data !== "object") return null;
   const cloned = { ...data };
@@ -710,6 +838,7 @@ async function main() {
     ? outputPathArg
     : path.resolve(process.cwd(), outputPathArg);
   const outputJsonPath = outputJsPath.replace(/\.js$/i, ".json");
+  const previousOutputData = readJsonIfExists(outputJsonPath);
 
   const startMonth = normalizeMonthToken(process.env.MULTI_ASSET_START_MONTH) || DEFAULT_START_MONTH;
   const nowMonth = currentMonthUtc();
@@ -729,56 +858,143 @@ async function main() {
 
   // eslint-disable-next-line no-console
   console.log("Fetching metals data...");
-  const goldCsv = await fetchText(STOOQ_SERIES_URLS.gold);
-  const silverCsv = await fetchText(STOOQ_SERIES_URLS.silver);
+  const goldPart = await withCachedAssetFallback(
+    previousOutputData,
+    {
+      id: "metal_gold_spot_usd",
+      name: "贵金属·黄金现货（USD）",
+      legendName: "黄金（USD）",
+      categoryKey: "metals",
+      categoryLabel: "贵金属",
+      subgroupKey: "metals",
+      subgroupLabel: "贵金属",
+      source: "Stooq",
+      unit: "美元",
+    },
+    async () => {
+      const goldCsv = await fetchText(STOOQ_SERIES_URLS.gold);
+      return buildStooqAsset(
+        "metal_gold_spot_usd",
+        "贵金属·黄金现货（USD）",
+        "黄金（USD）",
+        "metals",
+        "贵金属",
+        "Stooq",
+        goldCsv,
+      );
+    },
+  );
+  const silverPart = await withCachedAssetFallback(
+    previousOutputData,
+    {
+      id: "metal_silver_spot_usd",
+      name: "贵金属·白银现货（USD）",
+      legendName: "白银（USD）",
+      categoryKey: "metals",
+      categoryLabel: "贵金属",
+      subgroupKey: "metals",
+      subgroupLabel: "贵金属",
+      source: "Stooq",
+      unit: "美元",
+    },
+    async () => {
+      const silverCsv = await fetchText(STOOQ_SERIES_URLS.silver);
+      return buildStooqAsset(
+        "metal_silver_spot_usd",
+        "贵金属·白银现货（USD）",
+        "白银（USD）",
+        "metals",
+        "贵金属",
+        "Stooq",
+        silverCsv,
+      );
+    },
+  );
 
   // eslint-disable-next-line no-console
   console.log("Fetching equities data...");
   const equityPartList = [];
   for (const target of EQUITY_TARGETS) {
-    if (!target.url) continue;
+    const sourceUrl = resolveEquitySourceUrl(target);
+    if (!sourceUrl) continue;
     if (target.parser === "stooq") {
-      const csvText = await fetchText(target.url);
-      const part = buildStooqAsset(
-        target.id,
-        target.name,
-        target.legendName,
-        "equities",
-        "权益类资产",
-        target.source || "Stooq",
-        csvText,
+      const part = await withCachedAssetFallback(
+        previousOutputData,
+        {
+          id: target.id,
+          name: target.name,
+          legendName: target.legendName,
+          categoryKey: "equities",
+          categoryLabel: "权益类资产",
+          subgroupKey: "equities",
+          subgroupLabel: "权益类资产",
+          source: target.source || "Stooq",
+          unit: "指数",
+        },
+        async () => {
+          const csvText = await fetchText(sourceUrl);
+          return buildStooqAsset(
+            target.id,
+            target.name,
+            target.legendName,
+            "equities",
+            "权益类资产",
+            target.source || "Stooq",
+            csvText,
+          );
+        },
       );
       part.asset.unit = "指数";
       equityPartList.push(part);
       continue;
     }
+    if (target.parser === "fred") {
+      const part = await withCachedAssetFallback(
+        previousOutputData,
+        {
+          id: target.id,
+          name: target.name,
+          legendName: target.legendName,
+          categoryKey: "equities",
+          categoryLabel: "权益类资产",
+          subgroupKey: "equities",
+          subgroupLabel: "权益类资产",
+          source: target.source || `FRED（${target.seriesId}）`,
+          unit: "指数",
+        },
+        async () => {
+          const csvText = await fetchText(sourceUrl);
+          return buildEquityAssetFromFred(target, csvText);
+        },
+      );
+      equityPartList.push(part);
+      continue;
+    }
     if (target.parser === "eastmoney") {
-      const jsonText = await fetchText(target.url);
-      equityPartList.push(buildEquityAssetFromEastmoney(target, jsonText));
+      const part = await withCachedAssetFallback(
+        previousOutputData,
+        {
+          id: target.id,
+          name: target.name,
+          legendName: target.legendName,
+          categoryKey: "equities",
+          categoryLabel: "权益类资产",
+          subgroupKey: "equities",
+          subgroupLabel: "权益类资产",
+          source: target.source || "东方财富",
+          unit: "指数",
+        },
+        async () => {
+          const jsonText = await fetchText(sourceUrl);
+          return buildEquityAssetFromEastmoney(target, jsonText);
+        },
+      );
+      equityPartList.push(part);
     }
   }
 
   const chinaPart = buildChinaHousingAssets(centalineData, nbsData);
   const usPart = buildCaseShillerAssets(caseShillerCsvBySeriesId);
-
-  const goldPart = buildStooqAsset(
-    "metal_gold_spot_usd",
-    "贵金属·黄金现货（USD）",
-    "黄金（USD）",
-    "metals",
-    "贵金属",
-    "Stooq",
-    goldCsv,
-  );
-  const silverPart = buildStooqAsset(
-    "metal_silver_spot_usd",
-    "贵金属·白银现货（USD）",
-    "白银（USD）",
-    "metals",
-    "贵金属",
-    "Stooq",
-    silverCsv,
-  );
 
   const assets = [
     ...chinaPart.assets,
@@ -875,12 +1091,11 @@ async function main() {
       china_centaline: "Wind / 中原研究中心（本地数据文件）",
       china_nbs: "国家统计局（本地链式数据文件）",
       us_housing: CASE_SHILLER_TARGETS.map((item) => caseShillerSeriesUrl(item.seriesId)),
-      metals: "https://stooq.com",
-      equities: EQUITY_TARGETS.map((item) => item.url),
+      metals: Object.values(STOOQ_SERIES_URLS),
+      equities: EQUITY_TARGETS.map((item) => resolveEquitySourceUrl(item)).filter(Boolean),
     },
   };
 
-  const previousOutputData = readJsonIfExists(outputJsonPath);
   outputData.generatedAt = resolveGeneratedAt(outputData, previousOutputData);
 
   fs.writeFileSync(outputJsonPath, `${JSON.stringify(outputData, null, 2)}\n`, "utf8");
@@ -897,8 +1112,12 @@ async function main() {
   buildFontSubsetIfEnabled(rootDir);
 }
 
-main().catch((error) => {
-  // eslint-disable-next-line no-console
-  console.error(error);
-  process.exitCode = 1;
-});
+const isDirectRun = process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href;
+
+if (isDirectRun) {
+  main().catch((error) => {
+    // eslint-disable-next-line no-console
+    console.error(error);
+    process.exitCode = 1;
+  });
+}
