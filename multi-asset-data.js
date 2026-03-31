@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-03-29T04:55:11.029Z",
+  "generatedAt": "2026-03-31T00:03:45.849Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -1629,7 +1629,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "categoryLabel": "权益类资产",
       "subgroupKey": "equities",
       "subgroupLabel": "权益类资产",
-      "source": "东方财富（沪深300）",
+      "source": "东方财富（沪深300）（缓存回退）",
       "unit": "指数",
       "availableRange": "2008-01:2026-03"
     }
