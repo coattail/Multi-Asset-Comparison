@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-04-07T00:04:14.069Z",
+  "generatedAt": "2026-04-07T08:25:17.936Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -1630,7 +1630,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "categoryLabel": "权益类资产",
       "subgroupKey": "equities",
       "subgroupLabel": "权益类资产",
-      "source": "东方财富（沪深300）",
+      "source": "东方财富（沪深300）（缓存回退）",
       "unit": "指数",
       "availableRange": "2008-01:2026-04"
     }
@@ -26234,7 +26234,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       25552.39,
       24960.04,
       23740.19,
-      24045.53
+      24192.17
     ],
     "equity_csi300": [
       null,
@@ -28796,9 +28796,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         24019.99,
-        24045.53,
+        24192.17,
         24019.99,
-        24045.53
+        24192.17
       ]
     ],
     "equity_csi300": [
