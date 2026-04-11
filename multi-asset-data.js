@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-04-10T00:06:37.872Z",
+  "generatedAt": "2026-04-11T00:04:13.093Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -26234,7 +26234,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       25552.39,
       24960.04,
       23740.19,
-      24903.17
+      25082.09
     ],
     "equity_csi300": [
       null,
@@ -26480,7 +26480,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4706.34,
       4710.65,
       4450.05,
-      4566.22
+      4636.57
     ]
   },
   "ohlcValues": {
@@ -28796,9 +28796,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         24019.99,
-        24903.17,
+        25082.09,
         24019.99,
-        24903.17
+        25082.09
       ]
     ],
     "equity_csi300": [
@@ -30142,9 +30142,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         4517.27,
-        4566.22,
+        4636.57,
         4420.69,
-        4595.56
+        4655.1
       ]
     ]
   },
