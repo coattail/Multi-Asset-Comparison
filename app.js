@@ -131,6 +131,17 @@ const OVERLAY_CITY_ORDER = ["北京", "上海", "广州", "深圳", "天津", "�
 const OVERLAY_CITY_ORDER_INDEX = new Map(
   OVERLAY_CITY_ORDER.map((name, index) => [name, index]),
 );
+const chartAxisUtils = window.ChartAxisUtils || {};
+const computeVisibleYAxisRange =
+  typeof chartAxisUtils.computeVisibleYAxisRange === "function"
+    ? chartAxisUtils.computeVisibleYAxisRange
+    : () => ({
+        min: 80,
+        max: 120,
+        span: 40,
+        labelPrecision: 0,
+        source: "default",
+      });
 const CHART_FONT_FACE = "ProjectChartSTKaiti";
 const CHART_FONT_FAMILY =
   '"ProjectChartSTKaiti", "STKaiti", "Kaiti SC", "KaiTi", "BiauKai", serif';
@@ -3570,24 +3581,16 @@ function makeOption(
   const chartHeight = chart.getHeight();
   const responsiveChartWidth = getResponsiveChartWidth(chartWidth);
   const gridLayout = resolveChartGridLayout(chartWidth);
-  const allFiniteValues = [];
-  rendered.forEach((item) => {
-    if (!Array.isArray(item.normalized)) return;
-    item.normalized
-      .slice(safeVisibleStartIndex, safeVisibleEndIndex + 1)
-      .forEach((value) => {
-        if (isFiniteNumber(value)) {
-          allFiniteValues.push(value);
-        }
-      });
+  const yAxisBounds = computeVisibleYAxisRange({
+    rendered,
+    hiddenNames: hiddenCityNames,
+    visibleStartIndex: safeVisibleStartIndex,
+    visibleEndIndex: safeVisibleEndIndex,
   });
-  const yMin = allFiniteValues.length > 0 ? Math.min(...allFiniteValues) : 80;
-  const yMax = allFiniteValues.length > 0 ? Math.max(...allFiniteValues) : 120;
-  const yAxisStep = 10;
-  const yAxisMin = Math.floor((yMin - 5) / yAxisStep) * yAxisStep;
-  const yAxisMaxCandidate = Math.ceil((yMax + 5) / yAxisStep) * yAxisStep;
-  const yAxisMax = Math.max(yAxisMin + yAxisStep, yAxisMaxCandidate);
+  const yAxisMin = yAxisBounds.min;
+  const yAxisMax = yAxisBounds.max;
   const yAxisRange = Math.max(1, yAxisMax - yAxisMin);
+  const yAxisLabelPrecision = yAxisBounds.labelPrecision;
   const usableChartWidth = Math.max(
     220,
     chartWidth - gridLayout.left - gridLayout.right - (responsiveChartWidth <= 760 ? 12 : 24),
@@ -3839,7 +3842,7 @@ function makeOption(
         fontWeight: 600,
         fontFamily: CHART_FONT_FAMILY,
         formatter(value) {
-          return Number(value).toFixed(0);
+          return Number(value).toFixed(yAxisLabelPrecision);
         },
       },
     },
@@ -4678,6 +4681,7 @@ function bindEvents() {
       if (!selected) hidden.add(name);
     }
     uiState.hiddenCityNames = hidden;
+    render();
   });
 
   if (timeZoomStartEl && timeZoomEndEl) {
