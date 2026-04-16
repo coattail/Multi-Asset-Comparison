@@ -103,7 +103,12 @@ function toOptionalNumber(value) {
 function cityNameFromMetric(metricName) {
   const raw = String(metricName || "").trim();
   if (!raw) return "";
-  return raw.split(/[：:]/)[0].trim();
+  const parts = raw
+    .split(/[：:]/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (parts.length >= 3) return parts[parts.length - 2];
+  return parts[0] || "";
 }
 
 function readSheetName(workbookXml) {

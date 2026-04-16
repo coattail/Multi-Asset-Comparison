@@ -1,9 +1,9 @@
 window.HOUSE_PRICE_SOURCE_DATA = {
-  "sourceFile": "/Users/yuwan/Downloads/全面 二手房价格202602.xlsx",
-  "generatedAt": "2026-03-16T08:56:58Z",
-  "sheetName": "天津_中原领先指数",
+  "sourceFile": "/Users/coattail/Downloads/全面 二手房价格202604.xlsx",
+  "generatedAt": "2026-04-16T10:34:48.797Z",
+  "sheetName": "中国_天津_中原领先指数",
   "baseMonth": "2008-01",
-  "rowsParsed": 218,
+  "rowsParsed": 219,
   "dates": [
     "2008-01",
     "2008-02",
@@ -222,71 +222,72 @@ window.HOUSE_PRICE_SOURCE_DATA = {
     "2025-11",
     "2025-12",
     "2026-01",
-    "2026-02"
+    "2026-02",
+    "2026-03"
   ],
   "cities": [
     {
       "id": "city_1",
       "name": "天津",
-      "metricName": "天津:中原领先指数",
+      "metricName": "中国:天津:中原领先指数",
       "column": "B",
       "indicatorId": "S0109940",
-      "availableRange": "2008-01:2026-02",
+      "availableRange": "2008-01:2026-03",
       "source": "中原地产",
       "frequency": "月",
-      "updatedAt": "2026-02-13",
+      "updatedAt": "2026-04-16",
       "rebaseBaseMonth": "2008-01",
       "rebaseBaseValue": 227.5099
     },
     {
       "id": "city_3",
       "name": "深圳",
-      "metricName": "深圳:中原领先指数",
+      "metricName": "中国:深圳:中原领先指数",
       "column": "D",
       "indicatorId": "S0109845",
-      "availableRange": "2008-01:2026-02",
+      "availableRange": "2008-01:2026-03",
       "source": "中原地产",
       "frequency": "月",
-      "updatedAt": "2026-02-13",
+      "updatedAt": "2026-04-16",
       "rebaseBaseMonth": "2008-01",
       "rebaseBaseValue": 232.0347
     },
     {
       "id": "city_4",
       "name": "广州",
-      "metricName": "广州:中原领先指数",
+      "metricName": "中国:广州:中原领先指数",
       "column": "E",
       "indicatorId": "S0109895",
-      "availableRange": "2008-01:2026-02",
+      "availableRange": "2008-01:2026-03",
       "source": "中原地产",
       "frequency": "月",
-      "updatedAt": "2026-02-13",
+      "updatedAt": "2026-04-16",
       "rebaseBaseMonth": "2008-01",
       "rebaseBaseValue": 202.9337
     },
     {
       "id": "city_5",
       "name": "北京",
-      "metricName": "北京:中原领先指数",
+      "metricName": "中国:北京:中原领先指数",
       "column": "F",
       "indicatorId": "S0109786",
-      "availableRange": "2008-01:2026-02",
+      "availableRange": "2008-01:2026-03",
       "source": "中原地产",
       "frequency": "月",
-      "updatedAt": "2026-02-13",
+      "updatedAt": "2026-04-16",
       "rebaseBaseMonth": "2008-01",
       "rebaseBaseValue": 243.0521
     },
     {
       "id": "city_6",
       "name": "上海",
-      "metricName": "上海:中原领先指数",
+      "metricName": "中国:上海:中原领先指数",
       "column": "G",
       "indicatorId": "S0070073",
-      "availableRange": "2008-01:2026-02",
+      "availableRange": "2008-01:2026-03",
       "source": "中原地产",
       "frequency": "月",
-      "updatedAt": "2026-02-13",
+      "updatedAt": "2026-04-16",
       "rebaseBaseMonth": "2008-01",
       "rebaseBaseValue": 181.1981
     },
@@ -296,17 +297,17 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       "metricName": "香港:中原城市领先指数(CCL按月)",
       "column": null,
       "indicatorId": "HK_CCL_MONTHLY",
-      "availableRange": "2008-01:2026-02",
+      "availableRange": "2008-01:2026-03",
       "source": "中原地产香港官网(CCL)",
       "frequency": "月(由周度取月末)",
-      "updatedAt": "2026-03-16",
+      "updatedAt": "2026-04-16",
       "rebaseBaseMonth": "2008-01",
       "rebaseBaseValue": 70.59
     }
   ],
   "values": {
     "city_1": [
-      100.0,
+      100,
       101.192827,
       102.348865,
       104.183071,
@@ -523,10 +524,11 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       177.135149,
       172.739736,
       168.783864,
-      170.542029
+      170.542029,
+      168.344323
     ],
     "city_3": [
-      100.0,
+      100,
       98.261898,
       97.134049,
       95.878634,
@@ -743,10 +745,11 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       327.537217,
       322.365577,
       318.055877,
-      321.072667
+      321.072667,
+      321.503637
     ],
     "city_4": [
-      100.0,
+      100,
       100.012566,
       100.258114,
       99.949294,
@@ -963,10 +966,11 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       311.431763,
       307.489589,
       305.02573,
-      300.590784
+      300.590784,
+      303.054643
     ],
     "city_5": [
-      100.0,
+      100,
       100.336512,
       100.658007,
       101.749707,
@@ -1183,10 +1187,11 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       276.483931,
       271.135283,
       269.90098,
-      273.192455
+      273.192455,
+      277.3068
     ],
     "city_6": [
-      100.0,
+      100,
       99.725991,
       100.294484,
       103.407431,
@@ -1403,10 +1408,11 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       240.620625,
       233.998039,
       232.894274,
-      235.101803
+      235.101803,
+      237.309332
     ],
     "city_hk": [
-      100.0,
+      100,
       103.810738,
       103.258252,
       101.232469,
@@ -1623,7 +1629,8 @@ window.HOUSE_PRICE_SOURCE_DATA = {
       202.620768,
       204.15073,
       207.493979,
-      211.658875
+      211.658875,
+      215.568777
     ]
   }
 };
