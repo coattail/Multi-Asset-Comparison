@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-04-22T00:06:06.601Z",
+  "generatedAt": "2026-04-23T01:12:41.125Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -25988,7 +25988,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       6939.03,
       6878.88,
       6528.52,
-      7064.01
+      7137.9
     ],
     "equity_nasdaq100": [
       1710.75,
@@ -26234,7 +26234,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       25552.39,
       24960.04,
       23740.19,
-      26590.34
+      26479.47
     ],
     "equity_csi300": [
       null,
@@ -26480,7 +26480,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4706.34,
       4710.65,
       4450.05,
-      4768
+      4799.63
     ]
   },
   "ohlcValues": {
@@ -26609,7 +26609,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       [
-        2091.58,
+        2087.79,
         2065.3,
         2065.3,
         2095.15
@@ -27330,9 +27330,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         6575.32,
-        7064.01,
+        7137.9,
         6575.32,
-        7126.06
+        7137.9
       ]
     ],
     "equity_nasdaq100": [
@@ -28796,7 +28796,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         24019.99,
-        26590.34,
+        26479.47,
         24019.99,
         26672.43
       ]
@@ -30142,9 +30142,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         4517.27,
-        4768,
+        4799.63,
         4420.69,
-        4776.83
+        4801.45
       ]
     ]
   },
