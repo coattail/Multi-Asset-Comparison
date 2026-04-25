@@ -3,6 +3,7 @@ const THEME_MODE_LIGHT = "light";
 const THEME_MODE_DARK = "dark";
 const MAX_SELECTED_ASSET_COUNT = 6;
 const BASE_START_MONTH = "2006-01";
+const FRED_DEFAULT_START_DATE = `${BASE_START_MONTH}-01`;
 const CENTALINE_BASE_MONTH = "2008-01";
 const CHART_FONT_FACE = "ProjectChartSTKaiti";
 const CHART_FONT_FAMILY =
@@ -591,6 +592,17 @@ function getLastFiniteIndex(series) {
   if (!Array.isArray(series)) return -1;
   for (let i = series.length - 1; i >= 0; i -= 1) {
     if (isFiniteNumber(series[i])) return i;
+  }
+  return -1;
+}
+
+function getFirstFiniteIndex(series, { minValue = null } = {}) {
+  if (!Array.isArray(series)) return -1;
+  for (let i = 0; i < series.length; i += 1) {
+    const value = series[i];
+    if (!isFiniteNumber(value)) continue;
+    if (isFiniteNumber(minValue) && value < minValue) continue;
+    return i;
   }
   return -1;
 }
@@ -2213,7 +2225,7 @@ async function buildMultiAssetDataset() {
 
   const caseShillerTasks = CASE_SHILLER_SERIES.map(async (target) => {
     try {
-      const csvText = await fetchTextResilient(caseShillerSeriesUrl(target.seriesId));
+      const csvText = await fetchTextResilient(caseShillerSeriesUrl(target.seriesId, FRED_DEFAULT_START_DATE));
       const map = parseFredCsvToMonthMap(csvText);
       if (map.size === 0) {
         throw new Error("empty-series");
@@ -2236,7 +2248,7 @@ async function buildMultiAssetDataset() {
 
   const metalTasks = METAL_SERIES.map(async (target) => {
     try {
-      const csvText = await fetchTextResilient(caseShillerSeriesUrl(target.seriesId));
+      const csvText = await fetchTextResilient(caseShillerSeriesUrl(target.seriesId, FRED_DEFAULT_START_DATE));
       const map = parseFredCsvToMonthMap(csvText);
       if (map.size === 0) {
         throw new Error("empty-series");
@@ -2270,7 +2282,7 @@ async function buildMultiAssetDataset() {
         resolvedMap = parseEastmoneyKlineToMonthMap(jsonText);
         resolvedOhlcMap = parseEastmoneyKlineToMonthOhlcMap(jsonText);
       } else if (target.seriesId) {
-        const csvText = await fetchTextResilient(caseShillerSeriesUrl(target.seriesId));
+        const csvText = await fetchTextResilient(caseShillerSeriesUrl(target.seriesId, FRED_DEFAULT_START_DATE));
         resolvedMap = parseFredCsvToMonthMap(csvText);
       }
       if (
@@ -3879,6 +3891,7 @@ function render() {
   const rendered = [];
   const summaryRows = [];
   const missingBase = [];
+  const fallbackBaseAssets = [];
 
   selectedAssetIds.forEach((assetId, index) => {
     const asset = assetById.get(assetId);
@@ -3886,7 +3899,25 @@ function render() {
     if (!asset || !Array.isArray(fullSeries)) return;
 
     const seriesRaw = fullSeries.slice(startIndex, endIndex + 1);
-    const baseRaw = seriesRaw[effectiveBaseOffset];
+    const displayName = getAssetDisplayName(asset);
+    let baseOffset = effectiveBaseOffset;
+    let baseRaw = seriesRaw[baseOffset];
+
+    if (!isFiniteNumber(baseRaw) || baseRaw <= 0) {
+      const fallbackOffset = getFirstFiniteIndex(seriesRaw, { minValue: Number.EPSILON });
+      if (fallbackOffset >= 0) {
+        baseOffset = fallbackOffset;
+        baseRaw = seriesRaw[baseOffset];
+        const fallbackBaseMonth = months[baseOffset] || null;
+        if (fallbackBaseMonth) {
+          fallbackBaseAssets.push({
+            name: displayName,
+            month: fallbackBaseMonth,
+          });
+        }
+      }
+    }
+
     if (!isFiniteNumber(baseRaw) || baseRaw <= 0) {
       missingBase.push(getAssetDisplayName(asset));
       return;
@@ -3946,7 +3977,6 @@ function render() {
       return (Math.pow(latestInfo.value / 100, 1 / years) - 1) * 100;
     })();
 
-    const displayName = getAssetDisplayName(asset);
     const seriesName = asset.id;
     rendered.push({
       id: asset.id,
@@ -3965,6 +3995,7 @@ function render() {
       name: displayName,
       initialValue: 100,
       baseRaw,
+      baseMonth: months[baseOffset] || null,
       peakValue,
       peakDate,
       latestValue: latestInfo.value,
@@ -4052,7 +4083,13 @@ function render() {
   });
 
   chartTitleEl.textContent = "多资产价格走势对比";
-  chartMetaEl.textContent = `${formatMonthZh(viewportStartMonth)} - ${formatMonthZh(viewportEndMonth)} | 定基 ${formatMonthZh(effectiveBaseMonth)} = 100`;
+  const fallbackBaseSummary = fallbackBaseAssets.length
+    ? ` | 补充定基：${fallbackBaseAssets
+      .slice(0, 2)
+      .map((item) => `${item.name}(${formatMonthZh(item.month)})`)
+      .join("、")}${fallbackBaseAssets.length > 2 ? " 等" : ""}`
+    : "";
+  chartMetaEl.textContent = `${formatMonthZh(viewportStartMonth)} - ${formatMonthZh(viewportEndMonth)} | 定基 ${formatMonthZh(effectiveBaseMonth)} = 100${fallbackBaseSummary}`;
 
   renderSummaryTable(visibleRows);
   renderChartStatsOverlay(visibleRows, viewportStartMonth, viewportEndMonth);
@@ -4063,11 +4100,23 @@ function render() {
     if (asset?.source) activeSources.add(asset.source);
   });
   const sourceText = summarizeSourceProviders([...activeSources], { maxItems: 4, fallback: "-" });
-  footnoteEl.textContent = `当前滑块区间：${viewportStartMonth} ~ ${viewportEndMonth}；数据源：${sourceText || "-"}。${baseStrategyNote}`;
+  const fallbackBaseText = fallbackBaseAssets.length
+    ? `补充定基：${fallbackBaseAssets
+      .slice(0, 3)
+      .map((item) => `${item.name}（${item.month}）`)
+      .join("、")}${fallbackBaseAssets.length > 3 ? " 等" : ""}。`
+    : "";
+  footnoteEl.textContent = `当前滑块区间：${viewportStartMonth} ~ ${viewportEndMonth}；数据源：${sourceText || "-"}。${baseStrategyNote}${fallbackBaseText}`;
 
   const missingText = missingBase.length ? `未纳入：${missingBase.join("、")}。` : "";
+  const fallbackBaseStatusText = fallbackBaseAssets.length
+    ? `部分资产起点缺失，已按首个可用月定基：${fallbackBaseAssets
+      .slice(0, 3)
+      .map((item) => `${item.name}（${item.month}）`)
+      .join("、")}${fallbackBaseAssets.length > 3 ? " 等" : ""}。`
+    : "";
   if (!statusEl.textContent.includes("已自动切换为折线显示")) {
-    setStatus(`已生成 ${rendered.length} 条走势（定基 ${effectiveBaseMonth}=100）。${baseStrategyNote}${missingText}`, false);
+    setStatus(`已生成 ${rendered.length} 条走势（定基 ${effectiveBaseMonth}=100）。${baseStrategyNote}${fallbackBaseStatusText}${missingText}`, false);
   }
 }
 

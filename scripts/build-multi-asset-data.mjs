@@ -10,6 +10,8 @@ const STOOQ_SERIES_URLS = Object.freeze({
   gold: "https://stooq.com/q/d/l/?s=xauusd&i=d",
   silver: "https://stooq.com/q/d/l/?s=xagusd&i=d",
 });
+const SP500_LONG_HISTORY_URL =
+  "https://raw.githubusercontent.com/datasets/s-and-p-500/main/data/data.csv";
 const EQUITY_TARGETS = Object.freeze([
   {
     id: "equity_sp500",
@@ -244,6 +246,25 @@ function getCloseFromOhlcTuple(tuple) {
   return isFiniteNumber(closeValue) ? closeValue : null;
 }
 
+function buildMonthOhlcMapFromMonthCloseMap(monthValueMap, digits = 6) {
+  const monthOhlcMap = new Map();
+  const orderedMonths = [...monthValueMap.keys()].sort((a, b) => a.localeCompare(b));
+  let previousClose = null;
+  for (const month of orderedMonths) {
+    const closeValue = Number(monthValueMap.get(month));
+    if (!isFiniteNumber(closeValue)) continue;
+    const openValue = isFiniteNumber(previousClose) ? previousClose : closeValue;
+    const lowValue = Math.min(openValue, closeValue);
+    const highValue = Math.max(openValue, closeValue);
+    const tuple = buildOhlcTuple(openValue, closeValue, lowValue, highValue, digits);
+    if (tuple) {
+      monthOhlcMap.set(month, tuple);
+    }
+    previousClose = closeValue;
+  }
+  return monthOhlcMap;
+}
+
 function buildAvailableRange(series, months) {
   let startIndex = -1;
   let endIndex = -1;
@@ -422,6 +443,11 @@ function caseShillerSeriesUrl(seriesId, startDate = "") {
     url.searchParams.set("cosd", startDate);
   }
   return url.toString();
+}
+
+function monthTokenToFredObservationDate(monthToken) {
+  const normalized = normalizeMonthToken(monthToken);
+  return normalized ? `${normalized}-01` : "";
 }
 
 function parseCaseShillerCsv(csvText) {
@@ -647,6 +673,47 @@ export function buildEquityAssetFromFred(target, csvText) {
   };
 }
 
+function parseSp500LongHistoryCsvToMonthMap(csvText) {
+  const monthValueMap = new Map();
+  const lines = String(csvText || "")
+    .replace(/\r\n?/g, "\n")
+    .split("\n")
+    .filter(Boolean);
+  if (lines.length < 2) return monthValueMap;
+
+  const headers = lines[0].split(",").map((item) => String(item || "").trim().toLowerCase());
+  const dateIndex = headers.findIndex((item) => item === "date");
+  const valueIndex = headers.findIndex((item) => item === "sp500");
+  if (dateIndex < 0 || valueIndex < 0) return monthValueMap;
+
+  for (let i = 1; i < lines.length; i += 1) {
+    const cells = lines[i].split(",");
+    if (cells.length <= Math.max(dateIndex, valueIndex)) continue;
+    const month = normalizeMonthToken(String(cells[dateIndex] || "").slice(0, 7));
+    const value = Number(cells[valueIndex]);
+    if (!month || !isFiniteNumber(value)) continue;
+    monthValueMap.set(month, value);
+  }
+  return monthValueMap;
+}
+
+function mergeMissingMonthlyHistory(part, fallbackMonthMap) {
+  if (!part || !(part.seriesMap instanceof Map) || !(part.ohlcMap instanceof Map)) return;
+  if (!(fallbackMonthMap instanceof Map) || fallbackMonthMap.size === 0) return;
+
+  const fallbackOhlcMap = buildMonthOhlcMapFromMonthCloseMap(fallbackMonthMap, 6);
+  fallbackMonthMap.forEach((value, month) => {
+    if (!part.seriesMap.has(month)) {
+      part.seriesMap.set(month, value);
+    }
+  });
+  fallbackOhlcMap.forEach((tuple, month) => {
+    if (!part.ohlcMap.has(month)) {
+      part.ohlcMap.set(month, tuple);
+    }
+  });
+}
+
 function parseEastmoneyKlineToDailyRows(jsonText) {
   const rows = [];
   const parsed = parseJsonLoose(jsonText);
@@ -792,9 +859,11 @@ function withCachedAssetFallback(previousOutputData, assetMeta, buildPrimaryPart
     });
 }
 
-function resolveEquitySourceUrl(target) {
+function resolveEquitySourceUrl(target, { fredStartDate = "" } = {}) {
   if (target.url) return target.url;
-  if (target.parser === "fred" && target.seriesId) return caseShillerSeriesUrl(target.seriesId);
+  if (target.parser === "fred" && target.seriesId) {
+    return caseShillerSeriesUrl(target.seriesId, fredStartDate);
+  }
   return "";
 }
 
@@ -842,6 +911,7 @@ async function main() {
 
   const startMonth = normalizeMonthToken(process.env.MULTI_ASSET_START_MONTH) || DEFAULT_START_MONTH;
   const nowMonth = currentMonthUtc();
+  const fredStartDate = monthTokenToFredObservationDate(startMonth);
 
   // eslint-disable-next-line no-console
   console.log("Loading local China housing sources...");
@@ -852,7 +922,7 @@ async function main() {
   console.log("Fetching Case-Shiller city data...");
   const caseShillerCsvBySeriesId = new Map();
   for (const target of CASE_SHILLER_TARGETS) {
-    const csvText = await fetchText(caseShillerSeriesUrl(target.seriesId));
+    const csvText = await fetchText(caseShillerSeriesUrl(target.seriesId, fredStartDate));
     caseShillerCsvBySeriesId.set(target.seriesId, csvText);
   }
 
@@ -915,7 +985,7 @@ async function main() {
   console.log("Fetching equities data...");
   const equityPartList = [];
   for (const target of EQUITY_TARGETS) {
-    const sourceUrl = resolveEquitySourceUrl(target);
+    const sourceUrl = resolveEquitySourceUrl(target, { fredStartDate });
     if (!sourceUrl) continue;
     if (target.parser === "stooq") {
       const part = await withCachedAssetFallback(
@@ -964,7 +1034,21 @@ async function main() {
         },
         async () => {
           const csvText = await fetchText(sourceUrl);
-          return buildEquityAssetFromFred(target, csvText);
+          const part = buildEquityAssetFromFred(target, csvText);
+          if (target.id === "equity_sp500") {
+            try {
+              const longHistoryCsv = await fetchText(SP500_LONG_HISTORY_URL);
+              const longHistoryMap = parseSp500LongHistoryCsvToMonthMap(longHistoryCsv);
+              mergeMissingMonthlyHistory(part, longHistoryMap);
+              if (longHistoryMap.size > 0) {
+                part.asset.source = "FRED（SP500）+ datasets/s-and-p-500（月度补齐）";
+              }
+            } catch (error) {
+              // eslint-disable-next-line no-console
+              console.warn(`[fallback] ${target.id} long-history merge skipped: ${error.message}`);
+            }
+          }
+          return part;
         },
       );
       equityPartList.push(part);
@@ -1090,9 +1174,12 @@ async function main() {
     sourceNotes: {
       china_centaline: "Wind / 中原研究中心（本地数据文件）",
       china_nbs: "国家统计局（本地链式数据文件）",
-      us_housing: CASE_SHILLER_TARGETS.map((item) => caseShillerSeriesUrl(item.seriesId)),
+      us_housing: CASE_SHILLER_TARGETS.map((item) => caseShillerSeriesUrl(item.seriesId, fredStartDate)),
       metals: Object.values(STOOQ_SERIES_URLS),
-      equities: EQUITY_TARGETS.map((item) => resolveEquitySourceUrl(item)).filter(Boolean),
+      equities: [
+        ...EQUITY_TARGETS.map((item) => resolveEquitySourceUrl(item, { fredStartDate })).filter(Boolean),
+        SP500_LONG_HISTORY_URL,
+      ],
     },
   };
 
