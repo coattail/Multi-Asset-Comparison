@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-05-03T01:20:23.104Z",
+  "generatedAt": "2026-05-05T01:16:28.522Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -26088,7 +26088,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       6878.88,
       6528.52,
       7209.01,
-      7230.12
+      7200.75
     ],
     "equity_nasdaq100": [
       1710.75,
@@ -27332,7 +27332,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
         2075.54
       ],
       [
-        2081.43,
+        2050.63,
         2096.96,
         2040.04,
         2099.06
@@ -28053,8 +28053,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         7230.12,
-        7230.12,
-        7230.12,
+        7200.75,
+        7200.75,
         7230.12
       ]
     ],
