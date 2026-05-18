@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-05-17T01:29:58.211Z",
+  "generatedAt": "2026-05-18T01:33:24.405Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -26582,7 +26582,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4710.65,
       4450.05,
       4807.31,
-      4859.59
+      4833.28
     ]
   },
   "ohlcValues": {
@@ -30877,8 +30877,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         4857.65,
-        4859.59,
-        4832.69,
+        4833.28,
+        4830.79,
         5030.52
       ]
     ]
