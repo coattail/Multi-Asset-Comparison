@@ -3364,10 +3364,12 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
   const yAxisLabelFontSize = compactMobile ? 11 : mediumMobile ? 12 : 14;
   const seriesLineWidth = compactMobile ? 1.7 : mediumMobile ? 2.1 : 3.02;
   const chartTheme = getActiveChartThemeStyle();
-  const candleBodyWidth = compactMobile ? "54%" : mediumMobile ? "58%" : "62%";
   const candleMaxWidth = compactMobile ? 10 : mediumMobile ? 12 : 16;
   const candleMinWidth = compactMobile ? 3 : 4;
   const hasCandlestickAxisPadding = rendered.some((item) => item.seriesType === "candlestick");
+  const candlestickSeriesIds = new Set(
+    rendered.filter((item) => item.seriesType === "candlestick").map((item) => item.id),
+  );
   const candleUpColor = chartTheme.candleUpColor || "#2f9c72";
   const candleUpBorderColor = chartTheme.candleUpBorderColor || candleUpColor;
   const candleDownColor = chartTheme.candleDownColor || "#e15050";
@@ -3380,6 +3382,85 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
     ),
   );
   const chartTextMaskColor = chartTheme.textMaskColor;
+  const buildCenteredCandlestickGeometry =
+    window.MultiAssetCandlestickUtils?.buildCenteredCandlestickGeometry;
+  const resolveCenteredCandlestickBodyWidth =
+    window.MultiAssetCandlestickUtils?.resolveCenteredCandlestickBodyWidth;
+  const makeCenteredCandlestickRenderItem = () => (params, api) => {
+    if (!buildCenteredCandlestickGeometry) return null;
+
+    const categoryIndex = Number(api.value(0));
+    const openValue = Number(api.value(1));
+    const closeValue = Number(api.value(2));
+    const lowValue = Number(api.value(3));
+    const highValue = Number(api.value(4));
+    if (
+      !Number.isInteger(categoryIndex) ||
+      !isFiniteNumber(openValue) ||
+      !isFiniteNumber(closeValue) ||
+      !isFiniteNumber(lowValue) ||
+      !isFiniteNumber(highValue)
+    ) {
+      return null;
+    }
+
+    const openCoord = api.coord([categoryIndex, openValue]);
+    const closeCoord = api.coord([categoryIndex, closeValue]);
+    const lowCoord = api.coord([categoryIndex, lowValue]);
+    const highCoord = api.coord([categoryIndex, highValue]);
+    const bandWidth = Math.abs(api.size([1, 0])[0]);
+    const bodyWidth = resolveCenteredCandlestickBodyWidth
+      ? resolveCenteredCandlestickBodyWidth(bandWidth, {
+          ratio: compactMobile ? 0.54 : mediumMobile ? 0.58 : 0.62,
+          minWidth: candleMinWidth,
+          maxWidth: candleMaxWidth,
+        })
+      : candleMinWidth;
+    const geometry = buildCenteredCandlestickGeometry({
+      centerX: closeCoord[0],
+      openY: openCoord[1],
+      closeY: closeCoord[1],
+      lowY: lowCoord[1],
+      highY: highCoord[1],
+      bodyWidth,
+    });
+    const isBullish = closeValue >= openValue;
+    const fillColor = isBullish ? candleUpColor : candleDownColor;
+    const strokeColor = isBullish ? candleUpBorderColor : candleDownBorderColor;
+
+    return {
+      type: "group",
+      children: [
+        {
+          type: "line",
+          shape: {
+            x1: geometry.wickX,
+            y1: geometry.highY,
+            x2: geometry.wickX,
+            y2: geometry.lowY,
+          },
+          style: {
+            stroke: strokeColor,
+            lineWidth: 1,
+          },
+        },
+        {
+          type: "rect",
+          shape: {
+            x: geometry.bodyX,
+            y: geometry.bodyY,
+            width: geometry.bodyWidth,
+            height: geometry.bodyHeight,
+          },
+          style: {
+            fill: fillColor,
+            stroke: strokeColor,
+            lineWidth: 1,
+          },
+        },
+      ],
+    };
+  };
 
   return {
     backgroundColor: chartTheme.chartBackground,
@@ -3421,14 +3502,15 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
         const detail = rows
           .map((item) => {
             const tuple = Array.isArray(item?.value) ? item.value : null;
-            const openValue = tuple ? toFiniteNumber(tuple[0]) : null;
-            const closeValue = tuple ? toFiniteNumber(tuple[1]) : null;
-            const lowValue = tuple ? toFiniteNumber(tuple[2]) : null;
-            const highValue = tuple ? toFiniteNumber(tuple[3]) : null;
+            const isCustomCandlestick = candlestickSeriesIds.has(item?.seriesId);
+            const openValue = tuple ? toFiniteNumber(tuple[isCustomCandlestick ? 1 : 0]) : null;
+            const closeValue = tuple ? toFiniteNumber(tuple[isCustomCandlestick ? 2 : 1]) : null;
+            const lowValue = tuple ? toFiniteNumber(tuple[isCustomCandlestick ? 3 : 2]) : null;
+            const highValue = tuple ? toFiniteNumber(tuple[isCustomCandlestick ? 4 : 3]) : null;
             const singleValue = tuple ? null : toFiniteNumber(item?.value);
             let valueText = "-";
             if (
-              item?.seriesType === "candlestick" &&
+              (item?.seriesType === "candlestick" || isCustomCandlestick) &&
               isFiniteNumber(openValue) &&
               isFiniteNumber(closeValue) &&
               isFiniteNumber(lowValue) &&
@@ -3667,19 +3749,17 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
             lastValidCandleIndex >= 0
               ? item.normalizedOhlc.slice(0, lastValidCandleIndex + 1)
               : [];
-          const candlestickData = candleDataWindow.map((tuple) =>
-            Array.isArray(tuple) ? tuple : "-"
+          const candlestickData = candleDataWindow.map((tuple, tupleIndex) =>
+            Array.isArray(tuple) ? [tupleIndex, ...tuple] : "-"
           );
 
           seriesList.push({
             id: item.id,
             name: seriesName,
-            type: "candlestick",
+            type: "custom",
             triggerLineEvent: true,
             data: candlestickData,
-            barWidth: candleBodyWidth,
-            barMaxWidth: candleMaxWidth,
-            barMinWidth: candleMinWidth,
+            renderItem: makeCenteredCandlestickRenderItem(),
             itemStyle: {
               color: candleUpColor,
               color0: candleDownColor,
@@ -3699,6 +3779,11 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
             },
             endLabel: {
               show: false,
+            },
+            encode: {
+              x: 0,
+              y: [1, 2, 3, 4],
+              tooltip: [1, 2, 4, 3],
             },
             animationDuration: 560,
           });
