@@ -39,9 +39,9 @@ const EQUITY_TARGETS = Object.freeze([
     id: "equity_sp500",
     name: "权益类资产·标普500",
     legendName: "标普500",
-    source: "FRED（SP500）",
-    parser: "fred",
-    seriesId: "SP500",
+    source: "Yahoo Finance（^GSPC）",
+    parser: "yahoo",
+    symbol: "^GSPC",
   },
   {
     id: "equity_nasdaq100",
@@ -717,6 +717,54 @@ export function buildEquityAssetFromFred(target, csvText) {
   };
 }
 
+function parseYahooFinanceChartToDailyRows(jsonText) {
+  const rows = [];
+  const parsed = parseJsonLoose(jsonText);
+  const result = parsed?.chart?.result?.[0];
+  const timestamps = result?.timestamp;
+  const quote = result?.indicators?.quote?.[0];
+  if (!Array.isArray(timestamps) || !quote) return rows;
+
+  for (let index = 0; index < timestamps.length; index += 1) {
+    const timestamp = Number(timestamps[index]);
+    const date = isFiniteNumber(timestamp)
+      ? normalizeDateToken(new Date(timestamp * 1000).toISOString().slice(0, 10))
+      : "";
+    const tuple = buildOhlcTuple(
+      quote.open?.[index],
+      quote.close?.[index],
+      quote.low?.[index],
+      quote.high?.[index],
+      6,
+    );
+    if (!date || !tuple) continue;
+    rows.push({ date, tuple });
+  }
+
+  return rows;
+}
+
+export function buildEquityAssetFromYahooFinance(target, jsonText) {
+  const monthOhlcMap = aggregateDailyRowsToMonthOhlcMap(parseYahooFinanceChartToDailyRows(jsonText), 6);
+  const monthValueMap = buildMonthCloseMapFromMonthOhlcMap(monthOhlcMap, 6);
+
+  return {
+    asset: {
+      id: target.id,
+      name: target.name,
+      legendName: target.legendName,
+      categoryKey: "equities",
+      categoryLabel: "权益类资产",
+      subgroupKey: "equities",
+      subgroupLabel: "权益类资产",
+      source: target.source || `Yahoo Finance（${target.symbol || target.id}）`,
+      unit: "指数",
+    },
+    seriesMap: monthValueMap,
+    ohlcMap: monthOhlcMap,
+  };
+}
+
 function parseEastmoneyKlineToDailyRows(jsonText) {
   const rows = [];
   const parsed = parseJsonLoose(jsonText);
@@ -884,6 +932,11 @@ async function supplementMetalPartWithStatMuse(part, metalKey, year) {
 
 function resolveEquitySourceUrl(target) {
   if (target.url) return target.url;
+  if (target.parser === "yahoo" && target.symbol) {
+    return `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+      target.symbol,
+    )}?period1=1136073600&period2=253402300799&interval=1d&events=history&includeAdjustedClose=true`;
+  }
   if (target.parser === "fred" && target.seriesId) return caseShillerSeriesUrl(target.seriesId);
   return "";
 }
@@ -1060,6 +1113,28 @@ async function main() {
         async () => {
           const csvText = await fetchText(sourceUrl);
           return buildEquityAssetFromFred(target, csvText);
+        },
+      );
+      equityPartList.push(part);
+      continue;
+    }
+    if (target.parser === "yahoo") {
+      const part = await withCachedAssetFallback(
+        previousOutputData,
+        {
+          id: target.id,
+          name: target.name,
+          legendName: target.legendName,
+          categoryKey: "equities",
+          categoryLabel: "权益类资产",
+          subgroupKey: "equities",
+          subgroupLabel: "权益类资产",
+          source: target.source || `Yahoo Finance（${target.symbol || target.id}）`,
+          unit: "指数",
+        },
+        async () => {
+          const jsonText = await fetchText(sourceUrl);
+          return buildEquityAssetFromYahooFinance(target, jsonText);
         },
       );
       equityPartList.push(part);

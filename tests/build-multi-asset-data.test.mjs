@@ -5,6 +5,7 @@ import {
   appendSupplementalMonthsAfterLatest,
   buildAssetPartFromPreviousOutput,
   buildEquityAssetFromFred,
+  buildEquityAssetFromYahooFinance,
   parseStatMuseMonthlyMetalHtml,
 } from "../scripts/build-multi-asset-data.mjs";
 
@@ -84,6 +85,54 @@ test("buildEquityAssetFromFred aggregates daily closes into monthly close and de
     [
       ["2026-03", [10, 20, 10, 20]],
       ["2026-04", [25, 30, 25, 30]],
+    ],
+  );
+});
+
+test("buildEquityAssetFromYahooFinance aggregates daily OHLC into monthly index candles", () => {
+  const chartJson = JSON.stringify({
+    chart: {
+      result: [
+        {
+          timestamp: [1772411400, 1772497800, 1775003400, 1775089800],
+          indicators: {
+            quote: [
+              {
+                open: [10, 11, 20, 21],
+                high: [12, 13, 23, 24],
+                low: [9, 10, 19, 20],
+                close: [11, 12, 22, 23],
+              },
+            ],
+          },
+        },
+      ],
+    },
+  });
+
+  const part = buildEquityAssetFromYahooFinance(
+    {
+      id: "equity_sp500",
+      name: "权益类资产·标普500",
+      legendName: "标普500",
+      source: "Yahoo Finance（^GSPC）",
+      symbol: "^GSPC",
+    },
+    chartJson,
+  );
+
+  assert.deepEqual(
+    [...part.seriesMap.entries()],
+    [
+      ["2026-03", 12],
+      ["2026-04", 23],
+    ],
+  );
+  assert.deepEqual(
+    [...part.ohlcMap.entries()],
+    [
+      ["2026-03", [10, 12, 9, 13]],
+      ["2026-04", [20, 23, 19, 24]],
     ],
   );
 });
