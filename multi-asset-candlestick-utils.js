@@ -11,7 +11,7 @@
 
   function resolveCenteredCandlestickBodyWidth(
     bandWidth,
-    { ratio = 0.62, minWidth = 4, maxWidth = 16 } = {},
+    { ratio = 0.5, minWidth = 2, maxWidth = 12 } = {},
   ) {
     const rawWidth = Math.round(Math.abs(Number(bandWidth) || 0) * ratio);
     const clampedWidth = clamp(rawWidth || minWidth, minWidth, maxWidth);

@@ -5,9 +5,9 @@ import candlestickUtils from "../multi-asset-candlestick-utils.js";
 
 const { buildCenteredCandlestickGeometry, resolveCenteredCandlestickBodyWidth } = candlestickUtils;
 
-test("resolveCenteredCandlestickBodyWidth keeps dense candles on an even pixel width", () => {
-  assert.equal(resolveCenteredCandlestickBodyWidth(5.9, { ratio: 0.62, minWidth: 4, maxWidth: 16 }), 4);
-  assert.equal(resolveCenteredCandlestickBodyWidth(17, { ratio: 0.62, minWidth: 4, maxWidth: 16 }), 10);
+test("resolveCenteredCandlestickBodyWidth keeps dense candles slim while preserving even pixel widths", () => {
+  assert.equal(resolveCenteredCandlestickBodyWidth(5.9), 2);
+  assert.equal(resolveCenteredCandlestickBodyWidth(17), 8);
 });
 
 test("buildCenteredCandlestickGeometry keeps wick and body on the exact same center", () => {

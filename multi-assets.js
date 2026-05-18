@@ -3364,8 +3364,8 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
   const yAxisLabelFontSize = compactMobile ? 11 : mediumMobile ? 12 : 14;
   const seriesLineWidth = compactMobile ? 1.7 : mediumMobile ? 2.1 : 3.02;
   const chartTheme = getActiveChartThemeStyle();
-  const candleMaxWidth = compactMobile ? 10 : mediumMobile ? 12 : 16;
-  const candleMinWidth = compactMobile ? 3 : 4;
+  const candleMaxWidth = compactMobile ? 8 : mediumMobile ? 10 : 12;
+  const candleMinWidth = 2;
   const hasCandlestickAxisPadding = rendered.some((item) => item.seriesType === "candlestick");
   const candlestickSeriesIds = new Set(
     rendered.filter((item) => item.seriesType === "candlestick").map((item) => item.id),
@@ -3411,7 +3411,7 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
     const bandWidth = Math.abs(api.size([1, 0])[0]);
     const bodyWidth = resolveCenteredCandlestickBodyWidth
       ? resolveCenteredCandlestickBodyWidth(bandWidth, {
-          ratio: compactMobile ? 0.54 : mediumMobile ? 0.58 : 0.62,
+          ratio: compactMobile ? 0.44 : mediumMobile ? 0.48 : 0.5,
           minWidth: candleMinWidth,
           maxWidth: candleMaxWidth,
         })
