@@ -20,12 +20,14 @@ test("candlestick charts use the centered custom renderer so wicks and bodies sh
   assert.match(source, /type:\s*"custom",[\s\S]*renderItem:\s*makeCenteredCandlestickRenderItem\(\),/);
 });
 
-test("custom candlesticks use month tokens on the x-axis so slider zoom keeps them visible", () => {
+test("custom candlesticks and x-axis zoom both use numeric category indexes", () => {
   const source = fs.readFileSync(path.resolve("multi-assets.js"), "utf8");
 
-  assert.match(source, /const categoryValue\s*=\s*String\(api\.value\(0\)\s*\|\|\s*""\);/);
+  assert.match(source, /const categoryIndex\s*=\s*Number\(api\.value\(0\)\);/);
   assert.match(
     source,
-    /Array\.isArray\(tuple\)\s*\?\s*\[axisMonths\[tupleIndex\],\s*\.\.\.tuple\]\s*:\s*"-"/,
+    /Array\.isArray\(tuple\)\s*\?\s*\[tupleIndex,\s*\.\.\.tuple\]\s*:\s*"-"/,
   );
+  assert.match(source, /min:\s*hasCandlestickAxisPadding\s*\?\s*visibleStartIndex\s*:\s*visibleStartToken\s*\|\|\s*undefined,/);
+  assert.match(source, /max:\s*hasCandlestickAxisPadding\s*\?\s*visibleEndIndex\s*:\s*visibleEndToken\s*\|\|\s*undefined,/);
 });
