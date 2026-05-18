@@ -2800,6 +2800,14 @@ function renderChartStatsOverlay(rows, startMonth, endMonth) {
   const rangeHtml = buildOverlayRangeHtml(startMonth, endMonth);
   const baseLabel = formatOverlayBaseLabel(startMonth);
   const baseValueHtml = buildOverlayBaseValueHtml(startMonth);
+  const delayedBaseRows = rows.filter(
+    (row) => row.baseMonth && normalizeMonthToken(row.baseMonth) !== normalizeMonthToken(startMonth),
+  );
+  const delayedBaseNoteHtml = delayedBaseRows.length
+    ? `<div class="chart-stats-note">*部分资产按各自首个可用月定基：${delayedBaseRows
+        .map((row) => `${row.name}（${formatMonthZh(row.baseMonth)}）`)
+        .join("、")}</div>`
+    : "";
 
   const orderedRows = [...rows].sort((a, b) => {
     const normalizeOrderName = (value) =>
@@ -2857,6 +2865,7 @@ function renderChartStatsOverlay(rows, startMonth, endMonth) {
       <tbody>${bodyRows}</tbody>
     </table>
     <div class="chart-stats-note">*数据来源：${sourceNoteText}</div>
+    ${delayedBaseNoteHtml}
     <div class="chart-stats-note">*图表制作：公众号 - 一座独立屋</div>
   `;
   chartStatsOverlayEl.classList.add("show");
@@ -3854,32 +3863,11 @@ function render() {
   uiState.zoomEndMonth = normalizeMonthToken(viewportEndMonth) || viewportEndMonth;
   syncTimeZoomWidget(months, viewportStartMonth, viewportEndMonth);
 
-  const hasSelectedCentalineHousing = selectedAssetIds.some((assetId) => {
-    const asset = assetById.get(assetId);
-    return (
-      asset?.categoryKey === "cn_housing" &&
-      inferChinaSourceKey(asset) === "centaline"
-    );
-  });
-  const shouldUseCentalineBase =
-    hasSelectedCentalineHousing &&
-    normalizeMonthToken(viewportStartMonth) < CENTALINE_BASE_MONTH;
-  const centalineBaseOffset = shouldUseCentalineBase
-    ? findMonthIndexByToken(CENTALINE_BASE_MONTH)
-    : -1;
-  const effectiveBaseOffset =
-    centalineBaseOffset >= 0 && centalineBaseOffset <= viewportEndOffset
-      ? centalineBaseOffset
-      : viewportStartOffset;
-  const effectiveBaseMonth = months[effectiveBaseOffset] || viewportStartMonth;
-  const baseStrategyNote =
-    shouldUseCentalineBase && effectiveBaseOffset === centalineBaseOffset
-      ? "已按中原房价起始月定基。"
-      : "";
-
   const rendered = [];
   const summaryRows = [];
-  const missingBase = [];
+  const unavailableAssets = [];
+  const normalizeSeriesByFirstUsableBase =
+    window.MultiAssetBaseUtils?.normalizeSeriesByFirstUsableBase;
 
   selectedAssetIds.forEach((assetId, index) => {
     const asset = assetById.get(assetId);
@@ -3887,22 +3875,26 @@ function render() {
     if (!asset || !Array.isArray(fullSeries)) return;
 
     const seriesRaw = fullSeries.slice(startIndex, endIndex + 1);
-    const baseRaw = seriesRaw[effectiveBaseOffset];
-    if (!isFiniteNumber(baseRaw) || baseRaw <= 0) {
-      missingBase.push(getAssetDisplayName(asset));
+    const normalizedResult = normalizeSeriesByFirstUsableBase?.(
+      seriesRaw,
+      viewportStartOffset,
+      viewportEndOffset,
+    );
+    const baseIndex = normalizedResult?.baseIndex ?? -1;
+    const baseRaw = normalizedResult?.baseRaw ?? null;
+    if (baseIndex < 0 || !isFiniteNumber(baseRaw) || baseRaw <= 0) {
+      unavailableAssets.push(getAssetDisplayName(asset));
       return;
     }
-
-    const normalized = seriesRaw.map((value) => {
-      if (!isFiniteNumber(value)) return null;
-      return (value / baseRaw) * 100;
-    });
+    const baseMonth = months[baseIndex] || viewportStartMonth;
+    const normalized = normalizedResult.normalized;
     const fullOhlcSeries = raw.ohlcValues?.[assetId];
     let normalizedOhlc = null;
     let seriesType = "line";
     if (asset.categoryKey === "equities" && Array.isArray(fullOhlcSeries)) {
       const windowedOhlcSeries = fullOhlcSeries.slice(startIndex, endIndex + 1);
-      const mappedOhlc = windowedOhlcSeries.map((tuple) => {
+      const mappedOhlc = windowedOhlcSeries.map((tuple, tupleIndex) => {
+        if (tupleIndex < baseIndex) return null;
         if (!Array.isArray(tuple) || tuple.length < 4) return null;
         return buildOhlcTuple(
           (Number(tuple[0]) / baseRaw) * 100,
@@ -3941,8 +3933,8 @@ function render() {
     const cumulativePct =
       isFiniteNumber(latestInfo.value) ? calcPctChange(latestInfo.value, 100) : null;
     const annualizedPct = (() => {
-      if (!isFiniteNumber(latestInfo.value) || latestIndex <= 0) return null;
-      const years = latestIndex / 12;
+      if (!isFiniteNumber(latestInfo.value) || latestIndex <= baseIndex) return null;
+      const years = (latestIndex - baseIndex) / 12;
       if (!Number.isFinite(years) || years <= 0) return null;
       return (Math.pow(latestInfo.value / 100, 1 / years) - 1) * 100;
     })();
@@ -3966,6 +3958,7 @@ function render() {
       name: displayName,
       initialValue: 100,
       baseRaw,
+      baseMonth,
       peakValue,
       peakDate,
       latestValue: latestInfo.value,
@@ -4053,7 +4046,7 @@ function render() {
   });
 
   chartTitleEl.textContent = "多资产价格走势对比";
-  chartMetaEl.textContent = `${formatMonthZh(viewportStartMonth)} - ${formatMonthZh(viewportEndMonth)} | 定基 ${formatMonthZh(effectiveBaseMonth)} = 100`;
+  chartMetaEl.textContent = `${formatMonthZh(viewportStartMonth)} - ${formatMonthZh(viewportEndMonth)} | 定基 ${formatMonthZh(viewportStartMonth)} = 100`;
 
   renderSummaryTable(visibleRows);
   renderChartStatsOverlay(visibleRows, viewportStartMonth, viewportEndMonth);
@@ -4064,11 +4057,19 @@ function render() {
     if (asset?.source) activeSources.add(asset.source);
   });
   const sourceText = summarizeSourceProviders([...activeSources], { maxItems: 4, fallback: "-" });
-  footnoteEl.textContent = `当前滑块区间：${viewportStartMonth} ~ ${viewportEndMonth}；数据源：${sourceText || "-"}。${baseStrategyNote}`;
+  const delayedBaseRows = visibleRows.filter(
+    (row) => normalizeMonthToken(row.baseMonth) !== normalizeMonthToken(viewportStartMonth),
+  );
+  const delayedBaseNote = delayedBaseRows.length
+    ? `部分资产按各自首个可用月定基：${delayedBaseRows
+        .map((row) => `${row.name}（${row.baseMonth}）`)
+        .join("、")}。`
+    : "";
+  footnoteEl.textContent = `当前滑块区间：${viewportStartMonth} ~ ${viewportEndMonth}；数据源：${sourceText || "-"}。${delayedBaseNote}`;
 
-  const missingText = missingBase.length ? `未纳入：${missingBase.join("、")}。` : "";
+  const missingText = unavailableAssets.length ? `未纳入：${unavailableAssets.join("、")}。` : "";
   if (!statusEl.textContent.includes("已自动切换为折线显示")) {
-    setStatus(`已生成 ${rendered.length} 条走势（定基 ${effectiveBaseMonth}=100）。${baseStrategyNote}${missingText}`, false);
+    setStatus(`已生成 ${rendered.length} 条走势（定基 ${viewportStartMonth}=100）。${delayedBaseNote}${missingText}`, false);
   }
 }
 
