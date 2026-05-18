@@ -3389,13 +3389,13 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
   const makeCenteredCandlestickRenderItem = () => (params, api) => {
     if (!buildCenteredCandlestickGeometry) return null;
 
-    const categoryIndex = Number(api.value(0));
+    const categoryValue = String(api.value(0) || "");
     const openValue = Number(api.value(1));
     const closeValue = Number(api.value(2));
     const lowValue = Number(api.value(3));
     const highValue = Number(api.value(4));
     if (
-      !Number.isInteger(categoryIndex) ||
+      !categoryValue ||
       !isFiniteNumber(openValue) ||
       !isFiniteNumber(closeValue) ||
       !isFiniteNumber(lowValue) ||
@@ -3404,10 +3404,10 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
       return null;
     }
 
-    const openCoord = api.coord([categoryIndex, openValue]);
-    const closeCoord = api.coord([categoryIndex, closeValue]);
-    const lowCoord = api.coord([categoryIndex, lowValue]);
-    const highCoord = api.coord([categoryIndex, highValue]);
+    const openCoord = api.coord([categoryValue, openValue]);
+    const closeCoord = api.coord([categoryValue, closeValue]);
+    const lowCoord = api.coord([categoryValue, lowValue]);
+    const highCoord = api.coord([categoryValue, highValue]);
     const bandWidth = Math.abs(api.size([1, 0])[0]);
     const bodyWidth = resolveCenteredCandlestickBodyWidth
       ? resolveCenteredCandlestickBodyWidth(bandWidth, {
@@ -3750,7 +3750,7 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
               ? item.normalizedOhlc.slice(0, lastValidCandleIndex + 1)
               : [];
           const candlestickData = candleDataWindow.map((tuple, tupleIndex) =>
-            Array.isArray(tuple) ? [tupleIndex, ...tuple] : "-"
+            Array.isArray(tuple) ? [axisMonths[tupleIndex], ...tuple] : "-"
           );
 
           seriesList.push({
