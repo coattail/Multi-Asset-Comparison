@@ -2,8 +2,10 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
+  appendSupplementalMonthsAfterLatest,
   buildAssetPartFromPreviousOutput,
   buildEquityAssetFromFred,
+  parseStatMuseMonthlyMetalHtml,
 } from "../scripts/build-multi-asset-data.mjs";
 
 test("buildAssetPartFromPreviousOutput reconstructs monthly values and ohlc from cached output", () => {
@@ -84,4 +86,51 @@ test("buildEquityAssetFromFred aggregates daily closes into monthly close and de
       ["2026-04", [25, 30, 25, 30]],
     ],
   );
+});
+
+test("parseStatMuseMonthlyMetalHtml extracts month-end closes from the rendered table", () => {
+  const html = `
+    <tr>
+      <td><span>May 2026</span></td>
+      <td><span>$4,626.45</span></td>
+      <td><span>$4,773.83</span></td>
+      <td><span>$4,500.85</span></td>
+      <td><span>$4,540.07</span></td>
+    </tr>
+    <tr>
+      <td><span>April 2026</span></td>
+      <td><span>$4,696.60</span></td>
+      <td><span>$4,889.70</span></td>
+      <td><span>$4,509.96</span></td>
+      <td><span>$4,622.59</span></td>
+    </tr>
+  `;
+
+  assert.deepEqual([...parseStatMuseMonthlyMetalHtml(html).entries()], [
+    ["2026-05", 4540.07],
+    ["2026-04", 4622.59],
+  ]);
+});
+
+test("appendSupplementalMonthsAfterLatest only appends months newer than the cached series", () => {
+  const target = new Map([
+    ["2026-01", 100],
+    ["2026-02", 110],
+    ["2026-03", 120],
+  ]);
+  const supplement = new Map([
+    ["2026-02", 999],
+    ["2026-03", 888],
+    ["2026-04", 130],
+    ["2026-05", 140],
+  ]);
+
+  assert.deepEqual(appendSupplementalMonthsAfterLatest(target, supplement), ["2026-04", "2026-05"]);
+  assert.deepEqual([...target.entries()], [
+    ["2026-01", 100],
+    ["2026-02", 110],
+    ["2026-03", 120],
+    ["2026-04", 130],
+    ["2026-05", 140],
+  ]);
 });
