@@ -3996,6 +3996,9 @@ function render() {
     }
 
     const viewportSeries = normalized.slice(viewportStartOffset, viewportEndOffset + 1);
+    const viewportOhlc = Array.isArray(normalizedOhlc)
+      ? normalizedOhlc.slice(viewportStartOffset, viewportEndOffset + 1)
+      : null;
     const validValues = viewportSeries.filter(isFiniteNumber);
     const peakValue = validValues.length ? Math.max(...validValues) : null;
     const peakIndex = isFiniteNumber(peakValue)
@@ -4017,9 +4020,10 @@ function render() {
     const maxDrawdownPct = calcMaxDrawdownPct(viewportSeries);
     const cumulativePct =
       isFiniteNumber(latestInfo.value) ? calcPctChange(latestInfo.value, 100) : null;
+    const viewportBaseIndex = Math.max(0, baseIndex - viewportStartOffset);
     const annualizedPct = (() => {
-      if (!isFiniteNumber(latestInfo.value) || latestIndex <= baseIndex) return null;
-      const years = (latestIndex - baseIndex) / 12;
+      if (!isFiniteNumber(latestInfo.value) || latestIndex <= viewportBaseIndex) return null;
+      const years = (latestIndex - viewportBaseIndex) / 12;
       if (!Number.isFinite(years) || years <= 0) return null;
       return (Math.pow(latestInfo.value / 100, 1 / years) - 1) * 100;
     })();
@@ -4032,8 +4036,8 @@ function render() {
       name: displayName,
       categoryKey: asset.categoryKey,
       cityName: asset.categoryKey === "cn_housing" ? getCnHousingCityName(asset) : "",
-      normalized,
-      normalizedOhlc,
+      normalized: viewportSeries,
+      normalizedOhlc: viewportOhlc,
       seriesType,
       color: getAssetSeriesColor(asset, index),
     });
@@ -4095,7 +4099,7 @@ function render() {
   const applyOptionByRendered = (renderList) => {
     isApplyingOption = true;
     try {
-      chart.setOption(makeOption(renderList, months, viewportStartMonth, viewportEndMonth), {
+      chart.setOption(makeOption(renderList, viewportMonths, viewportStartMonth, viewportEndMonth), {
         notMerge: true,
         lazyUpdate: false,
       });
