@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-24T01:34:33.037Z",
+  "generatedAt": "2026-05-25T01:37:11.579Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -1631,7 +1631,7 @@
       "categoryLabel": "权益类资产",
       "subgroupKey": "equities",
       "subgroupLabel": "权益类资产",
-      "source": "东方财富（沪深300）",
+      "source": "东方财富（沪深300）（缓存回退）",
       "unit": "指数",
       "availableRange": "2008-01:2026-05"
     }
