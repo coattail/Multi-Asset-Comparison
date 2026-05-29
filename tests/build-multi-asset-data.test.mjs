@@ -4,8 +4,10 @@ import assert from "node:assert/strict";
 import {
   appendSupplementalMonthsAfterLatest,
   buildAssetPartFromPreviousOutput,
+  buildCaseShillerAssets,
   buildEquityAssetFromFred,
   buildEquityAssetFromYahooFinance,
+  loadCaseShillerCsvBySeriesId,
   parseStatMuseMonthlyMetalHtml,
 } from "../scripts/build-multi-asset-data.mjs";
 
@@ -182,4 +184,37 @@ test("appendSupplementalMonthsAfterLatest only appends months newer than the cac
     ["2026-04", 130],
     ["2026-05", 140],
   ]);
+});
+
+test("buildCaseShillerAssets falls back to cached city data when a FRED payload is unavailable", () => {
+  const previousOutputData = {
+    dates: ["2026-02", "2026-03"],
+    values: {
+      us_cs_atxrsa: [245.12, 246.34],
+    },
+  };
+
+  const part = buildCaseShillerAssets(new Map([["ATXRSA", ""]]), previousOutputData);
+  const atlanta = part.assets.find((asset) => asset.id === "us_cs_atxrsa");
+
+  assert.deepEqual([...part.sourceSeriesByAssetId.get("us_cs_atxrsa").entries()], [
+    ["2026-02", 245.12],
+    ["2026-03", 246.34],
+  ]);
+  assert.equal(atlanta.source, "S&P CoreLogic Case-Shiller（ATXRSA）（缓存回退）");
+});
+
+test("loadCaseShillerCsvBySeriesId keeps cached cities when FRED fetch throws", async () => {
+  const previousOutputData = {
+    dates: ["2026-02"],
+    values: {
+      us_cs_atxrsa: [245.12],
+    },
+  };
+
+  const csvBySeriesId = await loadCaseShillerCsvBySeriesId(previousOutputData, async () => {
+    throw new Error("Received unusable payload from FRED");
+  }, [{ id: "us_cs_atxrsa", seriesId: "ATXRSA" }]);
+
+  assert.equal(csvBySeriesId.get("ATXRSA"), "");
 });

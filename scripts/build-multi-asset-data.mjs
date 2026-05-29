@@ -512,13 +512,43 @@ function parseCaseShillerCsv(csvText) {
   return monthValueMap;
 }
 
-function buildCaseShillerAssets(caseShillerCsvBySeriesId) {
+export async function loadCaseShillerCsvBySeriesId(
+  previousOutputData,
+  fetcher = fetchText,
+  targets = CASE_SHILLER_TARGETS,
+) {
+  const csvBySeriesId = new Map();
+  for (const target of targets) {
+    try {
+      const csvText = await fetcher(caseShillerSeriesUrl(target.seriesId));
+      csvBySeriesId.set(target.seriesId, csvText);
+    } catch (error) {
+      const cachedSeriesMap = buildSeriesMapFromPreviousOutput(previousOutputData, target.id);
+      if (cachedSeriesMap.size === 0) throw error;
+      console.warn(`[fallback] ${target.id}: ${error.message}`);
+      csvBySeriesId.set(target.seriesId, "");
+    }
+  }
+  return csvBySeriesId;
+}
+
+export function buildCaseShillerAssets(caseShillerCsvBySeriesId, previousOutputData = null) {
   const assets = [];
   const sourceSeriesByAssetId = new Map();
 
   for (const target of CASE_SHILLER_TARGETS) {
     const csvText = caseShillerCsvBySeriesId.get(target.seriesId) || "";
-    const seriesMap = parseCaseShillerCsv(csvText);
+    const sourceLabel = `S&P CoreLogic Case-Shiller（${target.seriesId}）`;
+    let seriesMap = parseCaseShillerCsv(csvText);
+    let assetSource = sourceLabel;
+    if (seriesMap.size === 0 && previousOutputData) {
+      const cachedSeriesMap = buildSeriesMapFromPreviousOutput(previousOutputData, target.id);
+      if (cachedSeriesMap.size > 0) {
+        console.warn(`[fallback] ${target.id}: using cached Case-Shiller data`);
+        seriesMap = cachedSeriesMap;
+        assetSource = `${sourceLabel}（缓存回退）`;
+      }
+    }
     sourceSeriesByAssetId.set(target.id, seriesMap);
     assets.push({
       id: target.id,
@@ -528,7 +558,7 @@ function buildCaseShillerAssets(caseShillerCsvBySeriesId) {
       categoryLabel: "美国房产",
       subgroupKey: "us_case_shiller",
       subgroupLabel: "美国房产（Case-Shiller）",
-      source: `S&P CoreLogic Case-Shiller（${target.seriesId}）`,
+      source: assetSource,
       unit: "指数",
     });
   }
@@ -993,11 +1023,7 @@ async function main() {
 
   // eslint-disable-next-line no-console
   console.log("Fetching Case-Shiller city data...");
-  const caseShillerCsvBySeriesId = new Map();
-  for (const target of CASE_SHILLER_TARGETS) {
-    const csvText = await fetchText(caseShillerSeriesUrl(target.seriesId));
-    caseShillerCsvBySeriesId.set(target.seriesId, csvText);
-  }
+  const caseShillerCsvBySeriesId = await loadCaseShillerCsvBySeriesId(previousOutputData);
 
   // eslint-disable-next-line no-console
   console.log("Fetching metals data...");
@@ -1164,7 +1190,7 @@ async function main() {
   }
 
   const chinaPart = buildChinaHousingAssets(centalineData, nbsData);
-  const usPart = buildCaseShillerAssets(caseShillerCsvBySeriesId);
+  const usPart = buildCaseShillerAssets(caseShillerCsvBySeriesId, previousOutputData);
 
   const assets = [
     ...chinaPart.assets,
