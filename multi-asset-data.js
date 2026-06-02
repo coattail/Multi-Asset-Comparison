@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-06-02T02:01:48.043Z",
+  "generatedAt": "2026-06-02T15:25:30.120Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -368,7 +368,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_120000",
@@ -382,7 +382,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_130100",
@@ -396,7 +396,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_130200",
@@ -410,7 +410,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_130300",
@@ -424,7 +424,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_140100",
@@ -438,7 +438,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_150100",
@@ -452,7 +452,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_150200",
@@ -466,7 +466,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_210100",
@@ -480,7 +480,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_210200",
@@ -494,7 +494,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_210600",
@@ -508,7 +508,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_210700",
@@ -522,7 +522,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_220100",
@@ -536,7 +536,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_220200",
@@ -550,7 +550,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_230100",
@@ -564,7 +564,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_231000",
@@ -578,7 +578,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_310000",
@@ -592,7 +592,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_320100",
@@ -606,7 +606,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_320200",
@@ -620,7 +620,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_320300",
@@ -634,7 +634,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_321000",
@@ -648,7 +648,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_330100",
@@ -662,7 +662,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_330200",
@@ -676,7 +676,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_330300",
@@ -690,7 +690,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_330700",
@@ -704,7 +704,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_340100",
@@ -718,7 +718,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_340300",
@@ -732,7 +732,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_340800",
@@ -746,7 +746,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_350100",
@@ -760,7 +760,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_350200",
@@ -774,7 +774,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_350500",
@@ -788,7 +788,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_360100",
@@ -802,7 +802,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_360400",
@@ -816,7 +816,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_360700",
@@ -830,7 +830,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_370100",
@@ -844,7 +844,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_370200",
@@ -858,7 +858,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_370600",
@@ -872,7 +872,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_370800",
@@ -886,7 +886,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_410100",
@@ -900,7 +900,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_410300",
@@ -914,7 +914,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_410400",
@@ -928,7 +928,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_420100",
@@ -942,7 +942,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_420500",
@@ -956,7 +956,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_420600",
@@ -970,7 +970,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_430100",
@@ -984,7 +984,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_430600",
@@ -998,7 +998,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_430700",
@@ -1012,7 +1012,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_440100",
@@ -1026,7 +1026,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_440200",
@@ -1040,7 +1040,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_440300",
@@ -1054,7 +1054,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_440800",
@@ -1068,7 +1068,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_441300",
@@ -1082,7 +1082,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_450100",
@@ -1096,7 +1096,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_450300",
@@ -1110,7 +1110,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_450500",
@@ -1124,7 +1124,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_460100",
@@ -1138,7 +1138,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_460200",
@@ -1152,7 +1152,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_500000",
@@ -1166,7 +1166,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_510100",
@@ -1180,7 +1180,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_510500",
@@ -1194,7 +1194,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_511300",
@@ -1208,7 +1208,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_520100",
@@ -1222,7 +1222,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_520300",
@@ -1236,7 +1236,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_530100",
@@ -1250,7 +1250,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_532900",
@@ -1264,7 +1264,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_610100",
@@ -1278,7 +1278,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_620100",
@@ -1292,7 +1292,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_630100",
@@ -1306,7 +1306,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_640100",
@@ -1320,7 +1320,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "cn_nbs70_city_nbs_650100",
@@ -1334,7 +1334,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-03"
+      "availableRange": "2006-01:2026-04"
     },
     {
       "id": "us_cs_atxrsa",
@@ -1584,7 +1584,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "categoryLabel": "贵金属",
       "subgroupKey": "metals",
       "subgroupLabel": "贵金属",
-      "source": "Stooq（缓存回退） + StatMuse（月度补充）",
+      "source": "Stooq（缓存回退）",
       "unit": "美元",
       "availableRange": "2006-01:2026-06"
     },
@@ -1596,7 +1596,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "categoryLabel": "贵金属",
       "subgroupKey": "metals",
       "subgroupLabel": "贵金属",
-      "source": "Stooq（缓存回退） + StatMuse（月度补充）",
+      "source": "Stooq（缓存回退）",
       "unit": "美元",
       "availableRange": "2006-01:2026-06"
     },
@@ -1622,7 +1622,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "FRED（NASDAQ100）",
       "unit": "指数",
-      "availableRange": "2006-01:2026-05"
+      "availableRange": "2006-01:2026-06"
     },
     {
       "id": "equity_csi300",
@@ -3370,7 +3370,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       248.205476,
       248.950092,
       250.443793,
-      null,
+      251.445568,
       null,
       null
     ],
@@ -3618,7 +3618,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       141.410754,
       140.7037,
       140.422293,
-      null,
+      140.001026,
       null,
       null
     ],
@@ -3866,7 +3866,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       114.735929,
       114.276985,
       113.934154,
-      null,
+      113.364483,
       null,
       null
     ],
@@ -4114,7 +4114,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       127.688507,
       126.794687,
       126.287508,
-      null,
+      125.782358,
       null,
       null
     ],
@@ -4362,7 +4362,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       114.81871,
       113.90016,
       113.102859,
-      null,
+      112.424242,
       null,
       null
     ],
@@ -4610,7 +4610,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       137.814917,
       137.125842,
       136.577339,
-      null,
+      136.167607,
       null,
       null
     ],
@@ -4858,7 +4858,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       109.009198,
       108.137124,
       107.704576,
-      null,
+      107.381462,
       null,
       null
     ],
@@ -5106,7 +5106,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       85.488408,
       84.975478,
       84.720552,
-      null,
+      84.551111,
       null,
       null
     ],
@@ -5354,7 +5354,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       165.17305,
       165.17305,
       165.338223,
-      null,
+      165.503561,
       null,
       null
     ],
@@ -5602,7 +5602,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       135.473814,
       135.202866,
       134.797257,
-      null,
+      134.797257,
       null,
       null
     ],
@@ -5850,7 +5850,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       109.709329,
       109.48991,
       109.38042,
-      null,
+      109.27104,
       null,
       null
     ],
@@ -6098,7 +6098,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       84.223186,
       83.80207,
       83.80207,
-      null,
+      83.718268,
       null,
       null
     ],
@@ -6346,7 +6346,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       128.179865,
       127.538966,
       127.411427,
-      null,
+      127.156604,
       null,
       null
     ],
@@ -6594,7 +6594,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       111.23193,
       110.898234,
       110.676438,
-      null,
+      110.233732,
       null,
       null
     ],
@@ -6842,7 +6842,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       143.987425,
       143.555463,
       143.268352,
-      null,
+      142.695279,
       null,
       null
     ],
@@ -7090,7 +7090,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       82.5069,
       82.176872,
       82.094695,
-      null,
+      81.848411,
       null,
       null
     ],
@@ -7338,7 +7338,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       206.495206,
       206.908196,
       207.735829,
-      null,
+      209.18998,
       null,
       null
     ],
@@ -7586,7 +7586,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       148.833322,
       148.684489,
       148.981858,
-      null,
+      148.981858,
       null,
       null
     ],
@@ -7834,7 +7834,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       192.568712,
       191.605868,
       191.98908,
-      null,
+      191.98908,
       null,
       null
     ],
@@ -8082,7 +8082,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       114.157259,
       113.814787,
       114.156231,
-      null,
+      114.727012,
       null,
       null
     ],
@@ -8330,7 +8330,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       118.166697,
       117.221363,
       116.518035,
-      null,
+      115.585891,
       null,
       null
     ],
@@ -8578,7 +8578,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       190.549961,
       190.168861,
       189.978692,
-      null,
+      189.788713,
       null,
       null
     ],
@@ -8826,7 +8826,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       133.430011,
       133.296581,
       133.296581,
-      null,
+      133.429878,
       null,
       null
     ],
@@ -9074,7 +9074,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       100.832274,
       100.529777,
       100.429247,
-      null,
+      100.127959,
       null,
       null
     ],
@@ -9322,7 +9322,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       111.608774,
       110.827513,
       110.605858,
-      null,
+      110.27404,
       null,
       null
     ],
@@ -9570,7 +9570,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       172.05088,
       171.190626,
       171.533007,
-      null,
+      171.70454,
       null,
       null
     ],
@@ -9818,7 +9818,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       164.418605,
       163.596512,
       163.105722,
-      null,
+      162.779511,
       null,
       null
     ],
@@ -10066,7 +10066,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       95.823599,
       95.152834,
       95.057681,
-      null,
+      94.962623,
       null,
       null
     ],
@@ -10314,7 +10314,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       136.109651,
       135.837432,
       135.294082,
-      null,
+      135.158788,
       null,
       null
     ],
@@ -10562,7 +10562,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       172.468703,
       172.468703,
       172.641172,
-      null,
+      172.986454,
       null,
       null
     ],
@@ -10810,7 +10810,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       102.272767,
       102.068221,
       101.762016,
-      null,
+      101.660254,
       null,
       null
     ],
@@ -11058,7 +11058,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       151.32491,
       150.870935,
       150.418322,
-      null,
+      149.816649,
       null,
       null
     ],
@@ -11306,7 +11306,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       156.763147,
       155.979331,
       154.887476,
-      null,
+      154.267926,
       null,
       null
     ],
@@ -11554,7 +11554,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       130.966109,
       130.049346,
       129.659198,
-      null,
+      129.39988,
       null,
       null
     ],
@@ -11802,7 +11802,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       126.885666,
       126.631895,
       126.758527,
-      null,
+      126.50501,
       null,
       null
     ],
@@ -12050,7 +12050,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       119.649613,
       118.931715,
       118.931715,
-      null,
+      118.812783,
       null,
       null
     ],
@@ -12298,7 +12298,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       129.570885,
       128.663889,
       128.277897,
-      null,
+      128.149619,
       null,
       null
     ],
@@ -12546,7 +12546,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       159.231896,
       158.276505,
       157.959952,
-      null,
+      157.644032,
       null,
       null
     ],
@@ -12794,7 +12794,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       139.690345,
       138.991893,
       138.713909,
-      null,
+      138.575195,
       null,
       null
     ],
@@ -13042,7 +13042,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       131.083639,
       130.428221,
       129.645652,
-      null,
+      128.997424,
       null,
       null
     ],
@@ -13290,7 +13290,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       121.186285,
       120.459167,
       119.615953,
-      null,
+      118.659025,
       null,
       null
     ],
@@ -13538,7 +13538,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       143.722005,
       142.572229,
       141.716796,
-      null,
+      141.858513,
       null,
       null
     ],
@@ -13786,7 +13786,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       113.068168,
       112.502827,
       112.165319,
-      null,
+      111.828823,
       null,
       null
     ],
@@ -14034,7 +14034,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       140.489652,
       139.365735,
       138.529541,
-      null,
+      138.113952,
       null,
       null
     ],
@@ -14282,7 +14282,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       194.041163,
       192.488834,
       192.103856,
-      null,
+      191.527544,
       null,
       null
     ],
@@ -14530,7 +14530,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       147.601751,
       146.568539,
       145.835696,
-      null,
+      144.960682,
       null,
       null
     ],
@@ -14778,7 +14778,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       119.282691,
       118.80556,
       118.092727,
-      null,
+      117.620356,
       null,
       null
     ],
@@ -15026,7 +15026,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       171.3483,
       170.491558,
       170.832541,
-      null,
+      171.174206,
       null,
       null
     ],
@@ -15274,7 +15274,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       104.188753,
       103.876187,
       103.149054,
-      null,
+      102.427011,
       null,
       null
     ],
@@ -15522,7 +15522,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       275.085329,
       273.984988,
       275.080928,
-      null,
+      275.906171,
       null,
       null
     ],
@@ -15770,7 +15770,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       145.105114,
       144.669799,
       143.94645,
-      null,
+      143.226718,
       null,
       null
     ],
@@ -16018,7 +16018,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       135.268818,
       134.457205,
       133.650462,
-      null,
+      133.249511,
       null,
       null
     ],
@@ -16266,7 +16266,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       145.339934,
       144.613234,
       143.745555,
-      null,
+      143.026827,
       null,
       null
     ],
@@ -16514,7 +16514,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       102.124363,
       101.409492,
       100.902445,
-      null,
+      100.29703,
       null,
       null
     ],
@@ -16762,7 +16762,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       109.500809,
       108.843804,
       108.299585,
-      null,
+      107.758087,
       null,
       null
     ],
@@ -17010,7 +17010,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       126.92561,
       126.164056,
       126.29022,
-      null,
+      126.41651,
       null,
       null
     ],
@@ -17258,7 +17258,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       184.972213,
       184.787241,
       184.048092,
-      null,
+      182.759755,
       null,
       null
     ],
@@ -17506,7 +17506,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       138.865898,
       138.588166,
       138.726754,
-      null,
+      138.726754,
       null,
       null
     ],
@@ -17754,7 +17754,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       164.564486,
       164.235357,
       163.742651,
-      null,
+      163.578908,
       null,
       null
     ],
@@ -18002,7 +18002,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       112.02295,
       111.014743,
       110.126625,
-      null,
+      109.465865,
       null,
       null
     ],
@@ -18250,7 +18250,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       112.206386,
       111.75756,
       111.422287,
-      null,
+      110.865176,
       null,
       null
     ],
@@ -18498,7 +18498,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       121.578748,
       121.092433,
       120.729156,
-      null,
+      120.12551,
       null,
       null
     ],
@@ -18746,7 +18746,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       168.356764,
       167.683337,
       166.677237,
-      null,
+      166.010528,
       null,
       null
     ],
@@ -18994,7 +18994,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       155.326827,
       154.084212,
       153.467875,
-      null,
+      152.700536,
       null,
       null
     ],
@@ -19242,7 +19242,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       116.302693,
       115.72118,
       115.026853,
-      null,
+      114.451719,
       null,
       null
     ],
@@ -19490,7 +19490,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       125.725706,
       125.59998,
       125.59998,
-      null,
+      126.10238,
       null,
       null
     ],
@@ -19738,7 +19738,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       148.030172,
       147.734112,
       147.586378,
-      null,
+      147.291205,
       null,
       null
     ],
@@ -19986,7 +19986,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       173.875366,
       173.527615,
       173.18056,
-      null,
+      172.661018,
       null,
       null
     ],
@@ -20234,7 +20234,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       147.738646,
       147.29543,
       147.000839,
-      null,
+      146.265835,
       null,
       null
     ],
@@ -20482,7 +20482,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       190.963447,
       190.199593,
       189.438795,
-      null,
+      189.249356,
       null,
       null
     ],
@@ -26188,7 +26188,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       6528.52002,
       7209.009766,
       7580.060059,
-      7599.959961
+      7618.839844
     ],
     "equity_nasdaq100": [
       1710.75,
@@ -26436,7 +26436,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       23740.19,
       27452.12,
       30333.18,
-      null
+      30513.86
     ],
     "equity_csi300": [
       null,
@@ -26684,7 +26684,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4450.05,
       4807.31,
       4892.12,
-      4848.51
+      4914.56
     ]
   },
   "ohlcValues": {
@@ -28161,9 +28161,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         7582.290039,
-        7599.959961,
+        7618.839844,
         7562.609863,
-        7617.660156
+        7620.899902
       ]
     ],
     "equity_nasdaq100": [
@@ -29637,7 +29637,12 @@ window.MULTI_ASSET_SOURCE_DATA = {
         27651.82,
         30333.18
       ],
-      null
+      [
+        30513.86,
+        30513.86,
+        30513.86,
+        30513.86
+      ]
     ],
     "equity_csi300": [
       null,
@@ -30992,9 +30997,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         4897.9,
-        4848.51,
-        4833.32,
-        4918.79
+        4914.56,
+        4832,
+        4930.28
       ]
     ]
   },
