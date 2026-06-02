@@ -21,7 +21,7 @@ const SOURCE_CONFIGS = [
     heroSubtitle: "数据来源：国家统计局（70城二手住宅销售价格指数）",
     defaultSelectedNames: ["北京", "上海", "广州", "深圳", "天津", "重庆"],
     globalKey: "HOUSE_PRICE_SOURCE_DATA_NBS_70",
-    scriptUrl: "house-price-data-nbs-70.js?v=20260416-data-refresh",
+    scriptUrl: "house-price-data-nbs-70.js?v=20260518-nbs70-dark-labels",
     data: window.HOUSE_PRICE_SOURCE_DATA_NBS_70,
   },
 ];
@@ -202,7 +202,7 @@ const CHART_THEME_STYLES = Object.freeze({
     sliderHandleBorderColor: "rgba(245, 164, 59, 0.95)",
     sliderHandleHoverColor: "rgba(255, 192, 105, 0.5)",
     sliderHandleHoverBorderColor: "rgba(255, 192, 105, 0.99)",
-    textMaskColor: "rgba(6, 12, 18, 0.66)",
+    textMaskColor: "#09131b",
     overlayTitleColor: "#FFFFFF",
     overlayLineColor: "#FFFFFF",
     overlayTextColor: "#FFFFFF",
