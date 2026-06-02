@@ -274,20 +274,21 @@ body.theme-dark .table-wrap thead th:first-child {
 }
 
 body.theme-dark .chart-stats-overlay table,
-body.theme-dark .chart-stats-overlay th {
-  border-color: #8ea4b2;
+body.theme-dark .chart-stats-overlay th,
+body.theme-dark .chart-stats-overlay td {
+  border-color: #ffffff;
 }
 
 body.theme-dark .chart-stats-overlay th,
 body.theme-dark .chart-stats-overlay td,
+body.theme-dark .chart-stats-overlay thead th,
 body.theme-dark .chart-stats-title-main,
 body.theme-dark .chart-stats-title-sub,
-body.theme-dark .chart-stats-note {
-  color: #d7e3eb;
-}
-
-body.theme-dark .chart-stats-source-tag {
-  color: #a8bcc9;
+body.theme-dark .chart-stats-note,
+body.theme-dark .chart-stats-source-tag,
+body.theme-dark .chart-stats-th-text,
+body.theme-dark .chart-stats-city-main {
+  color: #ffffff;
 }
 
 body.theme-dark .city-list::-webkit-scrollbar-thumb {
