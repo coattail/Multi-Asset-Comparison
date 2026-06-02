@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T01:58:34.787Z",
+  "generatedAt": "2026-06-02T02:01:48.043Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -1584,9 +1584,9 @@
       "categoryLabel": "贵金属",
       "subgroupKey": "metals",
       "subgroupLabel": "贵金属",
-      "source": "Stooq（缓存回退）",
+      "source": "Stooq（缓存回退） + StatMuse（月度补充）",
       "unit": "美元",
-      "availableRange": "2006-01:2026-05"
+      "availableRange": "2006-01:2026-06"
     },
     {
       "id": "metal_silver_spot_usd",
@@ -1596,9 +1596,9 @@
       "categoryLabel": "贵金属",
       "subgroupKey": "metals",
       "subgroupLabel": "贵金属",
-      "source": "Stooq（缓存回退）",
+      "source": "Stooq（缓存回退） + StatMuse（月度补充）",
       "unit": "美元",
-      "availableRange": "2006-01:2026-05"
+      "availableRange": "2006-01:2026-06"
     },
     {
       "id": "equity_sp500",
@@ -1610,7 +1610,7 @@
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（^GSPC）",
       "unit": "指数",
-      "availableRange": "2006-01:2026-05"
+      "availableRange": "2006-01:2026-06"
     },
     {
       "id": "equity_nasdaq100",
@@ -25692,7 +25692,7 @@
       4494.04,
       4622.59,
       4540.07,
-      null
+      4533.42
     ],
     "metal_silver_spot_usd": [
       9.84,
@@ -25940,7 +25940,7 @@
       69.7745,
       74.21,
       76.65,
-      null
+      75.05
     ],
     "equity_sp500": [
       1280.079956,
@@ -26188,7 +26188,7 @@
       6528.52002,
       7209.009766,
       7580.060059,
-      null
+      7599.959961
     ],
     "equity_nasdaq100": [
       1710.75,
@@ -26684,7 +26684,7 @@
       4450.05,
       4807.31,
       4892.12,
-      4900.29
+      4848.51
     ]
   },
   "ohlcValues": {
@@ -28159,7 +28159,12 @@
         7174.120117,
         7599.379883
       ],
-      null
+      [
+        7582.290039,
+        7599.959961,
+        7562.609863,
+        7617.660156
+      ]
     ],
     "equity_nasdaq100": [
       [
@@ -30987,9 +30992,9 @@
       ],
       [
         4897.9,
-        4900.29,
-        4867.45,
-        4912.19
+        4848.51,
+        4833.32,
+        4918.79
       ]
     ]
   },
