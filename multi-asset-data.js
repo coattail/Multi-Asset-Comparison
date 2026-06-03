@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-06-02T15:25:30.120Z",
+  "generatedAt": "2026-06-03T02:21:29.498Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -1620,7 +1620,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "categoryLabel": "权益类资产",
       "subgroupKey": "equities",
       "subgroupLabel": "权益类资产",
-      "source": "FRED（NASDAQ100）",
+      "source": "FRED（NASDAQ100）（缓存回退）",
       "unit": "指数",
       "availableRange": "2006-01:2026-06"
     },
@@ -26188,7 +26188,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       6528.52002,
       7209.009766,
       7580.060059,
-      7618.839844
+      7609.779785
     ],
     "equity_nasdaq100": [
       1710.75,
@@ -26684,7 +26684,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4450.05,
       4807.31,
       4892.12,
-      4914.56
+      4952.91
     ]
   },
   "ohlcValues": {
@@ -28161,7 +28161,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         7582.290039,
-        7618.839844,
+        7609.779785,
         7562.609863,
         7620.899902
       ]
@@ -30997,9 +30997,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         4897.9,
-        4914.56,
+        4952.91,
         4832,
-        4930.28
+        4955.25
       ]
     ]
   },
