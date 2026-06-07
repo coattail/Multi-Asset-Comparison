@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
+  EQUITY_TARGETS,
   appendSupplementalMonthsAfterLatest,
   buildAssetPartFromPreviousOutput,
   buildCachedAssetGroupFromPreviousOutput,
@@ -13,6 +14,15 @@ import {
   parseStatMuseMonthlyMetalHtml,
   withCachedAssetFallback,
 } from "../scripts/build-multi-asset-data.mjs";
+
+test("nasdaq 100 uses Yahoo Finance daily chart data", () => {
+  const target = EQUITY_TARGETS.find((item) => item.id === "equity_nasdaq100");
+
+  assert.equal(target.source, "Yahoo Finance（^NDX）");
+  assert.equal(target.parser, "yahoo");
+  assert.equal(target.symbol, "^NDX");
+  assert.equal(target.seriesId, undefined);
+});
 
 test("buildAssetPartFromPreviousOutput reconstructs monthly values and ohlc from cached output", () => {
   const previousOutputData = {

@@ -34,7 +34,7 @@ const ENGLISH_MONTH_NUMBERS = Object.freeze({
   November: "11",
   December: "12",
 });
-const EQUITY_TARGETS = Object.freeze([
+export const EQUITY_TARGETS = Object.freeze([
   {
     id: "equity_sp500",
     name: "权益类资产·标普500",
@@ -47,9 +47,9 @@ const EQUITY_TARGETS = Object.freeze([
     id: "equity_nasdaq100",
     name: "权益类资产·纳斯达克100",
     legendName: "纳斯达克100",
-    source: "FRED（NASDAQ100）",
-    parser: "fred",
-    seriesId: "NASDAQ100",
+    source: "Yahoo Finance（^NDX）",
+    parser: "yahoo",
+    symbol: "^NDX",
   },
   {
     id: "equity_csi300",
