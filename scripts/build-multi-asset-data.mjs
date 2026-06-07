@@ -187,6 +187,9 @@ const CASE_SHILLER_TARGETS = Object.freeze([
 const DEFAULT_START_MONTH = "2006-01";
 const DEFAULT_OUTPUT_FILENAME = "multi-asset-data.js";
 const WINDOW_VAR_NAME = "MULTI_ASSET_SOURCE_DATA";
+const DEFAULT_FETCH_TIMEOUT_MS = 15_000;
+const DEFAULT_CURL_CONNECT_TIMEOUT_SECONDS = 8;
+const DEFAULT_CURL_MAX_TIME_SECONDS = 15;
 
 function normalizeMonthToken(value) {
   const text = String(value || "").trim();
@@ -374,6 +377,33 @@ function runCurl(args, envOverrides = null) {
   });
 }
 
+export function buildCurlRequestArgs(
+  args,
+  connectTimeoutSeconds = DEFAULT_CURL_CONNECT_TIMEOUT_SECONDS,
+  maxTimeSeconds = DEFAULT_CURL_MAX_TIME_SECONDS,
+) {
+  return [
+    "--connect-timeout",
+    String(connectTimeoutSeconds),
+    "--max-time",
+    String(maxTimeSeconds),
+    ...args,
+  ];
+}
+
+function createRequestAbortSignal(timeoutMs = DEFAULT_FETCH_TIMEOUT_MS) {
+  if (!isFiniteNumber(timeoutMs) || timeoutMs <= 0) return undefined;
+  if (typeof AbortSignal !== "undefined" && typeof AbortSignal.timeout === "function") {
+    return AbortSignal.timeout(timeoutMs);
+  }
+  if (typeof AbortController === "undefined") return undefined;
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  if (typeof timer.unref === "function") timer.unref();
+  return controller.signal;
+}
+
 async function fetchText(url) {
   const jinaMirrorUrl = `https://r.jina.ai/http://${stripUrlProtocol(url)}`;
 
@@ -384,6 +414,7 @@ async function fetchText(url) {
           Accept: "*/*",
           "User-Agent": "Mozilla/5.0 (compatible; data-script/1.0)",
         },
+        signal: createRequestAbortSignal(),
       });
       if (response.ok) {
         const text = await response.text();
@@ -397,9 +428,9 @@ async function fetchText(url) {
   }
 
   const attempts = [
-    () => runCurl(["-L", "-sS", url]),
+    () => runCurl(buildCurlRequestArgs(["-L", "-sS", url])),
     () =>
-      runCurl(["-L", "-sS", url], {
+      runCurl(buildCurlRequestArgs(["-L", "-sS", url]), {
         HTTP_PROXY: "",
         HTTPS_PROXY: "",
         ALL_PROXY: "",
@@ -408,7 +439,7 @@ async function fetchText(url) {
         all_proxy: "",
       }),
     () =>
-      runCurl(["--noproxy", "*", "-L", "-sS", url], {
+      runCurl(buildCurlRequestArgs(["--noproxy", "*", "-L", "-sS", url]), {
         HTTP_PROXY: "",
         HTTPS_PROXY: "",
         ALL_PROXY: "",
@@ -416,7 +447,7 @@ async function fetchText(url) {
         https_proxy: "",
         all_proxy: "",
       }),
-    () => runCurl(["-L", "-sS", jinaMirrorUrl]),
+    () => runCurl(buildCurlRequestArgs(["-L", "-sS", jinaMirrorUrl])),
   ];
 
   let lastError = null;
@@ -518,16 +549,19 @@ export async function loadCaseShillerCsvBySeriesId(
   targets = CASE_SHILLER_TARGETS,
 ) {
   const csvBySeriesId = new Map();
-  for (const target of targets) {
+  const results = await Promise.all(targets.map(async (target) => {
     try {
       const csvText = await fetcher(caseShillerSeriesUrl(target.seriesId));
-      csvBySeriesId.set(target.seriesId, csvText);
+      return [target.seriesId, csvText];
     } catch (error) {
       const cachedSeriesMap = buildSeriesMapFromPreviousOutput(previousOutputData, target.id);
       if (cachedSeriesMap.size === 0) throw error;
       console.warn(`[fallback] ${target.id}: ${error.message}`);
-      csvBySeriesId.set(target.seriesId, "");
+      return [target.seriesId, ""];
     }
+  }));
+  for (const [seriesId, csvText] of results) {
+    csvBySeriesId.set(seriesId, csvText);
   }
   return csvBySeriesId;
 }
@@ -926,17 +960,40 @@ export function buildAssetPartFromPreviousOutput(previousOutputData, assetMeta) 
   };
 }
 
-function withCachedAssetFallback(previousOutputData, assetMeta, buildPrimaryPart) {
+export function buildCachedAssetGroupFromPreviousOutput(previousOutputData, categoryKeys) {
+  const categorySet = new Set(categoryKeys);
+  const cachedAssets = Array.isArray(previousOutputData?.assets) ? previousOutputData.assets : [];
+  const assets = cachedAssets
+    .filter((asset) => asset && categorySet.has(asset.categoryKey))
+    .map((asset) => ({ ...asset }));
+  if (assets.length === 0) {
+    throw new Error(`No cached assets available for ${[...categorySet].join(", ")}`);
+  }
+
+  const sourceSeriesByAssetId = new Map();
+  for (const asset of assets) {
+    sourceSeriesByAssetId.set(asset.id, buildSeriesMapFromPreviousOutput(previousOutputData, asset.id));
+  }
+
+  return { assets, sourceSeriesByAssetId };
+}
+
+function findCachedAssetMeta(previousOutputData, assetId) {
+  const assets = Array.isArray(previousOutputData?.assets) ? previousOutputData.assets : [];
+  return assets.find((asset) => asset?.id === assetId) || null;
+}
+
+export function withCachedAssetFallback(previousOutputData, assetMeta, buildPrimaryPart) {
   return Promise.resolve()
     .then(buildPrimaryPart)
     .catch((error) => {
       if (!previousOutputData) throw error;
       // eslint-disable-next-line no-console
       console.warn(`[fallback] ${assetMeta.id}: ${error.message}`);
-      return buildAssetPartFromPreviousOutput(previousOutputData, {
-        ...assetMeta,
-        source: `${assetMeta.source || "远端数据"}（缓存回退）`,
-      });
+      return buildAssetPartFromPreviousOutput(
+        previousOutputData,
+        findCachedAssetMeta(previousOutputData, assetMeta.id) || assetMeta,
+      );
     });
 }
 
@@ -1001,6 +1058,12 @@ function buildFontSubsetIfEnabled(rootDir) {
   execFileSync(process.execPath, [scriptPath], { stdio: "inherit" });
 }
 
+function shouldRefreshMarketsOnly() {
+  const flag = String(process.env.MULTI_ASSET_MARKET_ONLY || "").trim().toLowerCase();
+  const scope = String(process.env.MULTI_ASSET_REFRESH_SCOPE || "").trim().toLowerCase();
+  return flag === "1" || flag === "true" || scope === "markets" || scope === "market-only";
+}
+
 async function main() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
@@ -1015,15 +1078,32 @@ async function main() {
 
   const startMonth = normalizeMonthToken(process.env.MULTI_ASSET_START_MONTH) || DEFAULT_START_MONTH;
   const nowMonth = currentMonthUtc();
+  const marketOnlyRefresh = shouldRefreshMarketsOnly();
 
-  // eslint-disable-next-line no-console
-  console.log("Loading local China housing sources...");
-  const centalineData = loadWindowData(path.resolve(rootDir, "house-price-data.js"), "HOUSE_PRICE_SOURCE_DATA");
-  const nbsData = loadWindowData(path.resolve(rootDir, "house-price-data-nbs-70.js"), "HOUSE_PRICE_SOURCE_DATA_NBS_70");
+  let nonMarketPart = null;
+  let centalineData = null;
+  let nbsData = null;
+  let caseShillerCsvBySeriesId = null;
+  if (marketOnlyRefresh) {
+    if (!previousOutputData) {
+      throw new Error("MULTI_ASSET_MARKET_ONLY requires an existing multi-asset-data.json cache");
+    }
+    // eslint-disable-next-line no-console
+    console.log("Loading cached non-market asset groups...");
+    nonMarketPart = buildCachedAssetGroupFromPreviousOutput(previousOutputData, [
+      "cn_housing",
+      "us_housing",
+    ]);
+  } else {
+    // eslint-disable-next-line no-console
+    console.log("Loading local China housing sources...");
+    centalineData = loadWindowData(path.resolve(rootDir, "house-price-data.js"), "HOUSE_PRICE_SOURCE_DATA");
+    nbsData = loadWindowData(path.resolve(rootDir, "house-price-data-nbs-70.js"), "HOUSE_PRICE_SOURCE_DATA_NBS_70");
 
-  // eslint-disable-next-line no-console
-  console.log("Fetching Case-Shiller city data...");
-  const caseShillerCsvBySeriesId = await loadCaseShillerCsvBySeriesId(previousOutputData);
+    // eslint-disable-next-line no-console
+    console.log("Fetching Case-Shiller city data...");
+    caseShillerCsvBySeriesId = await loadCaseShillerCsvBySeriesId(previousOutputData);
+  }
 
   // eslint-disable-next-line no-console
   console.log("Fetching metals data...");
@@ -1189,20 +1269,23 @@ async function main() {
     }
   }
 
-  const chinaPart = buildChinaHousingAssets(centalineData, nbsData);
-  const usPart = buildCaseShillerAssets(caseShillerCsvBySeriesId, previousOutputData);
+  const chinaPart = marketOnlyRefresh ? null : buildChinaHousingAssets(centalineData, nbsData);
+  const usPart = marketOnlyRefresh ? null : buildCaseShillerAssets(caseShillerCsvBySeriesId, previousOutputData);
 
   const assets = [
-    ...chinaPart.assets,
-    ...usPart.assets,
+    ...(marketOnlyRefresh ? nonMarketPart.assets : [...chinaPart.assets, ...usPart.assets]),
     goldPart.asset,
     silverPart.asset,
     ...equityPartList.map((item) => item.asset),
   ];
 
   const sourceSeriesByAssetId = mergeSeriesMaps([
-    ...chinaPart.sourceSeriesByAssetId.entries(),
-    ...usPart.sourceSeriesByAssetId.entries(),
+    ...(marketOnlyRefresh
+      ? nonMarketPart.sourceSeriesByAssetId.entries()
+      : [
+          ...chinaPart.sourceSeriesByAssetId.entries(),
+          ...usPart.sourceSeriesByAssetId.entries(),
+        ]),
     [goldPart.asset.id, goldPart.seriesMap],
     [silverPart.asset.id, silverPart.seriesMap],
     ...equityPartList.map((item) => [item.asset.id, item.seriesMap]),
@@ -1214,6 +1297,7 @@ async function main() {
   );
 
   const latestMonthBySources = [
+    marketOnlyRefresh ? previousOutputData?.dates?.[previousOutputData.dates.length - 1] || "" : "",
     centalineData?.dates?.[centalineData.dates.length - 1] || "",
     nbsData?.dates?.[nbsData.dates.length - 1] || "",
     getLatestMonthWithData(sourceSeriesByAssetId),

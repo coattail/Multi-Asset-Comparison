@@ -4,11 +4,14 @@ import assert from "node:assert/strict";
 import {
   appendSupplementalMonthsAfterLatest,
   buildAssetPartFromPreviousOutput,
+  buildCachedAssetGroupFromPreviousOutput,
   buildCaseShillerAssets,
+  buildCurlRequestArgs,
   buildEquityAssetFromFred,
   buildEquityAssetFromYahooFinance,
   loadCaseShillerCsvBySeriesId,
   parseStatMuseMonthlyMetalHtml,
+  withCachedAssetFallback,
 } from "../scripts/build-multi-asset-data.mjs";
 
 test("buildAssetPartFromPreviousOutput reconstructs monthly values and ohlc from cached output", () => {
@@ -52,6 +55,87 @@ test("buildAssetPartFromPreviousOutput reconstructs monthly values and ohlc from
       ["2026-03", [6200, 6345.67, 6188, 6360]],
     ],
   );
+});
+
+test("buildCachedAssetGroupFromPreviousOutput reconstructs non-market asset groups from cached output", () => {
+  const previousOutputData = {
+    dates: ["2026-01", "2026-02"],
+    assets: [
+      {
+        id: "cn_centaline_city_1",
+        name: "中国房产·中原6城·北京",
+        categoryKey: "cn_housing",
+        source: "中原地产",
+      },
+      {
+        id: "us_cs_atxrsa",
+        name: "美国房产·亚特兰大都会区",
+        categoryKey: "us_housing",
+        source: "S&P CoreLogic Case-Shiller（ATXRSA）",
+      },
+      {
+        id: "equity_sp500",
+        name: "权益类资产·标普500",
+        categoryKey: "equities",
+      },
+    ],
+    values: {
+      cn_centaline_city_1: [100, 101],
+      us_cs_atxrsa: [245.12, 246.34],
+      equity_sp500: [6100, 6200],
+    },
+  };
+
+  const part = buildCachedAssetGroupFromPreviousOutput(previousOutputData, ["cn_housing", "us_housing"]);
+
+  assert.deepEqual(
+    part.assets.map((asset) => asset.id),
+    ["cn_centaline_city_1", "us_cs_atxrsa"],
+  );
+  assert.deepEqual([...part.sourceSeriesByAssetId.get("us_cs_atxrsa").entries()], [
+    ["2026-01", 245.12],
+    ["2026-02", 246.34],
+  ]);
+  assert.equal(part.sourceSeriesByAssetId.has("equity_sp500"), false);
+});
+
+test("withCachedAssetFallback preserves cached metadata when remote market data fails", async () => {
+  const previousOutputData = {
+    dates: ["2026-06"],
+    assets: [
+      {
+        id: "equity_csi300",
+        name: "权益类资产·沪深300",
+        legendName: "沪深300",
+        categoryKey: "equities",
+        categoryLabel: "权益类资产",
+        source: "东方财富（沪深300）",
+        unit: "指数",
+      },
+    ],
+    values: {
+      equity_csi300: [4816.92],
+    },
+  };
+
+  const part = await withCachedAssetFallback(
+    previousOutputData,
+    {
+      id: "equity_csi300",
+      name: "权益类资产·沪深300",
+      legendName: "沪深300",
+      categoryKey: "equities",
+      categoryLabel: "权益类资产",
+      source: "东方财富（沪深300）",
+      unit: "指数",
+    },
+    async () => {
+      throw new Error("upstream unavailable");
+    },
+  );
+
+  assert.equal(part.asset.source, "东方财富（沪深300）");
+  assert.deepEqual([...part.seriesMap.entries()], [["2026-06", 4816.92]]);
 });
 
 test("buildEquityAssetFromFred aggregates daily closes into monthly close and derived ohlc", () => {
@@ -217,4 +301,50 @@ test("loadCaseShillerCsvBySeriesId keeps cached cities when FRED fetch throws", 
   }, [{ id: "us_cs_atxrsa", seriesId: "ATXRSA" }]);
 
   assert.equal(csvBySeriesId.get("ATXRSA"), "");
+});
+
+test("loadCaseShillerCsvBySeriesId fetches independent city series concurrently", async () => {
+  let activeFetches = 0;
+  let maxActiveFetches = 0;
+
+  const fetcher = async () => {
+    activeFetches += 1;
+    maxActiveFetches = Math.max(maxActiveFetches, activeFetches);
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    activeFetches -= 1;
+    return "observation_date,VALUE\n2026-02-01,100\n";
+  };
+
+  const csvBySeriesId = await loadCaseShillerCsvBySeriesId(null, fetcher, [
+    { id: "us_cs_atxrsa", seriesId: "ATXRSA" },
+    { id: "us_cs_boxrsa", seriesId: "BOXRSA" },
+    { id: "us_cs_crxrsa", seriesId: "CRXRSA" },
+  ]);
+
+  assert.equal(maxActiveFetches, 3);
+  assert.equal(csvBySeriesId.size, 3);
+});
+
+test("buildCurlRequestArgs adds bounded connect and total request timeouts", () => {
+  assert.deepEqual(buildCurlRequestArgs(["-L", "-sS", "https://example.com/data.csv"], 7, 19), [
+    "--connect-timeout",
+    "7",
+    "--max-time",
+    "19",
+    "-L",
+    "-sS",
+    "https://example.com/data.csv",
+  ]);
+});
+
+test("buildCurlRequestArgs defaults to short daily-update timeouts", () => {
+  assert.deepEqual(buildCurlRequestArgs(["-L", "-sS", "https://example.com/data.csv"]), [
+    "--connect-timeout",
+    "8",
+    "--max-time",
+    "15",
+    "-L",
+    "-sS",
+    "https://example.com/data.csv",
+  ]);
 });
