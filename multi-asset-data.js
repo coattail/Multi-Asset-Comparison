@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-06-13T01:51:50.905Z",
+  "generatedAt": "2026-06-14T01:59:43.714Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -26436,7 +26436,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       23740.189453,
       27452.119141,
       30333.179688,
-      29635.947266
+      29635.949219
     ],
     "equity_csi300": [
       null,
@@ -29639,7 +29639,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         30295.25,
-        29635.947266,
+        29635.949219,
         28196.900391,
         30762.199219
       ]
