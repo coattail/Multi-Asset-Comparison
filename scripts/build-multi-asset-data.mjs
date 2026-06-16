@@ -270,7 +270,11 @@ function buildOhlcTuple(open, close, low, high, digits = 6) {
     !isFiniteNumber(openValue) ||
     !isFiniteNumber(closeValue) ||
     !isFiniteNumber(lowValue) ||
-    !isFiniteNumber(highValue)
+    !isFiniteNumber(highValue) ||
+    openValue <= 0 ||
+    closeValue <= 0 ||
+    lowValue <= 0 ||
+    highValue <= 0
   ) {
     return null;
   }

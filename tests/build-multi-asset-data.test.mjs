@@ -233,6 +233,42 @@ test("buildEquityAssetFromYahooFinance aggregates daily OHLC into monthly index 
   );
 });
 
+test("buildEquityAssetFromYahooFinance ignores zero-price daily rows", () => {
+  const chartJson = JSON.stringify({
+    chart: {
+      result: [
+        {
+          timestamp: [1772411400, 1772497800],
+          indicators: {
+            quote: [
+              {
+                open: [10, 11],
+                high: [12, 0],
+                low: [9, 0],
+                close: [11, 0],
+              },
+            ],
+          },
+        },
+      ],
+    },
+  });
+
+  const part = buildEquityAssetFromYahooFinance(
+    {
+      id: "equity_sp500",
+      name: "权益类资产·标普500",
+      legendName: "标普500",
+      source: "Yahoo Finance（^GSPC）",
+      symbol: "^GSPC",
+    },
+    chartJson,
+  );
+
+  assert.deepEqual([...part.seriesMap.entries()], [["2026-03", 11]]);
+  assert.deepEqual([...part.ohlcMap.entries()], [["2026-03", [10, 11, 9, 12]]]);
+});
+
 test("parseStatMuseMonthlyMetalHtml extracts month-end closes from the rendered table", () => {
   const html = `
     <tr>
