@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-07-01T01:55:31.140Z",
+  "generatedAt": "2026-07-02T01:36:11.104Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -1611,7 +1611,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（^GSPC）",
       "unit": "指数",
-      "availableRange": "2006-01:2026-06"
+      "availableRange": "2006-01:2026-07"
     },
     {
       "id": "equity_nasdaq100",
@@ -1623,7 +1623,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（^NDX）",
       "unit": "指数",
-      "availableRange": "2006-01:2026-06"
+      "availableRange": "2006-01:2026-07"
     },
     {
       "id": "equity_csi300",
@@ -26288,7 +26288,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       7209.009766,
       7580.060059,
       7499.359863,
-      null
+      7483.22998
     ],
     "equity_nasdaq100": [
       1710.75,
@@ -26536,8 +26536,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       23740.189453,
       27452.119141,
       30333.179688,
-      30276.347656,
-      null
+      30276.349609,
+      29809.132813
     ],
     "equity_csi300": [
       null,
@@ -26786,7 +26786,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4807.31,
       4892.12,
       4979.43,
-      4978.39
+      4857.52
     ]
   },
   "ohlcValues": {
@@ -28267,7 +28267,12 @@ window.MULTI_ASSET_SOURCE_DATA = {
         7237.850098,
         7620.899902
       ],
-      null
+      [
+        7478.839844,
+        7483.22998,
+        7449.629883,
+        7521.810059
+      ]
     ],
     "equity_nasdaq100": [
       [
@@ -29742,11 +29747,16 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         30295.25,
-        30276.347656,
+        30276.349609,
         28196.900391,
         30762.199219
       ],
-      null
+      [
+        29914.28125,
+        29809.132813,
+        29787.408203,
+        30084.78125
+      ]
     ],
     "equity_csi300": [
       null,
@@ -31107,9 +31117,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         4972.69,
-        4978.39,
-        4969.18,
-        4989.72
+        4857.52,
+        4837.26,
+        5017.38
       ]
     ]
   },
