@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-07-02T01:36:11.104Z",
+  "generatedAt": "2026-07-03T01:15:57.576Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -1585,9 +1585,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "categoryLabel": "贵金属",
       "subgroupKey": "metals",
       "subgroupLabel": "贵金属",
-      "source": "Stooq（缓存回退）",
+      "source": "Stooq（缓存回退） + StatMuse（月度补充）",
       "unit": "美元",
-      "availableRange": "2006-01:2026-06"
+      "availableRange": "2006-01:2026-07"
     },
     {
       "id": "metal_silver_spot_usd",
@@ -1597,9 +1597,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "categoryLabel": "贵金属",
       "subgroupKey": "metals",
       "subgroupLabel": "贵金属",
-      "source": "Stooq（缓存回退）",
+      "source": "Stooq（缓存回退） + StatMuse（月度补充）",
       "unit": "美元",
-      "availableRange": "2006-01:2026-06"
+      "availableRange": "2006-01:2026-07"
     },
     {
       "id": "equity_sp500",
@@ -25790,7 +25790,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4622.59,
       4540.07,
       4533.42,
-      null
+      4035.28
     ],
     "metal_silver_spot_usd": [
       9.84,
@@ -26039,7 +26039,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       74.21,
       76.65,
       75.05,
-      null
+      59.1
     ],
     "equity_sp500": [
       1280.079956,
@@ -26288,7 +26288,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       7209.009766,
       7580.060059,
       7499.359863,
-      7483.22998
+      7483.240234
     ],
     "equity_nasdaq100": [
       1710.75,
@@ -26537,7 +26537,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       27452.119141,
       30333.179688,
       30276.349609,
-      29809.132813
+      29329.212891
     ],
     "equity_csi300": [
       null,
@@ -26786,7 +26786,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4807.31,
       4892.12,
       4979.43,
-      4857.52
+      4812.3
     ]
   },
   "ohlcValues": {
@@ -28269,9 +28269,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         7478.839844,
-        7483.22998,
-        7449.629883,
-        7521.810059
+        7483.240234,
+        7427.549805,
+        7540.75
       ]
     ],
     "equity_nasdaq100": [
@@ -29752,10 +29752,10 @@ window.MULTI_ASSET_SOURCE_DATA = {
         30762.199219
       ],
       [
-        29914.28125,
-        29809.132813,
-        29787.408203,
-        30084.78125
+        29914.279297,
+        29329.212891,
+        29087.326172,
+        30084.779297
       ]
     ],
     "equity_csi300": [
@@ -31117,8 +31117,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         4972.69,
-        4857.52,
-        4837.26,
+        4812.3,
+        4800.48,
         5017.38
       ]
     ]
