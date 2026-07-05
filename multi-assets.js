@@ -4040,8 +4040,8 @@ function render() {
       normalizedOhlc: viewportOhlc,
       seriesType,
       color: getAssetSeriesColor(asset, index),
-      // Keep gold close to its declared color instead of blending it into an olive tone.
-      lineOpacity: asset.id === "metal_gold_spot_usd" ? 0.96 : undefined,
+      // Let the segments recede slightly while keeping the gold hue recognizable.
+      lineOpacity: asset.id === "metal_gold_spot_usd" ? 0.68 : undefined,
     });
 
     summaryRows.push({
