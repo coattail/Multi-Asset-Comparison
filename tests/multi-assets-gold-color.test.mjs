@@ -6,8 +6,8 @@ import path from "node:path";
 const source = fs.readFileSync(path.resolve("multi-assets.js"), "utf8");
 
 test("gold uses warm gold colors in light and dark themes", () => {
-  assert.match(source, /metal_gold_spot_usd:\s*"#c98b00"/i);
-  assert.match(source, /metal_gold_spot_usd:\s*"#ffd21f"/i);
+  assert.match(source, /metal_gold_spot_usd:\s*"#d9b300"/i);
+  assert.match(source, /metal_gold_spot_usd:\s*"#ffe14a"/i);
 });
 
 test("gold segments stay semi-transparent while retaining their warm color", () => {

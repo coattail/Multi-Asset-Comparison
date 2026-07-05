@@ -211,11 +211,11 @@ const SERIES_COLORS = Object.freeze({
 
 const METAL_FIXED_COLORS = Object.freeze({
   [THEME_MODE_LIGHT]: Object.freeze({
-    metal_gold_spot_usd: "#c98b00",
+    metal_gold_spot_usd: "#d9b300",
     metal_silver_spot_usd: "#7f90a3",
   }),
   [THEME_MODE_DARK]: Object.freeze({
-    metal_gold_spot_usd: "#ffd21f",
+    metal_gold_spot_usd: "#ffe14a",
     metal_silver_spot_usd: "#c4d0db",
   }),
 });
