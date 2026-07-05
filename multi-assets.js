@@ -3126,19 +3126,29 @@ function ensureDistinctAssetLineColors(
   if (!Array.isArray(rendered) || rendered.length < 2) return;
   const themeMode = getCurrentThemeMode();
   const corePalette = getThemeCoreCityPalette();
-  const isLockedCoreCity = (item) => {
-    if (item?.categoryKey !== "cn_housing") return false;
-    const cityName = String(item?.cityName || "").trim();
-    return cityName && Object.prototype.hasOwnProperty.call(corePalette, cityName);
+  const fixedMetalPalette =
+    METAL_FIXED_COLORS[themeMode] || METAL_FIXED_COLORS[THEME_MODE_LIGHT];
+  const getLockedAssetColor = (item) => {
+    if (item?.categoryKey === "cn_housing") {
+      const cityName = String(item?.cityName || "").trim();
+      if (cityName && Object.prototype.hasOwnProperty.call(corePalette, cityName)) {
+        return corePalette[cityName];
+      }
+    }
+    const assetId = String(item?.id || "");
+    if (Object.prototype.hasOwnProperty.call(fixedMetalPalette, assetId)) {
+      return fixedMetalPalette[assetId];
+    }
+    return "";
   };
   const seedColors = rendered.map((item) => item.color).filter(Boolean);
   const candidatePool = buildDistinctAssetColorPool(seedColors, themeMode, rendered.length);
   const assignedColors = [];
 
   rendered.forEach((item) => {
-    if (!isLockedCoreCity(item)) return;
-    const cityName = String(item.cityName || "").trim();
-    item.color = corePalette[cityName];
+    const lockedColor = getLockedAssetColor(item);
+    if (!lockedColor) return;
+    item.color = lockedColor;
     const parsedLocked = parseChartColorToRgb(item.color);
     if (parsedLocked) {
       assignedColors.push({ rgb: parsedLocked });
@@ -3146,7 +3156,7 @@ function ensureDistinctAssetLineColors(
   });
 
   rendered.forEach((item, index) => {
-    if (isLockedCoreCity(item)) return;
+    if (getLockedAssetColor(item)) return;
     const fallbackColor = candidatePool[index % Math.max(candidatePool.length, 1)] || "";
     const preferredColor = String(item?.color || fallbackColor).trim();
     const nextColor = pickDistinctColor(

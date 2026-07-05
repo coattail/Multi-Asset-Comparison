@@ -16,3 +16,15 @@ test("gold segments stay semi-transparent while retaining their warm color", () 
     /lineOpacity:\s*asset\.id\s*===\s*"metal_gold_spot_usd"\s*\?\s*0\.68\s*:\s*undefined/,
   );
 });
+
+test("distinct-color assignment preserves fixed metal colors", () => {
+  assert.match(
+    source,
+    /const fixedMetalPalette\s*=\s*[\s\S]*?METAL_FIXED_COLORS\[themeMode\]/,
+  );
+  assert.match(
+    source,
+    /Object\.prototype\.hasOwnProperty\.call\(fixedMetalPalette,\s*assetId\)[\s\S]*?return fixedMetalPalette\[assetId\]/,
+  );
+  assert.match(source, /if \(getLockedAssetColor\(item\)\) return;/);
+});
