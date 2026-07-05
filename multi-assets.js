@@ -211,11 +211,11 @@ const SERIES_COLORS = Object.freeze({
 
 const METAL_FIXED_COLORS = Object.freeze({
   [THEME_MODE_LIGHT]: Object.freeze({
-    metal_gold_spot_usd: "#d6a62a",
+    metal_gold_spot_usd: "#c98b00",
     metal_silver_spot_usd: "#7f90a3",
   }),
   [THEME_MODE_DARK]: Object.freeze({
-    metal_gold_spot_usd: "#f4c34d",
+    metal_gold_spot_usd: "#ffd21f",
     metal_silver_spot_usd: "#c4d0db",
   }),
 });
@@ -4040,6 +4040,8 @@ function render() {
       normalizedOhlc: viewportOhlc,
       seriesType,
       color: getAssetSeriesColor(asset, index),
+      // Keep gold close to its declared color instead of blending it into an olive tone.
+      lineOpacity: asset.id === "metal_gold_spot_usd" ? 0.96 : undefined,
     });
 
     summaryRows.push({
