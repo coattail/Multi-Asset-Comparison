@@ -289,6 +289,8 @@ const uiState = {
   hiddenAssetNames: new Set(),
   zoomStartMonth: null,
   zoomEndMonth: null,
+  selectedStartMonth: null,
+  selectedEndMonth: null,
   chinaSourceMode: "centaline",
   showChartTable: true,
 };
@@ -1689,19 +1691,26 @@ function syncTimeZoomWidgetFromMonthSelects() {
   }
 
   const months = raw.dates.slice(startIndex, endIndex + 1);
-  let nextStartIndex = findMonthIndexByToken(months, uiState.zoomStartMonth);
-  let nextEndIndex = findMonthIndexByToken(months, uiState.zoomEndMonth);
-  if (nextStartIndex < 0) nextStartIndex = 0;
-  if (nextEndIndex < 0) nextEndIndex = months.length - 1;
-  if (nextStartIndex > nextEndIndex) {
-    nextStartIndex = 0;
-    nextEndIndex = months.length - 1;
+  const viewport = window.TimeRangeViewportUtils?.resolveViewport({
+    months,
+    selectedStartMonth: selectedStart,
+    selectedEndMonth: selectedEnd,
+    previousSelectedStartMonth: uiState.selectedStartMonth,
+    previousSelectedEndMonth: uiState.selectedEndMonth,
+    zoomStartMonth: uiState.zoomStartMonth,
+    zoomEndMonth: uiState.zoomEndMonth,
+  });
+  if (!viewport) {
+    setTimeZoomDisabled(true);
+    return;
   }
 
-  const nextStart = months[nextStartIndex];
-  const nextEnd = months[nextEndIndex];
+  const nextStart = viewport.startMonth;
+  const nextEnd = viewport.endMonth;
   uiState.zoomStartMonth = normalizeMonthToken(nextStart) || nextStart;
   uiState.zoomEndMonth = normalizeMonthToken(nextEnd) || nextEnd;
+  uiState.selectedStartMonth = selectedStart;
+  uiState.selectedEndMonth = selectedEnd;
   syncTimeZoomWidget(months, nextStart, nextEnd);
 }
 
@@ -2756,6 +2765,8 @@ function buildMonthSelects(dates) {
   const defaultStart = dates.includes(BASE_START_MONTH) ? BASE_START_MONTH : dates[0];
   startMonthEl.value = defaultStart;
   endMonthEl.value = dates[dates.length - 1];
+  uiState.selectedStartMonth = null;
+  uiState.selectedEndMonth = null;
   syncTimeZoomWidgetFromMonthSelects();
 }
 
@@ -4240,6 +4251,7 @@ function bindEvents() {
       endMonthEl.value = startMonthEl.value;
     }
     syncTimeZoomWidgetFromMonthSelects();
+    safeRender("时间区间变更");
   });
 
   endMonthEl.addEventListener("change", () => {
@@ -4247,6 +4259,7 @@ function bindEvents() {
       startMonthEl.value = endMonthEl.value;
     }
     syncTimeZoomWidgetFromMonthSelects();
+    safeRender("时间区间变更");
   });
 
   chart.on("legendselectchanged", (params) => {

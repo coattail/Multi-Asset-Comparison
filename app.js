@@ -303,6 +303,8 @@ const uiState = {
   hiddenCityNames: new Set(),
   zoomStartMonth: null,
   zoomEndMonth: null,
+  selectedStartMonth: null,
+  selectedEndMonth: null,
 };
 let isApplyingOption = false;
 let latestRenderContext = null;
@@ -854,6 +856,8 @@ function applyDataSource(sourceKey) {
   uiState.hiddenCityNames.clear();
   uiState.zoomStartMonth = null;
   uiState.zoomEndMonth = null;
+  uiState.selectedStartMonth = null;
+  uiState.selectedEndMonth = null;
   uiState.showDrawdownAnalysis = false;
   uiState.showChartTable = true;
 
@@ -1133,19 +1137,26 @@ function syncTimeZoomWidgetFromMonthSelects() {
     return;
   }
   const months = raw.dates.slice(startIndex, endIndex + 1);
-  let nextStartIndex = findMonthIndexByToken(months, uiState.zoomStartMonth);
-  let nextEndIndex = findMonthIndexByToken(months, uiState.zoomEndMonth);
-  if (nextStartIndex < 0) nextStartIndex = 0;
-  if (nextEndIndex < 0) nextEndIndex = months.length - 1;
-  if (nextStartIndex > nextEndIndex) {
-    nextStartIndex = 0;
-    nextEndIndex = months.length - 1;
+  const viewport = window.TimeRangeViewportUtils?.resolveViewport({
+    months,
+    selectedStartMonth: selectedStart,
+    selectedEndMonth: selectedEnd,
+    previousSelectedStartMonth: uiState.selectedStartMonth,
+    previousSelectedEndMonth: uiState.selectedEndMonth,
+    zoomStartMonth: uiState.zoomStartMonth,
+    zoomEndMonth: uiState.zoomEndMonth,
+  });
+  if (!viewport) {
+    setTimeZoomDisabled(true);
+    return;
   }
 
-  const nextStart = months[nextStartIndex];
-  const nextEnd = months[nextEndIndex];
+  const nextStart = viewport.startMonth;
+  const nextEnd = viewport.endMonth;
   uiState.zoomStartMonth = normalizeMonthToken(nextStart) || nextStart;
   uiState.zoomEndMonth = normalizeMonthToken(nextEnd) || nextEnd;
+  uiState.selectedStartMonth = selectedStart;
+  uiState.selectedEndMonth = selectedEnd;
   syncTimeZoomWidget(months, nextStart, nextEnd);
 }
 
@@ -1604,6 +1615,8 @@ function buildMonthSelects(dates) {
   const defaultEnd = dates[dates.length - 1];
   startMonthEl.value = defaultStart;
   endMonthEl.value = defaultEnd;
+  uiState.selectedStartMonth = null;
+  uiState.selectedEndMonth = null;
   syncTimeZoomWidgetFromMonthSelects();
 }
 
@@ -4763,11 +4776,13 @@ function bindEvents() {
   startMonthEl.addEventListener("change", () => {
     if (startMonthEl.value > endMonthEl.value) endMonthEl.value = startMonthEl.value;
     syncTimeZoomWidgetFromMonthSelects();
+    render();
   });
 
   endMonthEl.addEventListener("change", () => {
     if (endMonthEl.value < startMonthEl.value) startMonthEl.value = endMonthEl.value;
     syncTimeZoomWidgetFromMonthSelects();
+    render();
   });
 
   window.addEventListener("resize", () => {

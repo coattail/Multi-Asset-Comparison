@@ -344,6 +344,7 @@ body.theme-dark .city-list::-webkit-scrollbar-thumb {
   margin: 7px 0 0;
   color: var(--soft);
   line-height: 1.58;
+  overflow-wrap: anywhere;
 }
 
 .subtitle.credit {
@@ -707,16 +708,16 @@ body.theme-dark .controls {
 }
 
 .page-multi-assets .asset-list.is-cn-nbs70:not(.is-searching) .asset-module[data-category="us_housing"] .asset-item {
-  min-height: 22px;
-  font-size: 0.74rem;
+  min-height: var(--asset-compact-row-height, 22px);
+  font-size: var(--asset-compact-font-size, 0.74rem);
   line-height: 1.18;
   gap: 4px;
 }
 
 .page-multi-assets .asset-list.is-cn-centaline:not(.is-searching) .asset-module[data-category="cn_housing"] .asset-item,
 .page-multi-assets .asset-list.is-cn-centaline:not(.is-searching) .asset-module[data-category="us_housing"] .asset-item {
-  min-height: 22px;
-  font-size: 0.74rem;
+  min-height: var(--asset-compact-row-height, 22px);
+  font-size: var(--asset-compact-font-size, 0.74rem);
   line-height: 1.18;
   gap: 4px;
 }
@@ -1520,6 +1521,10 @@ thead th {
     gap: 12px;
   }
 
+  .page-multi-assets .workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .controls {
     position: static;
     top: auto;
@@ -1600,6 +1605,11 @@ thead th {
 }
 
 @media (max-width: 760px), (hover: none) and (pointer: coarse) and (orientation: portrait) {
+  body {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
   .page {
     width: min(98vw, 100%);
     margin: 14px auto 18px;
@@ -1684,7 +1694,7 @@ thead th {
   }
 
   .inline-actions button {
-    min-height: 40px;
+    min-height: 44px;
     width: 100%;
     font-size: 0.84rem;
   }
@@ -1716,13 +1726,34 @@ thead th {
   .asset-search,
   .analysis-btn,
   .primary-btn {
-    min-height: 42px;
+    min-height: 44px;
   }
 
   .page-multi-assets .control-block--time-range select {
-    min-height: 38px;
+    min-height: 44px;
     padding: 6px 8px;
     font-size: 0.8rem;
+  }
+
+  .page-multi-assets {
+    --asset-row-height: 32px;
+    --asset-row-gap: 7px;
+    --asset-compact-row-height: 32px;
+    --asset-compact-font-size: 0.8rem;
+  }
+
+  .page-multi-assets .asset-item {
+    gap: 7px;
+  }
+
+  .page-multi-assets .asset-item input,
+  .city-item input {
+    width: 18px;
+    height: 18px;
+  }
+
+  .china-source-chip {
+    min-height: 36px;
   }
 
   .analysis-btn {
@@ -1883,6 +1914,11 @@ thead th {
 
   .asset-list {
     max-height: 220px;
+  }
+
+  .page-multi-assets .asset-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
   }
 
   .city-list--three-cols {
