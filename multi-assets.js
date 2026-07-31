@@ -66,7 +66,7 @@ const EQUITY_SERIES = Object.freeze([
     legendName: "沪深300",
     parser: "eastmoney",
     url:
-      "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.000300&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58&klt=101&fqt=0&beg=20080101&end=20500101",
+      "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.000300&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58&klt=101&fqt=0&beg=20060101&end=20500101",
     source: "东方财富（沪深300）",
   },
 ]);
@@ -268,7 +268,7 @@ const chart =
   typeof window.echarts.init === "function" &&
   chartEl
     ? window.echarts.init(chartEl, null, {
-        renderer: "canvas",
+        renderer: "svg",
       })
     : null;
 
@@ -3770,8 +3770,8 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
             lastValidCandleIndex >= 0
               ? item.normalizedOhlc.slice(0, lastValidCandleIndex + 1)
               : [];
-          const candlestickData = candleDataWindow.map((tuple, tupleIndex) =>
-            Array.isArray(tuple) ? [tupleIndex, ...tuple] : "-"
+          const candlestickData = candleDataWindow.flatMap((tuple, tupleIndex) =>
+            Array.isArray(tuple) ? [[tupleIndex, ...tuple]] : []
           );
 
           seriesList.push({
@@ -4118,7 +4118,6 @@ function render() {
     visibleSummaryRows: visibleRows,
   };
 
-  let effectiveRendered = rendered;
   const applyOptionByRendered = (renderList) => {
     isApplyingOption = true;
     try {
@@ -4131,26 +4130,9 @@ function render() {
     }
   };
 
-  try {
-    applyOptionByRendered(rendered);
-  } catch (error) {
-    const hasCandlestick = rendered.some((item) => item.seriesType === "candlestick");
-    if (!hasCandlestick) {
-      throw error;
-    }
-    const fallbackRendered = rendered.map((item) => {
-      if (item.seriesType !== "candlestick") return item;
-      return {
-        ...item,
-        seriesType: "line",
-      };
-    });
-    applyOptionByRendered(fallbackRendered);
-    effectiveRendered = fallbackRendered;
-    setStatus("当前浏览器对K线渲染兼容性有限，已自动切换为折线显示。", true);
-  }
+  applyOptionByRendered(rendered);
 
-  effectiveRendered.forEach((item) => {
+  rendered.forEach((item) => {
     const key = item.seriesName || item.id || item.name;
     if (uiState.hiddenAssetNames.has(key)) {
       chart.dispatchAction({ type: "legendUnSelect", name: key });

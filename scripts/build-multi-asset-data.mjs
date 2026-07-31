@@ -58,7 +58,7 @@ export const EQUITY_TARGETS = Object.freeze([
     source: "东方财富（沪深300）",
     parser: "eastmoney",
     url:
-      "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.000300&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58&klt=101&fqt=0&beg=20080101&end=20500101",
+      "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.000300&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58&klt=101&fqt=0&beg=20060101&end=20500101",
   },
 ]);
 const CASE_SHILLER_TARGETS = Object.freeze([

@@ -20,13 +20,13 @@ test("candlestick charts use the centered custom renderer so wicks and bodies sh
   assert.match(source, /type:\s*"custom",[\s\S]*renderItem:\s*makeCenteredCandlestickRenderItem\(\),/);
 });
 
-test("custom candlesticks and x-axis zoom both use numeric category indexes", () => {
+test("custom candlesticks use numeric category indexes and omit empty placeholder rows", () => {
   const source = fs.readFileSync(path.resolve("multi-assets.js"), "utf8");
 
   assert.match(source, /const categoryIndex\s*=\s*Number\(api\.value\(0\)\);/);
   assert.match(
     source,
-    /Array\.isArray\(tuple\)\s*\?\s*\[tupleIndex,\s*\.\.\.tuple\]\s*:\s*"-"/,
+    /candleDataWindow\.flatMap\(\(tuple,\s*tupleIndex\)\s*=>\s*Array\.isArray\(tuple\)\s*\?\s*\[\[tupleIndex,\s*\.\.\.tuple\]\]\s*:\s*\[\]/,
   );
   assert.match(source, /min:\s*hasCandlestickAxisPadding\s*\?\s*visibleStartIndex\s*:\s*visibleStartToken\s*\|\|\s*undefined,/);
   assert.match(source, /max:\s*hasCandlestickAxisPadding\s*\?\s*visibleEndIndex\s*:\s*visibleEndToken\s*\|\|\s*undefined,/);
@@ -50,6 +50,17 @@ test("candlestick viewport data is sliced before custom rendering", () => {
     source,
     /const viewportOhlc\s*=\s*Array\.isArray\(normalizedOhlc\)\s*\?\s*normalizedOhlc\.slice\(viewportStartOffset,\s*viewportEndOffset\s*\+\s*1\)\s*:\s*null;/,
   );
+});
+
+test("equity charts use SVG and keep the close-price companion invisible", () => {
+  const source = fs.readFileSync(path.resolve("multi-assets.js"), "utf8");
+
+  assert.match(source, /window\.echarts\.init\(chartEl,\s*null,\s*\{\s*renderer:\s*"svg",/);
+  assert.match(
+    source,
+    /id:\s*`\$\{item\.id\}__endlabel`[\s\S]*lineStyle:\s*\{\s*width:\s*1,\s*opacity:\s*0,\s*\}[\s\S]*itemStyle:\s*\{\s*opacity:\s*0,\s*\}/,
+  );
+  assert.doesNotMatch(source, /seriesType:\s*"line",[\s\S]*当前浏览器对K线渲染兼容性有限/);
 });
 
 test("viewport metrics convert the base index into the visible-window coordinate system", () => {

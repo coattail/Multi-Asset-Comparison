@@ -24,6 +24,13 @@ test("nasdaq 100 uses Yahoo Finance daily chart data", () => {
   assert.equal(target.seriesId, undefined);
 });
 
+test("沪深300 source starts at January 2006", () => {
+  const target = EQUITY_TARGETS.find((item) => item.id === "equity_csi300");
+
+  assert.ok(target);
+  assert.match(target.url, /[?&]beg=20060101(?:&|$)/);
+});
+
 test("buildAssetPartFromPreviousOutput reconstructs monthly values and ohlc from cached output", () => {
   const previousOutputData = {
     dates: ["2026-01", "2026-02", "2026-03"],
