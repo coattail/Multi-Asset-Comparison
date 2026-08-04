@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-08-03T01:13:25.233Z",
+  "generatedAt": "2026-08-04T01:04:36.760Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -1612,7 +1612,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（^GSPC）",
       "unit": "指数",
-      "availableRange": "2006-01:2026-07"
+      "availableRange": "2006-01:2026-08"
     },
     {
       "id": "equity_nasdaq100",
@@ -1624,7 +1624,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（^NDX）",
       "unit": "指数",
-      "availableRange": "2006-01:2026-07"
+      "availableRange": "2006-01:2026-08"
     },
     {
       "id": "equity_csi300",
@@ -1636,7 +1636,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "东方财富（沪深300）",
       "unit": "指数",
-      "availableRange": "2006-01:2026-07"
+      "availableRange": "2006-01:2026-08"
     }
   ],
   "values": {
@@ -26388,7 +26388,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       7580.060059,
       7499.359863,
       7489.720215,
-      null
+      7600.5
     ],
     "equity_nasdaq100": [
       1710.75,
@@ -26638,7 +26638,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       30333.179688,
       30276.349609,
       28274.199219,
-      null
+      28776.802734
     ],
     "equity_csi300": [
       1009.6,
@@ -26888,7 +26888,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4892.12,
       4979.43,
       4588.2,
-      null
+      4543.18
     ]
   },
   "ohlcValues": {
@@ -28375,7 +28375,12 @@ window.MULTI_ASSET_SOURCE_DATA = {
         7313.919922,
         7581.5
       ],
-      null
+      [
+        7504.779785,
+        7600.5,
+        7504.779785,
+        7610.040039
+      ]
     ],
     "equity_nasdaq100": [
       [
@@ -29860,7 +29865,12 @@ window.MULTI_ASSET_SOURCE_DATA = {
         27176.029297,
         30084.779297
       ],
-      null
+      [
+        28278.587891,
+        28776.802734,
+        28196.876953,
+        28842.357422
+      ]
     ],
     "equity_csi300": [
       [
@@ -31345,7 +31355,12 @@ window.MULTI_ASSET_SOURCE_DATA = {
         4478.21,
         5017.38
       ],
-      null
+      [
+        4561.82,
+        4543.18,
+        4529.19,
+        4572.59
+      ]
     ]
   },
   "sourceNotes": {
