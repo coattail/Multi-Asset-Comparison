@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-08-15T23:54:25.660Z",
+  "generatedAt": "2026-08-16T23:53:36.840Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -26387,7 +26387,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       7209.009766,
       7580.060059,
       7499.359863,
-      7437.629883,
+      7489.720215,
       7785.759766
     ],
     "equity_nasdaq100": [
@@ -28371,7 +28371,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         7478.839844,
-        7437.629883,
+        7489.720215,
         7313.919922,
         7581.5
       ],
