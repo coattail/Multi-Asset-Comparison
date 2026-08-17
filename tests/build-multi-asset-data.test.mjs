@@ -24,6 +24,27 @@ test("nasdaq 100 uses Yahoo Finance daily chart data", () => {
   assert.equal(target.seriesId, undefined);
 });
 
+test("Magnificent Seven targets use the correct Yahoo Finance tickers and dollar units", () => {
+  const expected = new Map([
+    ["equity_apple", "AAPL"],
+    ["equity_microsoft", "MSFT"],
+    ["equity_alphabet", "GOOGL"],
+    ["equity_amazon", "AMZN"],
+    ["equity_nvidia", "NVDA"],
+    ["equity_meta", "META"],
+    ["equity_tesla", "TSLA"],
+  ]);
+
+  for (const [id, symbol] of expected) {
+    const target = EQUITY_TARGETS.find((item) => item.id === id);
+    assert.ok(target, `${id} should be configured`);
+    assert.equal(target.parser, "yahoo");
+    assert.equal(target.symbol, symbol);
+    assert.equal(target.source, `Yahoo Finance（${symbol}）`);
+    assert.equal(target.unit, "美元");
+  }
+});
+
 test("沪深300 source starts at January 2006", () => {
   const target = EQUITY_TARGETS.find((item) => item.id === "equity_csi300");
 
@@ -238,6 +259,35 @@ test("buildEquityAssetFromYahooFinance aggregates daily OHLC into monthly index 
       ["2026-04", [20, 23, 19, 24]],
     ],
   );
+});
+
+test("buildEquityAssetFromYahooFinance preserves a stock target's dollar unit", () => {
+  const chartJson = JSON.stringify({
+    chart: {
+      result: [
+        {
+          timestamp: [1772411400],
+          indicators: {
+            quote: [{ open: [100], high: [105], low: [98], close: [103] }],
+          },
+        },
+      ],
+    },
+  });
+
+  const part = buildEquityAssetFromYahooFinance(
+    {
+      id: "equity_apple",
+      name: "权益类资产·苹果",
+      legendName: "苹果（AAPL）",
+      source: "Yahoo Finance（AAPL）",
+      symbol: "AAPL",
+      unit: "美元",
+    },
+    chartJson,
+  );
+
+  assert.equal(part.asset.unit, "美元");
 });
 
 test("buildEquityAssetFromYahooFinance ignores zero-price daily rows", () => {

@@ -5,7 +5,7 @@
 A research-oriented, fully static dashboard covering:
 
 - China second-hand housing indices (Centaline 6-city + NBS 70-city)
-- Multi-asset comparison (China housing / US housing / metals / equities)
+- Multi-asset comparison (China housing / US housing / metals / major equity indices / Magnificent Seven)
 - Rebase analysis, drawdown analysis, in-chart summary table, and HD export
 
 No frontend build/bundling pipeline is required.

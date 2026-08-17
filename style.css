@@ -204,7 +204,8 @@ body.theme-dark .china-source-chip.is-active {
 }
 
 body.theme-dark .page-multi-assets .asset-module[data-category="cn_housing"] .asset-grid::-webkit-scrollbar-thumb,
-body.theme-dark .page-multi-assets .asset-module[data-category="us_housing"] .asset-grid::-webkit-scrollbar-thumb {
+body.theme-dark .page-multi-assets .asset-module[data-category="us_housing"] .asset-grid::-webkit-scrollbar-thumb,
+body.theme-dark .page-multi-assets .asset-module[data-category="equities"] .asset-grid::-webkit-scrollbar-thumb {
   background: rgba(191, 146, 86, 0.65);
 }
 
@@ -669,7 +670,8 @@ body.theme-dark .controls {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.page-multi-assets .asset-module[data-category="us_housing"] {
+.page-multi-assets .asset-module[data-category="us_housing"],
+.page-multi-assets .asset-module[data-category="equities"] {
   display: flex;
   flex-direction: column;
 }
@@ -763,7 +765,8 @@ body.theme-dark .controls {
 }
 
 .page-multi-assets .asset-module[data-category="cn_housing"] .asset-grid,
-.page-multi-assets .asset-module[data-category="us_housing"] .asset-grid {
+.page-multi-assets .asset-module[data-category="us_housing"] .asset-grid,
+.page-multi-assets .asset-module[data-category="equities"] .asset-grid {
   max-height: calc(
     (var(--asset-row-height) * var(--housing-module-visible-rows)) +
       (var(--asset-row-gap) * (var(--housing-module-visible-rows) - 1))
@@ -774,18 +777,21 @@ body.theme-dark .controls {
 }
 
 .page-multi-assets .asset-module[data-category="cn_housing"] .asset-grid::-webkit-scrollbar,
-.page-multi-assets .asset-module[data-category="us_housing"] .asset-grid::-webkit-scrollbar {
+.page-multi-assets .asset-module[data-category="us_housing"] .asset-grid::-webkit-scrollbar,
+.page-multi-assets .asset-module[data-category="equities"] .asset-grid::-webkit-scrollbar {
   width: 8px;
 }
 
 .page-multi-assets .asset-module[data-category="cn_housing"] .asset-grid::-webkit-scrollbar-thumb,
-.page-multi-assets .asset-module[data-category="us_housing"] .asset-grid::-webkit-scrollbar-thumb {
+.page-multi-assets .asset-module[data-category="us_housing"] .asset-grid::-webkit-scrollbar-thumb,
+.page-multi-assets .asset-module[data-category="equities"] .asset-grid::-webkit-scrollbar-thumb {
   border-radius: 999px;
   background: rgba(96, 142, 176, 0.55);
 }
 
 .page-multi-assets .asset-module[data-category="cn_housing"] .asset-grid::-webkit-scrollbar-track,
-.page-multi-assets .asset-module[data-category="us_housing"] .asset-grid::-webkit-scrollbar-track {
+.page-multi-assets .asset-module[data-category="us_housing"] .asset-grid::-webkit-scrollbar-track,
+.page-multi-assets .asset-module[data-category="equities"] .asset-grid::-webkit-scrollbar-track {
   background: transparent;
 }
 

@@ -60,6 +60,69 @@ export const EQUITY_TARGETS = Object.freeze([
     url:
       "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.000300&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58&klt=101&fqt=0&beg=20060101&end=20500101",
   },
+  {
+    id: "equity_apple",
+    name: "权益类资产·苹果",
+    legendName: "苹果（AAPL）",
+    source: "Yahoo Finance（AAPL）",
+    parser: "yahoo",
+    symbol: "AAPL",
+    unit: "美元",
+  },
+  {
+    id: "equity_microsoft",
+    name: "权益类资产·微软",
+    legendName: "微软（MSFT）",
+    source: "Yahoo Finance（MSFT）",
+    parser: "yahoo",
+    symbol: "MSFT",
+    unit: "美元",
+  },
+  {
+    id: "equity_alphabet",
+    name: "权益类资产·Alphabet",
+    legendName: "Alphabet（GOOGL）",
+    source: "Yahoo Finance（GOOGL）",
+    parser: "yahoo",
+    symbol: "GOOGL",
+    unit: "美元",
+  },
+  {
+    id: "equity_amazon",
+    name: "权益类资产·亚马逊",
+    legendName: "亚马逊（AMZN）",
+    source: "Yahoo Finance（AMZN）",
+    parser: "yahoo",
+    symbol: "AMZN",
+    unit: "美元",
+  },
+  {
+    id: "equity_nvidia",
+    name: "权益类资产·英伟达",
+    legendName: "英伟达（NVDA）",
+    source: "Yahoo Finance（NVDA）",
+    parser: "yahoo",
+    symbol: "NVDA",
+    unit: "美元",
+  },
+  {
+    id: "equity_meta",
+    name: "权益类资产·Meta",
+    legendName: "Meta（META）",
+    source: "Yahoo Finance（META）",
+    parser: "yahoo",
+    symbol: "META",
+    unit: "美元",
+  },
+  {
+    id: "equity_tesla",
+    name: "权益类资产·特斯拉",
+    legendName: "特斯拉（TSLA）",
+    source: "Yahoo Finance（TSLA）",
+    parser: "yahoo",
+    symbol: "TSLA",
+    unit: "美元",
+  },
 ]);
 const CASE_SHILLER_TARGETS = Object.freeze([
   {
@@ -368,6 +431,10 @@ function isResponseBodyUsable(sourceUrl, text) {
   }
   if (loweredSourceUrl.includes("eastmoney.com")) {
     return body.includes("klines") && body.includes("{");
+  }
+  if (loweredSourceUrl.includes("finance.yahoo.com")) {
+    const parsed = parseJsonLoose(body);
+    return Array.isArray(parsed?.chart?.result) && parsed.chart.result.length > 0;
   }
   return true;
 }
@@ -826,7 +893,7 @@ export function buildEquityAssetFromYahooFinance(target, jsonText) {
       subgroupKey: "equities",
       subgroupLabel: "权益类资产",
       source: target.source || `Yahoo Finance（${target.symbol || target.id}）`,
-      unit: "指数",
+      unit: target.unit || "指数",
     },
     seriesMap: monthValueMap,
     ohlcMap: monthOhlcMap,
@@ -1240,7 +1307,7 @@ async function main() {
           subgroupKey: "equities",
           subgroupLabel: "权益类资产",
           source: target.source || `Yahoo Finance（${target.symbol || target.id}）`,
-          unit: "指数",
+          unit: target.unit || "指数",
         },
         async () => {
           const jsonText = await fetchText(sourceUrl);
@@ -1359,7 +1426,7 @@ async function main() {
     {
       key: "equities",
       label: "权益类资产",
-      description: "标普500、纳斯达克100、沪深300",
+      description: "标普500、纳斯达克100、沪深300、美股科技七巨头",
     },
   ];
 

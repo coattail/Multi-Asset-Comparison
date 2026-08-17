@@ -1,7 +1,7 @@
 const THEME_MODE_STORAGE_KEY = "house-price-theme-mode";
 const THEME_MODE_LIGHT = "light";
 const THEME_MODE_DARK = "dark";
-const MAX_SELECTED_ASSET_COUNT = 6;
+const MAX_SELECTED_ASSET_COUNT = 7;
 const BASE_START_MONTH = "2006-01";
 const CENTALINE_BASE_MONTH = "2008-01";
 const CHART_FONT_FACE = "ProjectChartSTKaiti";
@@ -69,6 +69,69 @@ const EQUITY_SERIES = Object.freeze([
       "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.000300&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58&klt=101&fqt=0&beg=20060101&end=20500101",
     source: "东方财富（沪深300）",
   },
+  {
+    id: "equity_apple",
+    name: "权益类资产·苹果",
+    legendName: "苹果（AAPL）",
+    parser: "yahoo",
+    symbol: "AAPL",
+    source: "Yahoo Finance（AAPL）",
+    unit: "美元",
+  },
+  {
+    id: "equity_microsoft",
+    name: "权益类资产·微软",
+    legendName: "微软（MSFT）",
+    parser: "yahoo",
+    symbol: "MSFT",
+    source: "Yahoo Finance（MSFT）",
+    unit: "美元",
+  },
+  {
+    id: "equity_alphabet",
+    name: "权益类资产·Alphabet",
+    legendName: "Alphabet（GOOGL）",
+    parser: "yahoo",
+    symbol: "GOOGL",
+    source: "Yahoo Finance（GOOGL）",
+    unit: "美元",
+  },
+  {
+    id: "equity_amazon",
+    name: "权益类资产·亚马逊",
+    legendName: "亚马逊（AMZN）",
+    parser: "yahoo",
+    symbol: "AMZN",
+    source: "Yahoo Finance（AMZN）",
+    unit: "美元",
+  },
+  {
+    id: "equity_nvidia",
+    name: "权益类资产·英伟达",
+    legendName: "英伟达（NVDA）",
+    parser: "yahoo",
+    symbol: "NVDA",
+    source: "Yahoo Finance（NVDA）",
+    unit: "美元",
+  },
+  {
+    id: "equity_meta",
+    name: "权益类资产·Meta",
+    legendName: "Meta（META）",
+    parser: "yahoo",
+    symbol: "META",
+    source: "Yahoo Finance（META）",
+    unit: "美元",
+  },
+  {
+    id: "equity_tesla",
+    name: "权益类资产·特斯拉",
+    legendName: "特斯拉（TSLA）",
+    parser: "yahoo",
+    symbol: "TSLA",
+    source: "Yahoo Finance（TSLA）",
+    unit: "美元",
+  },
 ]);
 
 const CATEGORY_MODULES = Object.freeze([
@@ -90,7 +153,7 @@ const CATEGORY_MODULES = Object.freeze([
   {
     key: "equities",
     title: "权益类资产",
-    description: "标普500、纳斯达克100、沪深300",
+    description: "主要股指与美股科技七巨头",
   },
 ]);
 
@@ -1829,7 +1892,11 @@ function buildOhlcTuple(open, close, low, high, digits = 6) {
     !isFiniteNumber(openValue) ||
     !isFiniteNumber(closeValue) ||
     !isFiniteNumber(lowValue) ||
-    !isFiniteNumber(highValue)
+    !isFiniteNumber(highValue) ||
+    openValue <= 0 ||
+    closeValue <= 0 ||
+    lowValue <= 0 ||
+    highValue <= 0
   ) {
     return null;
   }
@@ -1963,6 +2030,41 @@ function parseJsonLoose(text) {
   }
 }
 
+function parseYahooFinanceChartToDailyRows(jsonText) {
+  const rows = [];
+  const parsed = parseJsonLoose(jsonText);
+  const result = parsed?.chart?.result?.[0];
+  const timestamps = result?.timestamp;
+  const quote = result?.indicators?.quote?.[0];
+  if (!Array.isArray(timestamps) || !quote) return rows;
+
+  for (let index = 0; index < timestamps.length; index += 1) {
+    const timestamp = Number(timestamps[index]);
+    const date = isFiniteNumber(timestamp)
+      ? normalizeDateToken(new Date(timestamp * 1000).toISOString().slice(0, 10))
+      : "";
+    const tuple = buildOhlcTuple(
+      quote.open?.[index],
+      quote.close?.[index],
+      quote.low?.[index],
+      quote.high?.[index],
+      6,
+    );
+    if (!date || !tuple) continue;
+    rows.push({ date, tuple });
+  }
+
+  return rows;
+}
+
+function parseYahooFinanceChartToMonthOhlcMap(jsonText) {
+  return aggregateDailyRowsToMonthOhlcMap(parseYahooFinanceChartToDailyRows(jsonText), 6);
+}
+
+function parseYahooFinanceChartToMonthMap(jsonText) {
+  return buildMonthCloseMapFromMonthOhlcMap(parseYahooFinanceChartToMonthOhlcMap(jsonText));
+}
+
 function parseEastmoneyKlineToDailyRows(jsonText) {
   const rows = [];
   const parsed = parseJsonLoose(jsonText);
@@ -2004,6 +2106,10 @@ function isResponseBodyUsable(sourceUrl, text) {
   }
   if (loweredSourceUrl.includes("eastmoney.com")) {
     return body.includes("klines") && body.includes("{");
+  }
+  if (loweredSourceUrl.includes("finance.yahoo.com")) {
+    const parsed = parseJsonLoose(body);
+    return Array.isArray(parsed?.chart?.result) && parsed.chart.result.length > 0;
   }
   return true;
 }
@@ -2058,6 +2164,12 @@ function caseShillerSeriesUrl(seriesId, startDate = "") {
     url.searchParams.set("cosd", startDate);
   }
   return url.toString();
+}
+
+function yahooFinanceChartUrl(symbol) {
+  return `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+    symbol,
+  )}?period1=1136073600&period2=253402300799&interval=1d&events=history&includeAdjustedClose=true`;
 }
 
 function buildChinaSourceAssets(sourceData, { sourceKey, sourceName, sourceLabel }) {
@@ -2278,6 +2390,10 @@ async function buildMultiAssetDataset() {
         const jsonText = await fetchTextResilient(target.url);
         resolvedMap = parseEastmoneyKlineToMonthMap(jsonText);
         resolvedOhlcMap = parseEastmoneyKlineToMonthOhlcMap(jsonText);
+      } else if (target.parser === "yahoo" && target.symbol) {
+        const jsonText = await fetchTextResilient(yahooFinanceChartUrl(target.symbol));
+        resolvedMap = parseYahooFinanceChartToMonthMap(jsonText);
+        resolvedOhlcMap = parseYahooFinanceChartToMonthOhlcMap(jsonText);
       } else if (target.seriesId) {
         const csvText = await fetchTextResilient(caseShillerSeriesUrl(target.seriesId));
         resolvedMap = parseFredCsvToMonthMap(csvText);
@@ -2306,7 +2422,7 @@ async function buildMultiAssetDataset() {
         categoryLabel: "权益类资产",
         subgroupLabel: "权益类资产",
         source: target.source || "权益类资产",
-        unit: "指数",
+        unit: target.unit || "指数",
       });
       seriesById.set(target.id, resolvedMap);
       if (resolvedOhlcMap instanceof Map && resolvedOhlcMap.size > 0) {
