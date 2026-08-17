@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-08-16T23:53:36.840Z",
+  "generatedAt": "2026-08-17T05:19:02.430Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -286,7 +286,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-06"
+      "availableRange": "2008-01:2026-07"
     },
     {
       "id": "cn_centaline_city_3",
@@ -300,7 +300,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-06"
+      "availableRange": "2008-01:2026-07"
     },
     {
       "id": "cn_centaline_city_4",
@@ -314,7 +314,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-06"
+      "availableRange": "2008-01:2026-07"
     },
     {
       "id": "cn_centaline_city_5",
@@ -328,7 +328,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-06"
+      "availableRange": "2008-01:2026-07"
     },
     {
       "id": "cn_centaline_city_6",
@@ -342,7 +342,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-06"
+      "availableRange": "2008-01:2026-07"
     },
     {
       "id": "cn_centaline_city_hk",
@@ -356,7 +356,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "chinaSourceLabel": "中原6城",
       "source": "中原地产香港官网(CCL)",
       "unit": "指数",
-      "availableRange": "2008-01:2026-06"
+      "availableRange": "2008-01:2026-07"
     },
     {
       "id": "cn_nbs70_city_nbs_110000",
@@ -1887,7 +1887,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       166.586157,
       165.707075,
       164.827992,
-      null,
+      162.630286,
       null
     ],
     "cn_centaline_city_3": [
@@ -2137,7 +2137,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       324.951397,
       325.382367,
       322.796547,
-      null,
+      320.641697,
       null
     ],
     "cn_centaline_city_4": [
@@ -2387,7 +2387,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       302.069099,
       301.576328,
       300.590784,
-      null,
+      302.069099,
       null
     ],
     "cn_centaline_city_5": [
@@ -2637,7 +2637,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       277.718234,
       278.129668,
       278.541103,
-      null,
+      277.718234,
       null
     ],
     "cn_centaline_city_6": [
@@ -2887,7 +2887,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       241.172507,
       243.380035,
       243.931918,
-      null,
+      244.4838,
       null
     ],
     "cn_centaline_city_hk": [
@@ -3137,7 +3137,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       219.86117,
       223.74274,
       227.751806,
-      null,
+      226.54767,
       null
     ],
     "cn_nbs70_city_nbs_110000": [
