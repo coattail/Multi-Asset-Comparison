@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-08-21T23:57:03.480Z",
+  "generatedAt": "2026-08-22T23:54:49.977Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -39152,7 +39152,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       [
         278.290009,
         258.630005,
-        257.035004,
+        257.040009,
         287.200012
       ]
     ],
