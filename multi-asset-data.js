@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-08-31T01:35:35.461Z",
+  "generatedAt": "2026-09-01T02:02:13.308Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -249,7 +249,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
     "2026-05",
     "2026-06",
     "2026-07",
-    "2026-08"
+    "2026-08",
+    "2026-09"
   ],
   "categories": [
     {
@@ -1636,7 +1637,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "东方财富（沪深300）",
       "unit": "指数",
-      "availableRange": "2006-01:2026-08"
+      "availableRange": "2006-01:2026-09"
     },
     {
       "id": "equity_apple",
@@ -1972,6 +1973,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       165.707075,
       164.827992,
       162.630286,
+      null,
       null
     ],
     "cn_centaline_city_3": [
@@ -2222,6 +2224,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       325.382367,
       322.796547,
       320.641697,
+      null,
       null
     ],
     "cn_centaline_city_4": [
@@ -2472,6 +2475,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       301.576328,
       300.590784,
       302.069099,
+      null,
       null
     ],
     "cn_centaline_city_5": [
@@ -2722,6 +2726,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       278.129668,
       278.541103,
       277.718234,
+      null,
       null
     ],
     "cn_centaline_city_6": [
@@ -2972,6 +2977,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       243.380035,
       243.931918,
       244.4838,
+      null,
       null
     ],
     "cn_centaline_city_hk": [
@@ -3222,6 +3228,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       223.74274,
       227.751806,
       226.54767,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_110000": [
@@ -3471,6 +3478,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       251.445568,
       251.697014,
       251.948711,
+      null,
       null,
       null
     ],
@@ -3722,6 +3730,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       139.441022,
       139.022699,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_130100": [
@@ -3971,6 +3980,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       113.364483,
       113.137754,
       112.572065,
+      null,
       null,
       null
     ],
@@ -4222,6 +4232,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       125.153446,
       124.402525,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_130300": [
@@ -4471,6 +4482,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       112.424242,
       111.974545,
       111.638621,
+      null,
       null,
       null
     ],
@@ -4722,6 +4734,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       135.486769,
       134.944822,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_150100": [
@@ -4971,6 +4984,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       107.381462,
       106.844555,
       106.417177,
+      null,
       null,
       null
     ],
@@ -5222,6 +5236,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       84.128355,
       83.87597,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_210100": [
@@ -5471,6 +5486,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       165.503561,
       165.503561,
       165.669065,
+      null,
       null,
       null
     ],
@@ -5722,6 +5738,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       134.932054,
       134.797122,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_210600": [
@@ -5971,6 +5988,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       109.27104,
       109.052498,
       108.834393,
+      null,
       null,
       null
     ],
@@ -6222,6 +6240,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       83.550831,
       83.46728,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_220100": [
@@ -6471,6 +6490,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       127.156604,
       126.902291,
       126.521584,
+      null,
       null,
       null
     ],
@@ -6722,6 +6742,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       110.123498,
       109.793128,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_230100": [
@@ -6971,6 +6992,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       142.695279,
       141.981803,
       141.413876,
+      null,
       null,
       null
     ],
@@ -7222,6 +7244,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       81.684714,
       81.521345,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_310000": [
@@ -7471,6 +7494,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       209.18998,
       210.44512,
       211.2869,
+      null,
       null,
       null
     ],
@@ -7722,6 +7746,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       148.832876,
       148.386377,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_320200": [
@@ -7971,6 +7996,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       191.98908,
       191.797091,
       192.180685,
+      null,
       null,
       null
     ],
@@ -8222,6 +8248,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       115.071193,
       115.186264,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_321000": [
@@ -8471,6 +8498,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       115.585891,
       114.892376,
       114.317914,
+      null,
       null,
       null
     ],
@@ -8722,6 +8750,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       189.788713,
       189.409136,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_330200": [
@@ -8971,6 +9000,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       133.429878,
       133.563308,
       133.830435,
+      null,
       null,
       null
     ],
@@ -9222,6 +9252,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       99.927703,
       99.527992,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_330700": [
@@ -9471,6 +9502,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       110.27404,
       110.053492,
       109.723332,
+      null,
       null,
       null
     ],
@@ -9722,6 +9754,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       171.70454,
       171.70454,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_340300": [
@@ -9971,6 +10004,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       162.779511,
       162.291172,
       161.96659,
+      null,
       null,
       null
     ],
@@ -10222,6 +10256,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       94.772698,
       94.48838,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_350100": [
@@ -10471,6 +10506,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       135.158788,
       134.753312,
       134.214299,
+      null,
       null,
       null
     ],
@@ -10722,6 +10758,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       173.15944,
       172.813121,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_350500": [
@@ -10971,6 +11008,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       101.660254,
       101.456933,
       101.051105,
+      null,
       null,
       null
     ],
@@ -11222,6 +11260,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       149.217382,
       148.471295,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_360400": [
@@ -11471,6 +11510,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       154.267926,
       153.805122,
       152.574681,
+      null,
       null,
       null
     ],
@@ -11722,6 +11762,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       128.623481,
       128.237611,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_370100": [
@@ -11971,6 +12012,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       126.50501,
       126.252,
       125.62074,
+      null,
       null,
       null
     ],
@@ -12222,6 +12264,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       118.575157,
       118.100856,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_370600": [
@@ -12471,6 +12514,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       128.149619,
       128.021469,
       127.637405,
+      null,
       null,
       null
     ],
@@ -12722,6 +12766,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       157.1711,
       156.542416,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_410100": [
@@ -12971,6 +13016,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       138.575195,
       138.71377,
       138.575056,
+      null,
       null,
       null
     ],
@@ -13222,6 +13268,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       128.223439,
       127.582322,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_410400": [
@@ -13471,6 +13518,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       118.659025,
       118.303048,
       117.474927,
+      null,
       null,
       null
     ],
@@ -13722,6 +13770,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       141.291079,
       141.149788,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_420500": [
@@ -13971,6 +14020,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       111.828823,
       111.716994,
       111.381843,
+      null,
       null,
       null
     ],
@@ -14222,6 +14272,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       137.285268,
       136.736127,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_430100": [
@@ -14471,6 +14522,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       191.527544,
       190.378379,
       189.997622,
+      null,
       null,
       null
     ],
@@ -14722,6 +14774,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       144.380839,
       143.947696,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_430700": [
@@ -14971,6 +15024,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       117.620356,
       117.032254,
       116.213028,
+      null,
       null,
       null
     ],
@@ -15222,6 +15276,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       171.34538,
       172.030762,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_440200": [
@@ -15471,6 +15526,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       102.427011,
       101.914876,
       101.201472,
+      null,
       null,
       null
     ],
@@ -15722,6 +15778,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       277.561608,
       278.394293,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_440800": [
@@ -15971,6 +16028,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       143.226718,
       142.367358,
       141.228419,
+      null,
       null,
       null
     ],
@@ -16222,6 +16280,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       132.983012,
       132.318097,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_450100": [
@@ -16471,6 +16530,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       143.026827,
       142.311693,
       141.884758,
+      null,
       null,
       null
     ],
@@ -16722,6 +16782,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       99.795545,
       99.396363,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_450500": [
@@ -16971,6 +17032,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       107.758087,
       107.327055,
       106.683093,
+      null,
       null,
       null
     ],
@@ -17222,6 +17284,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       125.658011,
       125.029721,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_460200": [
@@ -17471,6 +17534,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       182.759755,
       181.663196,
       181.118206,
+      null,
       null,
       null
     ],
@@ -17722,6 +17786,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       138.865481,
       139.004346,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_510100": [
@@ -17971,6 +18036,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       163.578908,
       162.924592,
       162.272894,
+      null,
       null,
       null
     ],
@@ -18222,6 +18288,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       108.699604,
       107.830007,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_511300": [
@@ -18471,6 +18538,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       110.865176,
       110.53258,
       110.09045,
+      null,
       null,
       null
     ],
@@ -18722,6 +18790,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       119.765133,
       119.286072,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_520300": [
@@ -18971,6 +19040,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       166.010528,
       164.848454,
       163.859363,
+      null,
       null,
       null
     ],
@@ -19222,6 +19292,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       152.242434,
       151.481222,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_532900": [
@@ -19471,6 +19542,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       114.451719,
       113.765009,
       112.968654,
+      null,
       null,
       null
     ],
@@ -19722,6 +19794,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       125.850175,
       125.346774,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_620100": [
@@ -19971,6 +20044,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       147.291205,
       147.143914,
       146.408194,
+      null,
       null,
       null
     ],
@@ -20222,6 +20296,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       172.488357,
       171.970892,
       null,
+      null,
       null
     ],
     "cn_nbs70_city_nbs_640100": [
@@ -20471,6 +20546,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       146.265835,
       145.973303,
       145.38941,
+      null,
       null,
       null
     ],
@@ -20722,6 +20798,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       188.492359,
       187.73839,
       null,
+      null,
       null
     ],
     "us_cs_atxrsa": [
@@ -20969,6 +21046,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       249.691119,
       249.468939,
       249.797908,
+      null,
       null,
       null,
       null,
@@ -21222,6 +21300,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
+      null,
       null
     ],
     "us_cs_crxrsa": [
@@ -21469,6 +21548,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       286.856511,
       286.338585,
       286.325971,
+      null,
       null,
       null,
       null,
@@ -21722,6 +21802,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
+      null,
       null
     ],
     "us_cs_cexrsa": [
@@ -21969,6 +22050,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       205.845931,
       205.625285,
       205.795717,
+      null,
       null,
       null,
       null,
@@ -22222,6 +22304,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
+      null,
       null
     ],
     "us_cs_dnxrsa": [
@@ -22472,6 +22555,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
+      null,
       null
     ],
     "us_cs_dexrsa": [
@@ -22718,6 +22802,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       199.900965,
       199.512281,
       199.529225,
+      null,
       null,
       null,
       null,
@@ -22972,6 +23057,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
+      null,
       null
     ],
     "us_cs_lxxrsa": [
@@ -23219,6 +23305,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       444.703403,
       442.028573,
       442.042055,
+      null,
       null,
       null,
       null,
@@ -23472,6 +23559,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
+      null,
       null
     ],
     "us_cs_mnxrsa": [
@@ -23719,6 +23807,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       249.471215,
       248.393421,
       248.291892,
+      null,
       null,
       null,
       null,
@@ -23972,6 +24061,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
+      null,
       null
     ],
     "us_cs_phxrsa": [
@@ -24219,6 +24309,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       327.66666,
       326.658985,
       324.663684,
+      null,
       null,
       null,
       null,
@@ -24472,6 +24563,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
+      null,
       null
     ],
     "us_cs_sdxrsa": [
@@ -24719,6 +24811,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       446.728817,
       444.293422,
       442.891261,
+      null,
       null,
       null,
       null,
@@ -24972,6 +25065,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
+      null,
       null
     ],
     "us_cs_sexrsa": [
@@ -25219,6 +25313,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       390.183844,
       386.457703,
       384.398525,
+      null,
       null,
       null,
       null,
@@ -25472,6 +25567,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       null,
       null,
       null,
+      null,
       null
     ],
     "us_cs_wdxrsa": [
@@ -25719,6 +25815,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       336.196499,
       335.803904,
       336.500353,
+      null,
       null,
       null,
       null,
@@ -25972,7 +26069,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4540.07,
       4533.42,
       4035.28,
-      4051.28
+      4051.28,
+      null
     ],
     "metal_silver_spot_usd": [
       9.84,
@@ -26222,7 +26320,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       76.65,
       75.05,
       59.1,
-      57.6
+      57.6,
+      null
     ],
     "equity_sp500": [
       1280.079956,
@@ -26472,7 +26571,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       7580.060059,
       7499.359863,
       7489.720215,
-      7711.759766
+      7686.140137,
+      null
     ],
     "equity_nasdaq100": [
       1710.75,
@@ -26722,7 +26822,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       30333.179688,
       30276.349609,
       28274.199219,
-      29433.429688
+      29456.972656,
+      null
     ],
     "equity_csi300": [
       1009.6,
@@ -26972,7 +27073,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4892.12,
       4979.43,
       4588.2,
-      4577.72
+      4625.09,
+      4608.8
     ],
     "equity_apple": [
       2.696786,
@@ -27222,7 +27324,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       312.059998,
       289.359985,
       308.910004,
-      319.700012
+      316.850006,
+      null
     ],
     "equity_microsoft": [
       28.15,
@@ -27472,7 +27575,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       450.23999,
       373.019989,
       464.720001,
-      513.530029
+      507.290009,
+      null
     ],
     "equity_alphabet": [
       10.827327,
@@ -27722,7 +27826,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       380.339996,
       357.369995,
       356.130005,
-      346.589996
+      339.350006,
+      null
     ],
     "equity_amazon": [
       2.241,
@@ -27972,7 +28077,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       270.640015,
       238.339996,
       271.579987,
-      266.429993
+      259.769989,
+      null
     ],
     "equity_nvidia": [
       0.374667,
@@ -28222,7 +28328,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       211.139999,
       200.089996,
       200.75,
-      217.550003
+      220.779999,
+      null
     ],
     "equity_meta": [
       null,
@@ -28472,7 +28579,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       632.51001,
       563.289978,
       556.710022,
-      578.02002
+      572.340027,
+      null
     ],
     "equity_tesla": [
       null,
@@ -28722,7 +28830,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       435.790009,
       420.600006,
       311.209991,
-      348.75
+      367.950012,
+      null
     ]
   },
   "ohlcValues": {
@@ -30211,10 +30320,11 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         7504.779785,
-        7711.759766,
+        7686.140137,
         7504.779785,
         7816.700195
-      ]
+      ],
+      null
     ],
     "equity_nasdaq100": [
       [
@@ -31701,10 +31811,11 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         28278.589844,
-        29433.429688,
+        29456.972656,
         28196.880859,
         30195.720703
-      ]
+      ],
+      null
     ],
     "equity_csi300": [
       [
@@ -33191,9 +33302,15 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         4561.82,
-        4577.72,
+        4625.09,
         4523.02,
         4744.01
+      ],
+      [
+        4618.73,
+        4608.8,
+        4606.37,
+        4625.56
       ]
     ],
     "equity_apple": [
@@ -34681,10 +34798,11 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         309.579987,
-        319.700012,
+        316.850006,
         300.570007,
         322.369995
-      ]
+      ],
+      null
     ],
     "equity_microsoft": [
       [
@@ -36171,10 +36289,11 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         476.130005,
-        513.530029,
+        507.290009,
         475,
         517.780029
-      ]
+      ],
+      null
     ],
     "equity_alphabet": [
       [
@@ -37661,10 +37780,11 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         365.450012,
-        346.589996,
-        338.519989,
+        339.350006,
+        337.156006,
         384.480011
-      ]
+      ],
+      null
     ],
     "equity_amazon": [
       [
@@ -39151,10 +39271,11 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         278.290009,
-        266.429993,
+        259.769989,
         255.020004,
         287.200012
-      ]
+      ],
+      null
     ],
     "equity_nvidia": [
       [
@@ -40641,10 +40762,11 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         197.690002,
-        217.550003,
+        220.779999,
         196.850006,
         230.470001
-      ]
+      ],
+      null
     ],
     "equity_meta": [
       null,
@@ -41751,10 +41873,11 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         562.23999,
-        578.02002,
+        572.340027,
         537.27002,
         612.429993
-      ]
+      ],
+      null
     ],
     "equity_tesla": [
       null,
@@ -42976,10 +43099,11 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         310.959991,
-        348.75,
+        367.950012,
         310.429993,
-        366.5
-      ]
+        368.920013
+      ],
+      null
     ]
   },
   "sourceNotes": {
