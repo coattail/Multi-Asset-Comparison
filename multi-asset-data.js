@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-09-01T02:02:13.308Z",
+  "generatedAt": "2026-09-02T01:23:11.136Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -1613,7 +1613,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（^GSPC）",
       "unit": "指数",
-      "availableRange": "2006-01:2026-08"
+      "availableRange": "2006-01:2026-09"
     },
     {
       "id": "equity_nasdaq100",
@@ -1625,7 +1625,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（^NDX）",
       "unit": "指数",
-      "availableRange": "2006-01:2026-08"
+      "availableRange": "2006-01:2026-09"
     },
     {
       "id": "equity_csi300",
@@ -1649,7 +1649,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（AAPL）",
       "unit": "美元",
-      "availableRange": "2006-01:2026-08"
+      "availableRange": "2006-01:2026-09"
     },
     {
       "id": "equity_microsoft",
@@ -1661,7 +1661,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（MSFT）",
       "unit": "美元",
-      "availableRange": "2006-01:2026-08"
+      "availableRange": "2006-01:2026-09"
     },
     {
       "id": "equity_alphabet",
@@ -1673,7 +1673,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（GOOGL）",
       "unit": "美元",
-      "availableRange": "2006-01:2026-08"
+      "availableRange": "2006-01:2026-09"
     },
     {
       "id": "equity_amazon",
@@ -1685,7 +1685,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（AMZN）",
       "unit": "美元",
-      "availableRange": "2006-01:2026-08"
+      "availableRange": "2006-01:2026-09"
     },
     {
       "id": "equity_nvidia",
@@ -1697,7 +1697,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（NVDA）",
       "unit": "美元",
-      "availableRange": "2006-01:2026-08"
+      "availableRange": "2006-01:2026-09"
     },
     {
       "id": "equity_meta",
@@ -1709,7 +1709,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（META）",
       "unit": "美元",
-      "availableRange": "2012-05:2026-08"
+      "availableRange": "2012-05:2026-09"
     },
     {
       "id": "equity_tesla",
@@ -1721,7 +1721,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "subgroupLabel": "权益类资产",
       "source": "Yahoo Finance（TSLA）",
       "unit": "美元",
-      "availableRange": "2010-06:2026-08"
+      "availableRange": "2010-06:2026-09"
     }
   ],
   "values": {
@@ -26572,7 +26572,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       7499.359863,
       7489.720215,
       7686.140137,
-      null
+      7631.470215
     ],
     "equity_nasdaq100": [
       1710.75,
@@ -26822,8 +26822,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       30333.179688,
       30276.349609,
       28274.199219,
-      29456.972656,
-      null
+      29456.970703,
+      29077.220703
     ],
     "equity_csi300": [
       1009.6,
@@ -27074,7 +27074,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4979.43,
       4588.2,
       4625.09,
-      4608.8
+      4611.44
     ],
     "equity_apple": [
       2.696786,
@@ -27325,7 +27325,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       289.359985,
       308.910004,
       316.850006,
-      null
+      325.130005
     ],
     "equity_microsoft": [
       28.15,
@@ -27576,7 +27576,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       373.019989,
       464.720001,
       507.290009,
-      null
+      501.019989
     ],
     "equity_alphabet": [
       10.827327,
@@ -27827,7 +27827,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       357.369995,
       356.130005,
       339.350006,
-      null
+      335.019989
     ],
     "equity_amazon": [
       2.241,
@@ -28078,7 +28078,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       238.339996,
       271.579987,
       259.769989,
-      null
+      254.919998
     ],
     "equity_nvidia": [
       0.374667,
@@ -28329,7 +28329,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       200.089996,
       200.75,
       220.779999,
-      null
+      217.440002
     ],
     "equity_meta": [
       null,
@@ -28580,7 +28580,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       563.289978,
       556.710022,
       572.340027,
-      null
+      578.539978
     ],
     "equity_tesla": [
       null,
@@ -28831,7 +28831,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       420.600006,
       311.209991,
       367.950012,
-      null
+      356.089996
     ]
   },
   "ohlcValues": {
@@ -30324,7 +30324,12 @@ window.MULTI_ASSET_SOURCE_DATA = {
         7504.779785,
         7816.700195
       ],
-      null
+      [
+        7635.470215,
+        7631.470215,
+        7611.200195,
+        7663.629883
+      ]
     ],
     "equity_nasdaq100": [
       [
@@ -31811,11 +31816,16 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         28278.589844,
-        29456.972656,
+        29456.970703,
         28196.880859,
         30195.720703
       ],
-      null
+      [
+        29056.578125,
+        29077.220703,
+        28953.255859,
+        29267.421875
+      ]
     ],
     "equity_csi300": [
       [
@@ -33308,9 +33318,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         4618.73,
-        4608.8,
-        4606.37,
-        4625.56
+        4611.44,
+        4604.77,
+        4640.08
       ]
     ],
     "equity_apple": [
@@ -34802,7 +34812,12 @@ window.MULTI_ASSET_SOURCE_DATA = {
         300.570007,
         322.369995
       ],
-      null
+      [
+        316.980011,
+        325.130005,
+        314.737,
+        327.299988
+      ]
     ],
     "equity_microsoft": [
       [
@@ -36293,7 +36308,12 @@ window.MULTI_ASSET_SOURCE_DATA = {
         475,
         517.780029
       ],
-      null
+      [
+        498.01001,
+        501.019989,
+        496.779999,
+        505.970001
+      ]
     ],
     "equity_alphabet": [
       [
@@ -37781,10 +37801,15 @@ window.MULTI_ASSET_SOURCE_DATA = {
       [
         365.450012,
         339.350006,
-        337.156006,
+        337.160004,
         384.480011
       ],
-      null
+      [
+        336,
+        335.019989,
+        333.059998,
+        337.200012
+      ]
     ],
     "equity_amazon": [
       [
@@ -39275,7 +39300,12 @@ window.MULTI_ASSET_SOURCE_DATA = {
         255.020004,
         287.200012
       ],
-      null
+      [
+        254.830002,
+        254.919998,
+        251.929993,
+        255.820007
+      ]
     ],
     "equity_nvidia": [
       [
@@ -40766,7 +40796,12 @@ window.MULTI_ASSET_SOURCE_DATA = {
         196.850006,
         230.470001
       ],
-      null
+      [
+        216.610001,
+        217.440002,
+        215.100006,
+        220.410004
+      ]
     ],
     "equity_meta": [
       null,
@@ -41877,7 +41912,12 @@ window.MULTI_ASSET_SOURCE_DATA = {
         537.27002,
         612.429993
       ],
-      null
+      [
+        557.799988,
+        578.539978,
+        556.289978,
+        584.900024
+      ]
     ],
     "equity_tesla": [
       null,
@@ -43103,7 +43143,12 @@ window.MULTI_ASSET_SOURCE_DATA = {
         310.429993,
         368.920013
       ],
-      null
+      [
+        360.855011,
+        356.089996,
+        352.959991,
+        362.700012
+      ]
     ]
   },
   "sourceNotes": {
