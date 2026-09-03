@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-09-02T01:23:11.136Z",
+  "generatedAt": "2026-09-03T01:26:00.405Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -1587,9 +1587,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "categoryLabel": "贵金属",
       "subgroupKey": "metals",
       "subgroupLabel": "贵金属",
-      "source": "Stooq（缓存回退） + StatMuse（月度补充） + StatMuse（月度补充）",
+      "source": "Stooq（缓存回退） + StatMuse（月度补充） + StatMuse（月度补充） + StatMuse（月度补充）",
       "unit": "美元",
-      "availableRange": "2006-01:2026-08"
+      "availableRange": "2006-01:2026-09"
     },
     {
       "id": "metal_silver_spot_usd",
@@ -1599,9 +1599,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       "categoryLabel": "贵金属",
       "subgroupKey": "metals",
       "subgroupLabel": "贵金属",
-      "source": "Stooq（缓存回退） + StatMuse（月度补充） + StatMuse（月度补充）",
+      "source": "Stooq（缓存回退） + StatMuse（月度补充） + StatMuse（月度补充） + StatMuse（月度补充）",
       "unit": "美元",
-      "availableRange": "2006-01:2026-08"
+      "availableRange": "2006-01:2026-09"
     },
     {
       "id": "equity_sp500",
@@ -26070,7 +26070,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4533.42,
       4035.28,
       4051.28,
-      null
+      4325.03
     ],
     "metal_silver_spot_usd": [
       9.84,
@@ -26321,7 +26321,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       75.05,
       59.1,
       57.6,
-      null
+      64.13
     ],
     "equity_sp500": [
       1280.079956,
@@ -26572,7 +26572,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       7499.359863,
       7489.720215,
       7686.140137,
-      7631.470215
+      7666.600098
     ],
     "equity_nasdaq100": [
       1710.75,
@@ -26823,7 +26823,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       30276.349609,
       28274.199219,
       29456.970703,
-      29077.220703
+      29143.330078
     ],
     "equity_csi300": [
       1009.6,
@@ -27074,7 +27074,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4979.43,
       4588.2,
       4625.09,
-      4611.44
+      4570.91
     ],
     "equity_apple": [
       2.696786,
@@ -30326,9 +30326,9 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         7635.470215,
-        7631.470215,
+        7666.600098,
         7611.200195,
-        7663.629883
+        7681.189941
       ]
     ],
     "equity_nasdaq100": [
@@ -31821,10 +31821,10 @@ window.MULTI_ASSET_SOURCE_DATA = {
         30195.720703
       ],
       [
-        29056.578125,
-        29077.220703,
-        28953.255859,
-        29267.421875
+        29056.580078,
+        29143.330078,
+        28953.259766,
+        29267.419922
       ]
     ],
     "equity_csi300": [
@@ -33318,8 +33318,8 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         4618.73,
-        4611.44,
-        4604.77,
+        4570.91,
+        4534.39,
         4640.08
       ]
     ],
@@ -34815,7 +34815,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       [
         316.980011,
         325.130005,
-        314.737,
+        314.730011,
         327.299988
       ]
     ],
@@ -36309,7 +36309,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
         517.780029
       ],
       [
-        498.01001,
+        497.519989,
         501.019989,
         496.779999,
         505.970001
@@ -37807,7 +37807,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       [
         336,
         335.019989,
-        333.059998,
+        333.049988,
         337.200012
       ]
     ],
@@ -40797,7 +40797,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
         230.470001
       ],
       [
-        216.610001,
+        216.75,
         217.440002,
         215.100006,
         220.410004
@@ -41913,10 +41913,10 @@ window.MULTI_ASSET_SOURCE_DATA = {
         612.429993
       ],
       [
-        557.799988,
+        558.349976,
         578.539978,
-        556.289978,
-        584.900024
+        556.099976,
+        584.950012
       ]
     ],
     "equity_tesla": [
@@ -43144,7 +43144,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
         368.920013
       ],
       [
-        360.855011,
+        360.899994,
         356.089996,
         352.959991,
         362.700012
