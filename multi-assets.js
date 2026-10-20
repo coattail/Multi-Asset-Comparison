@@ -355,7 +355,7 @@ const uiState = {
   selectedStartMonth: null,
   selectedEndMonth: null,
   chinaSourceMode: "centaline",
-  showChartTable: true,
+  showChartTable: !window.matchMedia("(max-width: 760px), (max-width: 1024px) and (max-height: 600px) and (pointer: coarse)").matches,
 };
 
 function isFiniteNumber(value) {
@@ -3612,6 +3612,7 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
       color: chartTheme.chartTextColor,
     },
     tooltip: {
+      confine: true,
       trigger: "axis",
       axisPointer: {
         type: "line",
@@ -3677,7 +3678,8 @@ function makeOption(rendered, months, viewportStartMonth, viewportEndMonth) {
       },
     },
     legend: {
-      bottom: legendBottom,
+      type: compactMobile ? "scroll" : "plain",
+      bottom: compactMobile ? 8 : legendBottom,
       textStyle: {
         color: chartTheme.legendTextColor,
         fontSize: legendFontSize,
@@ -4238,7 +4240,8 @@ function render() {
     isApplyingOption = true;
     try {
       chart.setOption(makeOption(renderList, viewportMonths, viewportStartMonth, viewportEndMonth), {
-        notMerge: true,
+        // Preserve the tooltip while touch/click events are still being processed.
+        replaceMerge: ["series"],
         lazyUpdate: false,
       });
     } finally {
