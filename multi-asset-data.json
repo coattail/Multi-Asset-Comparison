@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T02:04:08.686Z",
+  "generatedAt": "2026-10-20T04:51:49.856Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -288,7 +288,7 @@
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-08"
+      "availableRange": "2008-01:2026-09"
     },
     {
       "id": "cn_centaline_city_3",
@@ -302,7 +302,7 @@
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-08"
+      "availableRange": "2008-01:2026-09"
     },
     {
       "id": "cn_centaline_city_4",
@@ -316,7 +316,7 @@
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-08"
+      "availableRange": "2008-01:2026-09"
     },
     {
       "id": "cn_centaline_city_5",
@@ -330,7 +330,7 @@
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-08"
+      "availableRange": "2008-01:2026-09"
     },
     {
       "id": "cn_centaline_city_6",
@@ -344,7 +344,7 @@
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-08"
+      "availableRange": "2008-01:2026-09"
     },
     {
       "id": "cn_centaline_city_hk",
@@ -358,7 +358,7 @@
       "chinaSourceLabel": "中原6城",
       "source": "中原地产香港官网(CCL)",
       "unit": "指数",
-      "availableRange": "2008-01:2026-08"
+      "availableRange": "2008-01:2026-09"
     },
     {
       "id": "cn_nbs70_city_nbs_110000",
@@ -1975,7 +1975,7 @@
       164.827992,
       162.630286,
       160.87212,
-      null,
+      160.432579,
       null
     ],
     "cn_centaline_city_3": [
@@ -2227,7 +2227,7 @@
       322.796547,
       320.641697,
       317.624907,
-      null,
+      321.072667,
       null
     ],
     "cn_centaline_city_4": [
@@ -2479,7 +2479,7 @@
       300.590784,
       302.069099,
       301.576328,
-      null,
+      300.098012,
       null
     ],
     "cn_centaline_city_5": [
@@ -2731,7 +2731,7 @@
       278.541103,
       277.718234,
       274.838193,
-      null,
+      275.661062,
       null
     ],
     "cn_centaline_city_6": [
@@ -2983,7 +2983,7 @@
       243.931918,
       244.4838,
       244.4838,
-      null,
+      245.587564,
       null
     ],
     "cn_centaline_city_hk": [
@@ -3235,7 +3235,7 @@
       227.751806,
       226.54767,
       229.522595,
-      null,
+      226.802663,
       null
     ],
     "cn_nbs70_city_nbs_110000": [
