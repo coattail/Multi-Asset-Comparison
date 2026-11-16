@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T03:05:22.670Z",
+  "generatedAt": "2026-11-16T11:39:56.013Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -289,7 +289,7 @@
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-09"
+      "availableRange": "2008-01:2026-10"
     },
     {
       "id": "cn_centaline_city_3",
@@ -303,7 +303,7 @@
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-09"
+      "availableRange": "2008-01:2026-10"
     },
     {
       "id": "cn_centaline_city_4",
@@ -317,7 +317,7 @@
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-09"
+      "availableRange": "2008-01:2026-10"
     },
     {
       "id": "cn_centaline_city_5",
@@ -331,7 +331,7 @@
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-09"
+      "availableRange": "2008-01:2026-10"
     },
     {
       "id": "cn_centaline_city_6",
@@ -345,7 +345,7 @@
       "chinaSourceLabel": "中原6城",
       "source": "中原地产",
       "unit": "指数",
-      "availableRange": "2008-01:2026-09"
+      "availableRange": "2008-01:2026-10"
     },
     {
       "id": "cn_centaline_city_hk",
@@ -359,7 +359,7 @@
       "chinaSourceLabel": "中原6城",
       "source": "中原地产香港官网(CCL)",
       "unit": "指数",
-      "availableRange": "2008-01:2026-09"
+      "availableRange": "2008-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_110000",
@@ -373,7 +373,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_120000",
@@ -387,7 +387,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_130100",
@@ -401,7 +401,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_130200",
@@ -415,7 +415,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_130300",
@@ -429,7 +429,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_140100",
@@ -443,7 +443,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_150100",
@@ -457,7 +457,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_150200",
@@ -471,7 +471,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_210100",
@@ -485,7 +485,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_210200",
@@ -499,7 +499,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_210600",
@@ -513,7 +513,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_210700",
@@ -527,7 +527,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_220100",
@@ -541,7 +541,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_220200",
@@ -555,7 +555,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_230100",
@@ -569,7 +569,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_231000",
@@ -583,7 +583,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_310000",
@@ -597,7 +597,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_320100",
@@ -611,7 +611,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_320200",
@@ -625,7 +625,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_320300",
@@ -639,7 +639,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_321000",
@@ -653,7 +653,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_330100",
@@ -667,7 +667,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_330200",
@@ -681,7 +681,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_330300",
@@ -695,7 +695,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_330700",
@@ -709,7 +709,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_340100",
@@ -723,7 +723,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_340300",
@@ -737,7 +737,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_340800",
@@ -751,7 +751,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_350100",
@@ -765,7 +765,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_350200",
@@ -779,7 +779,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_350500",
@@ -793,7 +793,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_360100",
@@ -807,7 +807,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_360400",
@@ -821,7 +821,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_360700",
@@ -835,7 +835,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_370100",
@@ -849,7 +849,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_370200",
@@ -863,7 +863,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_370600",
@@ -877,7 +877,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_370800",
@@ -891,7 +891,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_410100",
@@ -905,7 +905,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_410300",
@@ -919,7 +919,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_410400",
@@ -933,7 +933,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_420100",
@@ -947,7 +947,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_420500",
@@ -961,7 +961,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_420600",
@@ -975,7 +975,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_430100",
@@ -989,7 +989,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_430600",
@@ -1003,7 +1003,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_430700",
@@ -1017,7 +1017,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_440100",
@@ -1031,7 +1031,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_440200",
@@ -1045,7 +1045,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_440300",
@@ -1059,7 +1059,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_440800",
@@ -1073,7 +1073,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_441300",
@@ -1087,7 +1087,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_450100",
@@ -1101,7 +1101,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_450300",
@@ -1115,7 +1115,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_450500",
@@ -1129,7 +1129,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_460100",
@@ -1143,7 +1143,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_460200",
@@ -1157,7 +1157,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_500000",
@@ -1171,7 +1171,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_510100",
@@ -1185,7 +1185,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_510500",
@@ -1199,7 +1199,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_511300",
@@ -1213,7 +1213,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_520100",
@@ -1227,7 +1227,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_520300",
@@ -1241,7 +1241,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_530100",
@@ -1255,7 +1255,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_532900",
@@ -1269,7 +1269,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_610100",
@@ -1283,7 +1283,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_620100",
@@ -1297,7 +1297,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_630100",
@@ -1311,7 +1311,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_640100",
@@ -1325,7 +1325,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "cn_nbs70_city_nbs_650100",
@@ -1339,7 +1339,7 @@
       "chinaSourceLabel": "统计局70城",
       "source": "国家统计局(data.stats.gov.cn)",
       "unit": "指数",
-      "availableRange": "2006-01:2026-09"
+      "availableRange": "2006-01:2026-10"
     },
     {
       "id": "us_cs_atxrsa",
@@ -1977,7 +1977,7 @@
       162.630286,
       160.87212,
       160.432579,
-      null,
+      159.553496,
       null
     ],
     "cn_centaline_city_3": [
@@ -2230,7 +2230,7 @@
       320.641697,
       317.624907,
       321.072667,
-      null,
+      318.917817,
       null
     ],
     "cn_centaline_city_4": [
@@ -2483,7 +2483,7 @@
       302.069099,
       301.576328,
       300.098012,
-      null,
+      298.619697,
       null
     ],
     "cn_centaline_city_5": [
@@ -2736,7 +2736,7 @@
       277.718234,
       274.838193,
       275.661062,
-      null,
+      276.072496,
       null
     ],
     "cn_centaline_city_6": [
@@ -2989,7 +2989,7 @@
       244.4838,
       244.4838,
       245.587564,
-      null,
+      246.139446,
       null
     ],
     "cn_centaline_city_hk": [
@@ -3242,7 +3242,7 @@
       226.54767,
       229.522595,
       226.802663,
-      null,
+      225.782689,
       null
     ],
     "cn_nbs70_city_nbs_110000": [
@@ -3495,7 +3495,7 @@
       251.948711,
       251.696762,
       251.948459,
-      null,
+      251.948459,
       null
     ],
     "cn_nbs70_city_nbs_120000": [
@@ -3748,7 +3748,7 @@
       138.744654,
       138.050931,
       137.636778,
-      null,
+      136.948594,
       null
     ],
     "cn_nbs70_city_nbs_130100": [
@@ -4001,7 +4001,7 @@
       112.234349,
       111.897646,
       111.673851,
-      null,
+      111.338829,
       null
     ],
     "cn_nbs70_city_nbs_130200": [
@@ -4254,7 +4254,7 @@
       123.780512,
       123.037829,
       122.42264,
-      null,
+      121.688104,
       null
     ],
     "cn_nbs70_city_nbs_130300": [
@@ -4507,7 +4507,7 @@
       110.968789,
       110.413945,
       110.082703,
-      null,
+      109.642372,
       null
     ],
     "cn_nbs70_city_nbs_140100": [
@@ -4760,7 +4760,7 @@
       134.405043,
       133.598613,
       133.064219,
-      null,
+      132.798091,
       null
     ],
     "cn_nbs70_city_nbs_150100": [
@@ -5013,7 +5013,7 @@
       106.097925,
       105.461337,
       105.144953,
-      null,
+      104.724373,
       null
     ],
     "cn_nbs70_city_nbs_150200": [
@@ -5266,7 +5266,7 @@
       83.45659,
       82.95585,
       82.541071,
-      null,
+      81.963284,
       null
     ],
     "cn_nbs70_city_nbs_210100": [
@@ -5519,7 +5519,7 @@
       165.834734,
       165.834734,
       165.834734,
-      null,
+      166.000569,
       null
     ],
     "cn_nbs70_city_nbs_210200": [
@@ -5772,7 +5772,7 @@
       134.527528,
       134.527528,
       134.662056,
-      null,
+      134.662056,
       null
     ],
     "cn_nbs70_city_nbs_210600": [
@@ -6025,7 +6025,7 @@
       108.50789,
       108.073858,
       107.85771,
-      null,
+      107.85771,
       null
     ],
     "cn_nbs70_city_nbs_210700": [
@@ -6278,7 +6278,7 @@
       83.216878,
       82.967227,
       82.801293,
-      null,
+      82.718492,
       null
     ],
     "cn_nbs70_city_nbs_220100": [
@@ -6531,7 +6531,7 @@
       126.142019,
       125.637451,
       125.134901,
-      null,
+      124.759496,
       null
     ],
     "cn_nbs70_city_nbs_220200": [
@@ -6784,7 +6784,7 @@
       109.683335,
       109.354285,
       108.807514,
-      null,
+      108.372284,
       null
     ],
     "cn_nbs70_city_nbs_230100": [
@@ -7037,7 +7037,7 @@
       140.706807,
       140.5661,
       140.003836,
-      null,
+      139.583824,
       null
     ],
     "cn_nbs70_city_nbs_231000": [
@@ -7290,7 +7290,7 @@
       81.439824,
       81.276944,
       81.11439,
-      null,
+      81.033276,
       null
     ],
     "cn_nbs70_city_nbs_310000": [
@@ -7543,7 +7543,7 @@
       211.920761,
       212.556523,
       213.619306,
-      null,
+      214.687403,
       null
     ],
     "cn_nbs70_city_nbs_320100": [
@@ -7796,7 +7796,7 @@
       147.941218,
       147.645336,
       147.054755,
-      null,
+      147.054755,
       null
     ],
     "cn_nbs70_city_nbs_320200": [
@@ -8049,7 +8049,7 @@
       191.796324,
       191.604528,
       192.179342,
-      null,
+      191.602804,
       null
     ],
     "cn_nbs70_city_nbs_320300": [
@@ -8302,7 +8302,7 @@
       115.416637,
       115.185804,
       115.531361,
-      null,
+      116.109018,
       null
     ],
     "cn_nbs70_city_nbs_321000": [
@@ -8555,7 +8555,7 @@
       113.860642,
       114.088363,
       113.746098,
-      null,
+      113.063621,
       null
     ],
     "cn_nbs70_city_nbs_330100": [
@@ -8808,7 +8808,7 @@
       189.219727,
       188.841288,
       188.274764,
-      null,
+      187.70994,
       null
     ],
     "cn_nbs70_city_nbs_330200": [
@@ -9061,7 +9061,7 @@
       133.830435,
       133.830435,
       133.696605,
-      null,
+      133.429212,
       null
     ],
     "cn_nbs70_city_nbs_330300": [
@@ -9314,7 +9314,7 @@
       99.229408,
       99.030949,
       98.733856,
-      null,
+      98.437654,
       null
     ],
     "cn_nbs70_city_nbs_330700": [
@@ -9567,7 +9567,7 @@
       109.503885,
       109.175373,
       108.957022,
-      null,
+      108.848065,
       null
     ],
     "cn_nbs70_city_nbs_340100": [
@@ -9820,7 +9820,7 @@
       171.361131,
       171.361131,
       171.703853,
-      null,
+      172.047261,
       null
     ],
     "cn_nbs70_city_nbs_340300": [
@@ -10073,7 +10073,7 @@
       161.48069,
       160.834767,
       160.513097,
-      null,
+      160.352584,
       null
     ],
     "cn_nbs70_city_nbs_340800": [
@@ -10326,7 +10326,7 @@
       94.110426,
       93.828095,
       93.546611,
-      null,
+      93.359518,
       null
     ],
     "cn_nbs70_city_nbs_350100": [
@@ -10579,7 +10579,7 @@
       133.94587,
       133.677978,
       133.143266,
-      null,
+      132.876979,
       null
     ],
     "cn_nbs70_city_nbs_350200": [
@@ -10832,7 +10832,7 @@
       172.294682,
       171.260914,
       170.747131,
-      null,
+      170.064142,
       null
     ],
     "cn_nbs70_city_nbs_350500": [
@@ -11085,7 +11085,7 @@
       100.545849,
       100.04312,
       99.642948,
-      null,
+      99.344019,
       null
     ],
     "cn_nbs70_city_nbs_360100": [
@@ -11338,7 +11338,7 @@
       148.322824,
       148.026178,
       147.434073,
-      null,
+      146.844337,
       null
     ],
     "cn_nbs70_city_nbs_360400": [
@@ -11591,7 +11591,7 @@
       152.269532,
       151.964993,
       151.509098,
-      null,
+      150.903062,
       null
     ],
     "cn_nbs70_city_nbs_360700": [
@@ -11844,7 +11844,7 @@
       127.724661,
       126.958313,
       126.45048,
-      null,
+      126.197579,
       null
     ],
     "cn_nbs70_city_nbs_370100": [
@@ -12097,7 +12097,7 @@
       124.867016,
       124.117814,
       123.621343,
-      null,
+      123.3741,
       null
     ],
     "cn_nbs70_city_nbs_370200": [
@@ -12350,7 +12350,7 @@
       117.392251,
       117.157466,
       117.040309,
-      null,
+      116.689188,
       null
     ],
     "cn_nbs70_city_nbs_370600": [
@@ -12603,7 +12603,7 @@
       127.38213,
       127.127366,
       127.000239,
-      null,
+      126.873239,
       null
     ],
     "cn_nbs70_city_nbs_370800": [
@@ -12856,7 +12856,7 @@
       156.229331,
       155.604414,
       154.981996,
-      null,
+      154.207086,
       null
     ],
     "cn_nbs70_city_nbs_410100": [
@@ -13109,7 +13109,7 @@
       138.159331,
       137.744853,
       137.193874,
-      null,
+      136.919486,
       null
     ],
     "cn_nbs70_city_nbs_410300": [
@@ -13362,7 +13362,7 @@
       126.816828,
       125.92911,
       125.173535,
-      null,
+      124.29732,
       null
     ],
     "cn_nbs70_city_nbs_410400": [
@@ -13615,7 +13615,7 @@
       116.887552,
       116.536889,
       116.070741,
-      null,
+      115.722529,
       null
     ],
     "cn_nbs70_city_nbs_420100": [
@@ -13868,7 +13868,7 @@
       141.149788,
       140.867488,
       141.008355,
-      null,
+      140.58533,
       null
     ],
     "cn_nbs70_city_nbs_420500": [
@@ -14121,7 +14121,7 @@
       111.159079,
       110.936761,
       110.603951,
-      null,
+      110.272139,
       null
     ],
     "cn_nbs70_city_nbs_420600": [
@@ -14374,7 +14374,7 @@
       135.91571,
       135.372047,
       134.830559,
-      null,
+      134.560898,
       null
     ],
     "cn_nbs70_city_nbs_430100": [
@@ -14627,7 +14627,7 @@
       189.807624,
       189.428009,
       188.859725,
-      null,
+      188.104286,
       null
     ],
     "cn_nbs70_city_nbs_430600": [
@@ -14880,7 +14880,7 @@
       143.659801,
       142.941502,
       142.512677,
-      null,
+      141.942626,
       null
     ],
     "cn_nbs70_city_nbs_430700": [
@@ -15133,7 +15133,7 @@
       115.631963,
       115.053803,
       114.593588,
-      null,
+      114.249807,
       null
     ],
     "cn_nbs70_city_nbs_440100": [
@@ -15386,7 +15386,7 @@
       172.718885,
       172.718885,
       172.891604,
-      null,
+      173.237387,
       null
     ],
     "cn_nbs70_city_nbs_440200": [
@@ -15639,7 +15639,7 @@
       100.695465,
       100.292683,
       99.79122,
-      null,
+      99.392055,
       null
     ],
     "cn_nbs70_city_nbs_440300": [
@@ -15892,7 +15892,7 @@
       278.951082,
       279.230033,
       279.788493,
-      null,
+      280.068281,
       null
     ],
     "cn_nbs70_city_nbs_440800": [
@@ -16145,7 +16145,7 @@
       140.381048,
       139.398381,
       138.701389,
-      null,
+      138.285285,
       null
     ],
     "cn_nbs70_city_nbs_441300": [
@@ -16398,7 +16398,7 @@
       131.921143,
       131.789222,
       131.262065,
-      null,
+      131.130803,
       null
     ],
     "cn_nbs70_city_nbs_450100": [
@@ -16651,7 +16651,7 @@
       141.742873,
       141.459387,
       141.035009,
-      null,
+      140.752939,
       null
     ],
     "cn_nbs70_city_nbs_450300": [
@@ -16904,7 +16904,7 @@
       99.19757,
       98.899977,
       98.801077,
-      null,
+      98.603475,
       null
     ],
     "cn_nbs70_city_nbs_450500": [
@@ -17157,7 +17157,7 @@
       106.149678,
       105.725079,
       105.090729,
-      null,
+      104.670366,
       null
     ],
     "cn_nbs70_city_nbs_460100": [
@@ -17410,7 +17410,7 @@
       123.904454,
       122.665409,
       121.684086,
-      null,
+      121.075666,
       null
     ],
     "cn_nbs70_city_nbs_460200": [
@@ -17663,7 +17663,7 @@
       180.393733,
       179.852552,
       179.852552,
-      null,
+      178.953289,
       null
     ],
     "cn_nbs70_city_nbs_500000": [
@@ -17916,7 +17916,7 @@
       138.726337,
       138.171432,
       137.756918,
-      null,
+      137.894675,
       null
     ],
     "cn_nbs70_city_nbs_510100": [
@@ -18169,7 +18169,7 @@
       161.786075,
       161.138931,
       160.333236,
-      null,
+      160.01257,
       null
     ],
     "cn_nbs70_city_nbs_510500": [
@@ -18422,7 +18422,7 @@
       107.075197,
       106.432746,
       106.007015,
-      null,
+      105.582987,
       null
     ],
     "cn_nbs70_city_nbs_511300": [
@@ -18675,7 +18675,7 @@
       109.870269,
       109.430788,
       109.102496,
-      null,
+      109.102496,
       null
     ],
     "cn_nbs70_city_nbs_520100": [
@@ -18928,7 +18928,7 @@
       118.808928,
       118.214883,
       117.742023,
-      null,
+      117.153313,
       null
     ],
     "cn_nbs70_city_nbs_520300": [
@@ -19181,7 +19181,7 @@
       163.367785,
       162.877682,
       162.551927,
-      null,
+      162.064271,
       null
     ],
     "cn_nbs70_city_nbs_530100": [
@@ -19434,7 +19434,7 @@
       150.572335,
       149.970046,
       149.220196,
-      null,
+      148.623315,
       null
     ],
     "cn_nbs70_city_nbs_532900": [
@@ -19687,7 +19687,7 @@
       112.403811,
       111.954196,
       111.394425,
-      null,
+      110.948847,
       null
     ],
     "cn_nbs70_city_nbs_610100": [
@@ -19940,7 +19940,7 @@
       124.845387,
       124.470851,
       124.097438,
-      null,
+      123.849243,
       null
     ],
     "cn_nbs70_city_nbs_620100": [
@@ -20193,7 +20193,7 @@
       146.115378,
       145.677032,
       145.531355,
-      null,
+      144.803698,
       null
     ],
     "cn_nbs70_city_nbs_630100": [
@@ -20446,7 +20446,7 @@
       171.454979,
       170.769159,
       170.427621,
-      null,
+      169.916338,
       null
     ],
     "cn_nbs70_city_nbs_640100": [
@@ -20699,7 +20699,7 @@
       144.953242,
       144.663336,
       144.229346,
-      null,
+      143.652429,
       null
     ],
     "cn_nbs70_city_nbs_650100": [
@@ -20952,7 +20952,7 @@
       187.550652,
       187.363101,
       186.988375,
-      null,
+      186.801387,
       null
     ],
     "us_cs_atxrsa": [
