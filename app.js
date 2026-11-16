@@ -10,7 +10,7 @@ const SOURCE_CONFIGS = [
     heroSubtitle: "数据来源：Wind、中原研究中心",
     defaultSelectedNames: null,
     globalKey: "HOUSE_PRICE_SOURCE_DATA",
-    scriptUrl: "house-price-data.js?v=20261020-centaline-september",
+    scriptUrl: "house-price-data.js?v=20261116-housing-october",
     data: window.HOUSE_PRICE_SOURCE_DATA,
   },
   {
@@ -21,7 +21,7 @@ const SOURCE_CONFIGS = [
     heroSubtitle: "数据来源：国家统计局（70城二手住宅销售价格指数）",
     defaultSelectedNames: ["北京", "上海", "广州", "深圳", "天津", "重庆"],
     globalKey: "HOUSE_PRICE_SOURCE_DATA_NBS_70",
-    scriptUrl: "house-price-data-nbs-70.js?v=20261019-nbs-70city-september",
+    scriptUrl: "house-price-data-nbs-70.js?v=20261116-housing-october",
     data: window.HOUSE_PRICE_SOURCE_DATA_NBS_70,
   },
 ];
