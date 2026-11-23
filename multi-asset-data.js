@@ -1,5 +1,5 @@
 window.MULTI_ASSET_SOURCE_DATA = {
-  "generatedAt": "2026-11-22T03:28:04.101Z",
+  "generatedAt": "2026-11-23T03:59:53.366Z",
   "baseMonth": "2006-01",
   "dates": [
     "2006-01",
@@ -27278,7 +27278,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       4625.09,
       4357.62,
       3985.5,
-      3954.57
+      3930.08
     ],
     "equity_apple": [
       2.696786,
@@ -33572,7 +33572,7 @@ window.MULTI_ASSET_SOURCE_DATA = {
       ],
       [
         4005.94,
-        3954.57,
+        3930.08,
         3894.47,
         4136.8
       ]
